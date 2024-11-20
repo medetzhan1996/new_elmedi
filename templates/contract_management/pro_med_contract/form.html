@@ -1,0 +1,27 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="modal-body">
+	<div class="form-group">
+        <b> {% trans "Номер контракта " %}</b>
+		{{ form.number|add_class:"form-control" }} 
+    </div>
+    <div class="form-group">
+    	<b>{% trans "Филиалы страховой компании" %}</b>
+    	{{ form.insurance|add_class:"form-control" }}
+    </div>
+    <div class="form-group">
+    	<b>{% trans "Страхователь/промпредприятие/клиент" %}</b>
+    	{{ form.insurer|add_class:"form-control" }}
+    </div>
+
+    <div class="form-group">
+    	<b>{% trans "Дата начала контракта" %}</b>
+    	{{ form.start_date|attr:"type:date"|add_class:"form-control" }}
+    </div>
+
+    <div class="form-group">
+    	<b>{% trans "Дата окончания контракта " %}</b>
+    	{{ form.end_date|attr:"type:date"|add_class:"form-control" }} 
+    </div>
+</div>

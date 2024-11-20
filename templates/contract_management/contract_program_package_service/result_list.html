@@ -1,0 +1,62 @@
+
+<style>
+    input{
+        width: 40px
+    }
+</style>
+<div class="contentbar" style="margin-top: 0;">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <!-- <div class="col-md-12">
+                <div class="">
+                    <input type="text" class="form-control" placeholder="Поиск услуг по коду и названию">
+                </div>
+            </div> -->
+            <div class="col-md-12">
+                <div class="scroll-table">
+                    <table class="table table-bordered treetable mb-0">
+                        <tr>
+                            <th colspan="1" style="width: 200px;"><div>Коды услуг</div></th>
+                            <th><div>Названия услуг</div></th>
+                            <th style="width:150px;">Редактирование</th>
+                        </tr>
+                    </table>
+                    <div class="scroll-table-body-none-header">
+                        <table class="table table-bordered treetable mt-0" id="service-table">
+                            <tbody>
+                                {% for service in services %}
+                                    {% is_leaf_node service.is_leaf_node as is_leaf_node %}
+                                    <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                        <td style="width: 200px;height: 30px;">
+                                            {% if not is_leaf_node %}
+                                                <span class='folder'>
+                                                    {{ service.code }}
+                                                </span>
+                                            {% else %}
+                                                <span class='file'>
+                                                    {{ service.code }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ service.title }}
+                                        </td>
+                                        <td class="text-center" style="width:150px;">
+
+                                            <input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+                                            <button data-service="{{ service.id }}"
+                                                    class="fa fa-trash btn delete-package_service"></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

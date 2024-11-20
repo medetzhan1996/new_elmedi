@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load package_service_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'package_service_management:pro_med_package_evaluation_list' %}">{% trans "Оценка  и актуарий вредности" %}</a></li>
+    <li class="breadcrumb-item active"><a href="">{{ package.title }}</a></li>
+{% endblock %}
+
+{% block content %}
+<style>
+	input{
+		width: 40px
+	}
+</style>
+<div class="contentbar" style="margin-top: 0;">
+	<div class="card" style="padding: 10px;">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="scroll-table">
+                    <table class="table table-bordered treetable" style="margin-bottom: 0;padding-bottom: 0;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" colspan="1" style=" width:160px;"class="text-center"><div style="margin-top: 95px;">{% trans "Коды услуг" %}</div></th>
+                                <th rowspan="2" class="text-center" style="width: 550px;"><div style="margin-top: 95px;">{% trans "Названия услуг" %}</div></th>
+                                <!-- <th colspan="5" class="text-center yellow">{% trans "ОМС" %}</th> -->
+                                <th colspan="5" class="text-center green">{% trans "ОМО" %}</th>
+                                <th colspan="5" class="text-center bg-red">{% trans "ОПМО" %}</th>
+                            </tr>
+                            <tr>
+                                <!-- <th rowspan="2" class="yellow"><div class="rotate ">{% trans "Базовая цена" %}</div></th>
+                                <th colspan="4" class="text-center yellow">Ценовой коэффициент</th> 
+                                <th rowspan="2" class="yellow"><div class="rotate"style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                                <th rowspan="2" class="yellow"><div class="rotate" style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                                <th rowspan="2" class="yellow"><div class="rotate" >{% trans "Амбулаторно" %}</div></th>
+                                <th rowspan="2" class="yellow"><div class="rotate">{% trans "Стационарно" %}</div></th> -->
+                                <th rowspan="2" class="green"><div class="rotate" >{% trans "Базовая цена" %}</div></th>
+                                <!-- <th colspan="4" class="text-center green">Ценовой коэффициент</th> -->
+                                <th rowspan="2" class="green"><div class="rotate"style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                                <th rowspan="2" class="green"><div class="rotate"style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                                <th rowspan="2" class="green"><div class="rotate" >{% trans "Амбулаторно" %}</div></th>
+                                <th rowspan="2" class="green"><div class="rotate" >{% trans "Стационарно" %}</div></th>
+                                <!-- <th rowspan="2" class="rotate green" rowspan="2">Лимит услуг</th> -->
+                                <th rowspan="2" class="bg-red"><div class="rotate">{% trans "Базовая цена" %}</div></th>
+                                <!-- <th colspan="4" class="text-center bg-red">Ценовой коэффициент</th> -->
+                                
+                                <th rowspan="2" class="bg-red"><div class="rotate"style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                                <th rowspan="2" class="bg-red"><div class="rotate"style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                                <th rowspan="2" class="bg-red"><div class="rotate" >{% trans "Амбулаторно" %}</div></th>
+                                <th rowspan="2" class="bg-red"><div class="rotate">{% trans "Стационарно" %}</div></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-table-body">
+                        <table class="table table-bordered treetable mt-0" id="service-table">
+                            <tbody>
+								{% for service in services %}
+									{% get_package_service package service as package_service %}
+									{% is_leaf_node service.is_leaf_node as is_leaf_node %}
+									<tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+										<td style="width:160px;height: 30px;">
+											{% if not is_leaf_node %}
+											<span class='folder'>
+												{{ service.code }}
+											</span>
+											{% else %}
+											<span class='file'>
+												{{ service.code }}
+											</span>
+											{% endif %}
+										</td>
+										<td style="width: 550px;">
+											{{ service.title }}
+										</td><!-- 
+										<td class="yellow">
+											{% if service.is_leaf_node %}
+											<input type="text" disabled="" name="vhi_price" class="	package-service-customize input-furm"
+												value="{{ service.stateinsurance.price|default_if_none:"" }}" title="{{ service.stateinsurance.price|default_if_none:"" }}">
+											{% endif %}
+										</td>
+										<td class="yellow">
+											{% if service.is_leaf_node %}
+												<input type="text" disabled="" name="vhi_price" class="	package-service-customize input-furm"
+												value="{{service.stateinsurance.at_home_coefficient|default_if_none:"" }}" title="{{service.stateinsurance.at_home_coefficient|default_if_none:"" }}">
+											{% endif %}
+										</td>
+										<td class="yellow">
+											{% if service.is_leaf_node %}
+												<input type="text" disabled="" name="vhi_price" class="	package-service-customize input-furm"
+												value="{{ service.stateinsurance.primary_health_care_coefficient|default_if_none:"" }}" title="{{ service.stateinsurance.primary_health_care_coefficient|default_if_none:"" }}">
+											{% endif %}
+										</td>
+										<td class="yellow">
+											{% if service.is_leaf_node %}
+											<input type="text" disabled="" name="vhi_price" class="	package-service-customize input-furm"
+												value="{{ service.stateinsurance.clinical_diagnostic_coefficient|default_if_none:"" }}" title="{{ service.stateinsurance.clinical_diagnostic_coefficient|default_if_none:"" }}">
+											{% endif %}
+										</td>
+										<td class="yellow">
+											{% if service.is_leaf_node %}
+											<input type="text" disabled="" name="vhi_price" class="	package-service-customize input-furm"
+												value="{{service.stateinsurance.hospital_coefficient|default_if_none:"" }}" title="{{service.stateinsurance.hospital_coefficient|default_if_none:"" }}">
+												
+											{% endif %}
+										</td> -->
+										<td class="green">
+											{% if is_leaf_node %}
+												<input type="text" name="vhi_price" class="package-service-customize input-furm"
+												value="{{ package_service.vhi_price|default:'' }}" title="{{ package_service.vhi_price|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="green">
+											{% if is_leaf_node %}
+												<input type="text" name="vhi_at_home_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.vhi_at_home_coefficient|default:'' }}" title="{{ package_service.vhi_at_home_coefficient|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="green">
+											{% if is_leaf_node %}
+												<input type="text" name="vhi_primary_health_care_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.vhi_primary_health_care_coefficient|default:'' }}" title="{{ package_service.vhi_primary_health_care_coefficient|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="green">
+											{% if is_leaf_node %}
+												<input type="text" name="vhi_clinical_diagnostic_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.vhi_clinical_diagnostic_coefficient|default:'' }}" title="{{ package_service.vhi_clinical_diagnostic_coefficient|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="green">
+											{% if is_leaf_node %}
+												<input type="text" name="vhi_hospital_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.vhi_hospital_coefficient|default:'' }}" title="{{ package_service.vhi_hospital_coefficient|default:'' }}">
+											{% endif %}
+										</td>
+										<!-- <td class="green">
+											<input type="text" name="limit" class="package-service-customize input-furm"
+												value="{{ package_service.limit|default:'' }}">
+										</td>  -->
+										<td class="bg-red">
+											{% if is_leaf_node %}
+												<input type="text" name="pay_base_price" class="package-service-customize input-furm"
+												value="{{ package_service.pay_base_price|default:'' }}" title="{{ package_service.pay_base_price|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="bg-red">
+											{% if is_leaf_node %}
+												<input type="text" name="pay_at_home_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.pay_at_home_coefficient|default:'' }}" title="{{ package_service.pay_at_home_coefficient|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="bg-red">
+											{% if is_leaf_node %}
+												<input type="text" name="pay_primary_health_care_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.pay_primary_health_care_coefficient|default:'' }}" title="{{ package_service.pay_primary_health_care_coefficient|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="bg-red">
+											{% if is_leaf_node %}
+												<input type="text" name="pay_clinical_diagnostic_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.pay_clinical_diagnostic_coefficient|default:'' }}" title="{{ package_service.pay_clinical_diagnostic_coefficient|default:'' }}">
+											{% endif %}
+										</td>
+										<td class="bg-red">
+											{% if is_leaf_node %}
+												<input type="text" name="pay_hospital_coefficient" class="package-service-customize input-furm"
+												value="{{ package_service.pay_hospital_coefficient|default:'' }}" title="{{ package_service.pay_hospital_coefficient|default:'' }}">
+											{% endif %}
+											<input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block domready %}
+
+	$("#service-table").treetable({
+		expandable: true,
+		clickableNodeNames: true
+	})
+
+	function get_form_data(_this, closest_element, element){
+		data = {}
+		_this.closest(closest_element).find(element).each(function(){
+			var name = $(this).attr('name')
+			data[name] = $(this).val()
+		})
+		return data
+	}
+
+	$(document).on("blur", ".package-service-customize", function() {
+		data = {}
+		var service = $(this).closest('tr').data('tt-id')
+		var data = get_form_data($(this), 'tr', '.package-service-customize')
+		data['service'] = service
+		data['package'] = "{{ package.id }}"
+		var url = "{% url 'package_service_management:package_service_form' package=package.id %}"
+		$.ajax({
+			url: url,
+			type: "POST",
+			data: data,
+			success: function(data){
+			}
+		})
+	})
+
+	$(document).on("click", ".delete-package_service", function() {
+		var id = $(this).closest('tr').data('tt-id')
+		var service = $(this).data('service')
+		var package = "{{ package.id }}"
+		var url = "{% url 'package_service_management:package_service_delete' package=package.id service=0 %}".replace('0', service)
+		$.ajax({
+			url: url,
+			type: "POST",
+			success: function(data){
+				$("#service-table").treetable("removeNode", id)
+			}
+		})
+	})
+
+{% endblock %}
+

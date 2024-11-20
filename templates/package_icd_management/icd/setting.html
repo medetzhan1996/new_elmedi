@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load package_icd_management_tags %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'package_icd_management:package_list' %}">Список групп</a></li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'package_icd_management:package_icd_list' package=package %}">Список МКБ-10</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="">
+            Настройка МКБ-10
+        </a>
+    </li>
+
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0">
+    <div class="card" style="padding: 10px;">
+        <div class="row ">
+            <div class="col-md-12">
+                 <b class="m-l-15">Выберите тип МКБ <!-- {{ base_icd }} --></b>
+                <select name="base_icd" id="id_base_icd" class="form-control">
+                    {% for value in base_icds %}
+                        <option value="{{ value.id }}" {% is_selected value.id base_icd %}>
+                            {{ value.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+                <div class="table-responsive m-b-30">
+                    <table  id="icd-table" class="table table-bordered treetable">
+						<tr>
+							<th >Код</th>
+							<th >Наименование услуги</th>
+                            <th>+/-</th>
+						</tr>
+                        {% for icd in icds %}
+                            {% get_package_icd package icd as package_icd %}
+                            <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}'>
+                                <td>
+                                    {% if not icd.is_leaf_node %}
+                                        <span class='folder'>{{ icd.code }}</span>
+                                    {% else %}
+                                        <span class='file'>{{ icd.code }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ icd.title }}</td>
+                                <td width="10px">
+                                    <input type="checkbox" class="package-icd-customize" name="is_perfomed"
+                                        {% is_checked package_icd.is_perfomed %}>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                  
+                </div>
+            </div>
+        </div>         
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+
+    $("#icd-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    function get_form_data(_this, closest_element, element){
+        data = {}
+        _this.closest(closest_element).find(element).each(function(){
+            var name = $(this).attr('name')
+            data[name] = $(this).is(':checked')
+        })
+        return data
+    }
+
+    $(document).on("click", ".delete-package_service", function() {
+        var id = $(this).closest('tr').data('tt-id')
+        var icd = $(this).data('icd')
+        var package = "{{ package }}"
+        var url = "{% url 'package_icd_management:package_icd_delete' package=package icd=0 %}".replace('0', icd)
+        $.ajax({
+            url: url,
+            type: "POST",
+            success: function(data){
+                $("#icd-table").treetable("removeNode", id)
+            }
+        })
+    })
+
+    $(document).on("change", ".package-icd-customize", function() {
+        var data = {}
+        var icd = $(this).closest('tr').data('tt-id')
+        var element = "[name='" + $(this).attr('name') + "']"
+        var is_checked = $(this).is(':checked')
+        var data = get_form_data($(this), 'tr', '.package-icd-customize')
+        data['icd'] = icd
+        data['package'] = "{{ package }}"
+        var url = "{% url 'package_icd_management:package_icd_form' package=package %}"
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            success: function(data){
+                if(is_checked){
+                    $("#icd-table").treetable("checkNode", icd, element)
+                }
+                else{
+                    $("#icd-table").treetable("uncheckNode", icd, element)
+                }
+            }
+        })
+    })
+
+    $(document).on("change", "#id_base_icd, #id_kind_service", function() {
+        var base_icd = $('#id_base_icd').val()
+        var searchParams = new URLSearchParams(window.location.search)
+        if(base_icd){
+            searchParams.set("base_icd", base_icd)
+        }
+        window.location.search = searchParams.toString()
+    })
+{% endblock %}
+

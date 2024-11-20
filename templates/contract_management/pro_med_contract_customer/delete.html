@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<form action="{% url 'contract_management:pro_med_contract_customer_delete' pk=object.id %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Удалить контракт с клиентом" %}'</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p style="color:#333;">{% trans "Клиент" %}': {{ object.customer.full_name }}</p>
+                <hr>
+                <p style="color:#333;" class="mb-0 color-red"> {% trans "Вы уверены, что хотите удалить контракт с клиентом" %}' "{{ object.customer.full_name }}"?   </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-danger btn-sm" value='{% trans "Удалить" %}'>
+         <a href="" class="btn btn-secondary btn-sm">{% trans "Отмена" %}'</a>
+    </div>
+</form>

@@ -1,0 +1,23 @@
+<form action="{% url 'hospital_service_management:hospital_delete' pk=object.id %}" method="POST">
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">Удалить больницу</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% csrf_token %}
+    <div class="modal-body">
+    <div class="row">
+        <div class="col-md-12">
+            <p>Название больницы: {{ object }}</p>
+            <hr>
+            <p class="mb-0 color-red"> Вы уверены, что хотите удалить "{{ object }}"?   </p>
+        </div>
+
+    </div>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-danger btn-sm" value="Удалить">
+        <a href="" class="btn btn-secondary btn-sm">Отмена</a>
+    </div>
+</form>

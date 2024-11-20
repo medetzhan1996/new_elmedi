@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+      <a href="">Название промпредприятия/клиента:
+        {% if request.user.insurance %}
+          <span>{{ request.user.insurance.title}}</span>
+        {% endif %}
+      </a>
+    </li>
+{% endblock %}
+{% block content %}
+
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+    <div class="row align-items-center">
+          <div class="col-md-9">
+              <input type="text"  class="form-control" placeholder='{% trans "Введите текст для поиска"%}'>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <a href="{% url 'directory:customer_create' %}" class="w-100 btn btn-primary">
+              {% trans "Добавить клиента" %}
+            </a>
+          </div>
+      </div>
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>{% trans "ФИО" %}</th>
+                          <th>{% trans "ИИН" %}</th>
+                          <th>{% trans "Номер телефона" %}</th>
+                          <th>{% trans "Адрес" %}</th>
+                          <th>{% trans "Место работы" %}</th>
+                          <th>{% trans "Профессия" %}</th>
+                          <th colspan="2"></th>
+                        </tr>
+                      </thead>
+                      <tbody id="contract-content">
+                        {% for customer in customers %}
+                          <tr>
+                            <td>
+                              {{ customer.full_name }}
+                            </td>
+                            <td>
+                              {{ customer.iin }}
+                            </td>
+                            <td>
+                              {{ customer.telephone_number }}
+                            </td>
+                            <td>
+                              {{ customer.address }}
+                            </td>
+                            <td>
+                              {{ customer.place_work }}
+                            </td>
+                            
+                            <td>
+                              {{ customer.profession }}
+                            </td>
+                            <td>
+                              <a href="{% url 'directory:customer_update' pk=customer.id %}">{% trans "Обновить" %}</a>
+                            </td>
+                            <td>
+                              <a href="{% url 'directory:customer_delete' pk=customer.id %}">{% trans "Удалить" %}</a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="12">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+{% endblock %}
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+    $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+    })
+{% endblock %}

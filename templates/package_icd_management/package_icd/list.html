@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load package_icd_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'package_icd_management:package_list' %}">{% trans "Клиническое покрытие" %}
+</a></li>
+    <li class="breadcrumb-item active"><a href="">{{ package_obj.title }}</a></li>
+
+
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <a class="btn btn-primary btn-right-ab btn-sm" href="{% url 'package_icd_management:package_icd_setting' package=package %}">{% trans "Добавить/cоздать исключения по МКБ10 " %}</a>
+            <div class="col-md-12">
+                <div class="scroll-table">
+                    <table class="table table-bordered treetable mb-0">
+                        <tr>
+                            <th style="width:200px;">
+                                <div>{% trans "Коды МКБ" %}</div>
+                            </th>
+                            <th>
+                                <div>{% trans "Наименование заболевания по МКБ" %}</div>                     
+                            </th>
+                            <th style="width:150px">{% trans "Редактирование" %}</th>
+                        </tr>
+                    </table>
+                    <div class="scroll-table-body-none-header">
+                        <table class="table table-bordered treetable mt-0" id="icd-table">
+                            {% for icd in icds %}
+                                {% get_package_icd package icd as package_icd %}
+                                <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}'>
+                                    <td style="width:200px; center;height: 30px;">
+                                        {% if not icd.is_leaf_node %}
+                                            <span class='folder'>{{ icd.code }}</span>
+                                        {% else %}
+                                            <span class='file'>{{ icd.code }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ icd.title }}</td>
+                                    <td width="150px">
+                                        <button data-icd="{{ icd.id }}"
+                                                class="fa fa-trash btn delete-package_service"></button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="table table-responsive m-b-30">
+                    <table  id="icd-table" class="table table-bordered treetable">
+                       
+						<tr>
+							<th >
+                                <div>Коды МКБ</div>
+                            </th>
+							<th>
+                                <div>Наименование МКБ</div>                     
+                            </th>
+                            <th>Редактирование</th>
+						</tr>
+                        
+                        {% for icd in icds %}
+                            {% get_package_icd package icd as package_icd %}
+                            <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}'>
+                                <td style="display: flex;align-items: center;height: 30px;">
+                                    {% if not icd.is_leaf_node %}
+                                        <span class='folder'>{{ icd.code }}</span>
+                                    {% else %}
+                                        <span class='file'>{{ icd.code }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ icd.title }}</td>
+                                <td width="10px">
+                                    <button data-icd="{{ icd.id }}"
+                                            class="fa fa-trash btn delete-package_service"></button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                  
+                </div> -->
+            </div>
+        </div>         
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+
+    $("#icd-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    function get_form_data(_this, closest_element, element){
+        data = {}
+        _this.closest(closest_element).find(element).each(function(){
+            var name = $(this).attr('name')
+            data[name] = $(this).is(':checked')
+        })
+        return data
+    }
+
+    $(document).on("click", ".delete-package_service", function() {
+        var id = $(this).closest('tr').data('tt-id')
+        var icd = $(this).data('icd')
+        var package = "{{ package }}"
+        var url = "{% url 'package_icd_management:package_icd_delete' package=package icd=0 %}".replace('0', icd)
+        $.ajax({
+            url: url,
+            type: "POST",
+            success: function(data){
+                $("#icd-table").treetable("removeNode", id)
+            }
+        })
+    })
+
+    $(document).on("change", ".package-icd-customize", function() {
+        var data = {}
+        var icd = $(this).closest('tr').data('tt-id')
+        var element = "[name='" + $(this).attr('name') + "']"
+        var is_checked = $(this).is(':checked')
+        var data = get_form_data($(this), 'tr', '.package-icd-customize')
+        data['icd'] = icd
+        data['package'] = "{{ package }}"
+        var url = "{% url 'package_icd_management:package_icd_form' package=package %}"
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            success: function(data){
+                if(is_checked){
+                    $("#icd-table").treetable("checkNode", icd, element)
+                }
+                else{
+                    $("#icd-table").treetable("uncheckNode", icd, element)
+                }
+            }
+        })
+    })
+{% endblock %}
+

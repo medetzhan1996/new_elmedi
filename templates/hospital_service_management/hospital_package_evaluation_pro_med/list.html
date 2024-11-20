@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+<br>
+{% block breadcrumb %}
+  {% if request.user.user_type != 10 %}
+    <!-- <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_list' %}">Клиники/Провайдеры</a>
+    </li> -->
+  {% endif %}
+    <!-- <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_package_evaluation_list' hospital=hospital.id %}">
+          {{ hospital.title }}
+        </a>
+    </li>
+ -->
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0px;">
+  <div class="card" style="padding: 10px;">
+     
+      
+      <div class="row align-items-center">
+          <div class="col-md-8">
+              <input type="text" id="table-search" class="form-control" placeholder='{% trans "Поиск групп услуг" %}'>
+          </div>
+          <div class="col-md-4">
+            <a href="{% url 'contract_management:insurance_list' %}" class="w-100 btn btn-success">{% trans "Открыть доступ для страховой компании" %} </a>          </div> 
+      </div>
+      
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">{% trans "Название групп услуг" %}</th>
+                              <th width="100px"></th>
+                          </tr>
+                      </thead>
+                      <tbody id="table-content">
+                        {% for hospital_package in hospital_packages %}
+                          <tr>
+                            <td>
+                              <span class='folder'>
+                                  <a href="{% url 'hospital_service_management:hospital_package_pro_med_service_evaluation_list' hospital=hospital.id  hospital_package=hospital_package.id %}" class="a-link">
+                                {{ hospital_package.title }}
+                              </a>
+                              </span>
+                              
+                            </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+{% endblock %}
+{% block domready %}
+$("#table-search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#table-content tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    })
+})
+{% endblock %}

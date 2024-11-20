@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+  {% if request.user.user_type != 15 %}
+    <!-- <li class="breadcrumb-item">
+        <a href="{% url 'hospital_icd_management:hospital_list' %}">Клиники/Провайдеры</a>
+    </li> -->
+  {% endif %}
+    <!-- <li class="breadcrumb-item">
+        <a href="{% url 'hospital_icd_management:hospital_package_list' hospital=hospital %}">
+          {{ hospital_obj.title }}
+        </a>
+    </li> -->
+
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0px;">
+  <div class="card" style="padding: 10px;">
+     
+      <div class="row align-items-center">
+          <div class="col-md-5">
+              <input type="text" class="form-control" placeholder='{% trans "Поиск групп мкб-10" %}'>
+          </div>
+          <div class="col-md-4 col-lg-4">              
+            <a href="#" class="w-100 btn btn-primary open-universal-modal"
+                   data-url="{% url 'hospital_icd_management:hospital_package_create' hospital=hospital %}">{% trans "+ Создать/Добавить группу мкб-10" %}</a>
+          </div>
+          <div class="col-md-3">
+            <button class="w-100 btn btn-success">{% trans "Завершить выбор мкб-10" %}</button>
+          </div>
+      </div> 
+      
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">{% trans "Название групп мкб-10" %}</th>
+                              <th width="130px">{% trans "Редактирование" %}</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for hospital_package in hospital_packages %}
+                          <tr>
+                            <td>
+                              <span class='folder'>
+                                  <a href="{% url 'hospital_icd_management:hospital_package_icd_list' hospital=hospital  hospital_package=hospital_package.id %}" class="a-link">
+                                {{ hospital_package.title }}
+                              </a>
+                              </span>
+                              
+                            </td>
+                            <td class="text-center">
+                              <a href="#" class="open-universal-modal"
+                                 data-url="{% url 'hospital_icd_management:hospital_package_update' hospital=hospital pk=hospital_package.id %}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                              </a>
+                             &nbsp&nbsp&nbsp
+                             <a href="#" class="open-universal-modal"
+                                 data-url="{% url 'hospital_icd_management:hospital_package_delete' hospital=hospital pk=hospital_package.id %}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                              </a>
+
+                          </td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+    $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+    })
+{% endblock %}
+

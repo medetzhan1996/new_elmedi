@@ -1,0 +1,102 @@
+ {% load static %}
+<div class="modal-header">
+        <h5 class="modal-title">Посмотреть чек</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+<div class="modal-body p-0">
+	<div id="report-to-print-content" style="padding:20px;">
+		<style>
+			.table_write td{ 
+			    border-color: #000000;
+			    border-style: solid;
+			    border-width: 0.01em 0.01em 0.01em 0.01em;
+			    padding: 6px 9px;
+			  }
+		</style>
+		<table class="table table_write table-bordered table-fixed shodow"  >
+			<thead>
+		      <td colspan="12" class="td-hover text-center">
+				  
+		      	<span><b style="">Счет реестр № {{ invoice.id }}</b></span><span style="margin-left: 17px;"><b>Дата: {{ invoice.date }}</b></span>
+		      </td>
+		    </tr>
+				<tr>
+			      <td colspan="12" class="td-hover">
+			      	
+			         Науқастың тегi, аты, әкесiнiң аты (Фамилия, имя, отчество больного)
+			         <span class="redd">
+			        	{{ invoice.contract_customer.customer.full_name }}
+			         </span>
+			      </td>
+		    </tr>
+		    <tr>
+			    <td colspan="12">
+			    	<span>Дата рождения: {{ invoice.date }}</span>
+			    </td>
+		    </tr>
+			
+				<tr>
+					<td colspan="6">Исполнитель: <span>
+						{{ invoice.performing_doctor|default_if_none:"Майлова Валентина" }}
+					</span></td>
+					<td colspan="6">ЛПУ: {{ invoice.hospital.title }}</td>
+				</tr>
+		    
+		    <tr>
+		    	<td colspan="12">
+		    		<span>Диагноз: {{ invoice.icd.code }} / {{ invoice.icd.title }}</span>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<td colspan="4">Hаименование услуг / ЛС</td>
+		    	<td colspan="2">Подпись врача</td>
+		    	<td colspan="2">Подпись пациента</td>
+		    	<!-- <td colspan="2">Время оказания услуг</td> -->
+		    </tr>
+		</thead>
+		<tbody>
+			
+				<tr>
+			    	<td colspan="4">{{ invoice.service.code }} / {{ invoice.service.title }}</td>
+			    	<td colspan="2">
+			    		<img src="{% static 'assets/images/валентина.jpg' %}">
+			    		{% if invoice.doctor_signature %}
+							<img src="{{ invoice.doctor_signature }}">
+						{% endif %}
+			    	</td>
+			    	<td colspan="2">
+			    		<img src="{% static 'assets/images/рустем.jpg' %}">
+			    		{% if invoice.contract_customer.customer.signature %}
+							<img src="{{ invoice.contract_customer.customer.signature }}">
+						{% endif %}	
+			    		
+			    	</td>
+			    </tr>
+		
+			<tr>
+				<td colspan="12">
+					
+					<span>Дата периема: {{ invoice.date }} </span>
+				</td>
+			</tr>
+		    <tr>
+		    	<td colspan="12">
+		    		Ф.И.О. врача: <span>
+		    			{{ invoice.performing_doctor|default_if_none:"Майлова Валентина" }}
+		    		</span>
+		    	</td>
+		    </tr>
+		    <tr>
+		    	<td colspan="12">
+		    		<span>Уважаемый пациент, подписывая акт, Вы подтверждаете удовлетворенность оказанной услугой.</span>
+		    	</td>
+		    </tr>
+		</tbody>
+		</table>
+	</div>
+</div>
+<br>
+
+<button id="report-to-print" class="btn btn-success">Скачать как pdf</button>

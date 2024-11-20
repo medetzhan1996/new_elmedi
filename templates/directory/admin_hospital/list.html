@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<style type="text/css">
+	.breadcrumb-list{
+		display: none;
+	}
+</style>
+	<div class="contentbar" style="margin-top: 0;">
+		<div class="card" style="padding: 10px;">
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th>{% trans "Справочники" %}</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'directory:service_list' %}">{% trans "Услуги" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:icd_list' %}">{% trans "МКБ-10" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:form_list' %}">{% trans "Формы" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:insurance_list' %}">{% trans "Страховые компании" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:hospital_list' %}">{% trans "Провайдеры" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:customer_list' %}">{% trans "Клиенты" %}</a></td>
+						</tr>
+					</table>
+					<table class="table table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th>Providing</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'hospital_service_management:hospital_package_list' hospital=request.user.hospital.id %}">alignment_sevices_clinique</a></td><!-- nastroika_spr_klinika -->
+						</tr>
+						<tr>
+							<td><a href="{% url 'hospital_icd_management:hospital_package_evaluation_list' hospital=request.user.hospital.id %}">clinician_clinique</a></td><!-- nastroika_mkb_lpu -->
+						</tr>
+						<tr>
+							<td><a href="{% url 'hospital_service_management:hospital_package_evaluation_list' hospital=request.user.hospital.id %}">contract_providing</a></td><!-- contract_lpu_sk -->
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>	
+{% endblock %}

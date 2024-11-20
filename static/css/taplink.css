@@ -1,0 +1,63 @@
+body{
+	background-color: #eff2f7;
+}
+.content-taplink{
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	display: flex;
+    flex-direction: column;
+}
+.logo-img{
+	width: 140px;
+	height: 140px;
+	border-radius: 50%;
+}
+.avatar-taplink,.before-after{ 
+   	display: flex;
+    text-align: center;
+    flex-direction: column;
+}
+.fas::after {
+    content: "----------------";
+    padding-left: 10px;
+}
+.fas::before{
+	content: "----------------";
+    padding-right: 10px;
+}
+.btn-taplink{
+	display: flex;
+    text-align: center;
+    flex-direction: column;
+    padding: 10px;
+    font-size: 17px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+.btn-taplink a{
+	color: #fff;
+}
+.btn-taplink a:hover{
+	text-decoration: none;
+}
+.fa-pr{
+	padding-right: 10px;
+}
+.footer-text{
+	text-align: center;
+    font-size: 13px;
+}
+.text-h3{
+    display: flex;
+    text-align: center;
+    flex-direction: column;
+    padding-top: 13px;
+    font-size: 23px;
+}
+.mb-20{
+    margin-bottom: 20px;
+}
+.rotate-45{
+    transform: rotate(45deg);
+}
+/*****/

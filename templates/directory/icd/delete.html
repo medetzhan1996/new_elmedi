@@ -1,0 +1,29 @@
+{% if view.kwargs.parent %}
+    {% url 'directory:icd_delete' pk=object.id parent=view.kwargs.parent as form_url %}
+{% else %}
+    {% url 'directory:icd_delete' pk=object.id as form_url %}
+{% endif %}
+{% load i18n %}
+
+<form action="{{ form_url }}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Удалить услугу" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p style="color:#333;">{% trans "Название услуги:" %} {{ object }}</p>
+                <hr>
+                <p style="color:red;" class="mb-0 color-red"> {% trans "Будут удалены все дочерные услуги" %} "{{ object }}"   </p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-danger btn-sm" value='{% trans "Удалить" %}'>
+         <a href="" class="btn btn-secondary btn-sm">{% trans "Отмена" %}</a>
+    </div>
+</form>

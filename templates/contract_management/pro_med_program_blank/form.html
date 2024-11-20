@@ -1,0 +1,17 @@
+{% load i18n %}
+{% load widget_tweaks %}
+<div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Добавить программы / профессии" %}</h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+	<div class="form-group">
+		<b>{% trans "Выберите шаблон программы " %}</b>
+		{{ form.program_blank|add_class:"form-control" }}
+		<input type="hidden" name="contract" value="{{ contract.id }}">
+	</div>
+</div>
+
+

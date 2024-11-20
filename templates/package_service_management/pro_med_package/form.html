@@ -1,0 +1,11 @@
+{% load widget_tweaks %}
+<div class="form-group">
+	<b>Название вредности</b>
+	{{ form.title|add_class:"form-control" }}
+	<b>Фабрика</b>
+	{{ form.insurer|add_class:"form-control" }}
+	<b>Введите описание (при необходимости)</b>
+	{{ form.description|add_class:"form-control" }}
+
+<input type="checkbox" checked name="is_favorite" class="d-none">
+</div>

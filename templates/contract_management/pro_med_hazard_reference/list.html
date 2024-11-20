@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>{% trans "Название вредности" %}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="contract-content">
+                        {% for hazard in hazards %}
+                          <tr>
+                            <td>
+                              {{ hazard.title }}
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="12">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}

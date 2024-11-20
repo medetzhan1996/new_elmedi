@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_package_evaluation_list' hospital=request.user.hospital.id %}">
+            {% trans "Назначение цен" %}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="">{% trans "Список страховых компании" %}</a>
+    </li>
+{% endblock %}
+{% block content %}
+<style type="text/css">
+  .bg-successs{
+    background: #b8edd0;
+  }
+  .bg-dangerr{
+    background: #f3d9d9;
+  }
+</style>
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-5">
+              <input id="table-search" type="text" class="form-control" placeholder='{% trans "Поиск" %}'>
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-success w-100" data-toggle="modal" data-target="#exampleModal">{% trans "Добавить страховую компанию" %}</button>
+          </div>
+      </div> 
+      <div class="row mt-3">
+          <div class="col-md-8">
+              <div class="table-responsive m-b-30">
+                  <table class="table" id="table-content">
+                      <thead class="thead-light">
+                        <tr>
+                          
+                          <th>{% trans "Название страховой компании" %}</th>
+                          <th style="width:50px;"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for insurance in insurances %}
+                          {% if insurance.is_checked %}
+                            <tr 
+                              class="{% if insurance.is_checked %}
+                                bg-dangerr
+                              {% else %}
+                                bg-dangerr
+                              {% endif %}"
+
+                              >
+                             
+                              <td>
+                                  {{ insurance.title }}
+                              </td>
+                              <!-- <td class="text-center">
+                                <input type="checkbox" name="" class="change-status-insurance" data-id="{{ insurance.id }}"
+                                {% if insurance.is_checked %} checked {% endif %}>
+                              </td> -->
+                              </td>
+                              <td class="text-center">
+                                <button class="btn-sm btn  btn-danger delete-status-insurance" data-id="{{ insurance.id }}">{% trans "Удалить" %}</button>
+                              </td>
+                            </tr>
+                          {% endif %}
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="7">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">{% trans "Список страховых компании" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+
+        <ul class="list-group list-group-flush">
+          {% for insurance in insurances %}
+          <li class="list-group-item">
+            <input type="checkbox" name="" class="change-status-insurance" data-id="{{ insurance.id }}"
+                              {% if insurance.is_checked %} checked {% endif %}>
+             {{ insurance.title }}
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">{% trans "Отменить" %}</button>
+        <button type="button" class="btn btn-primary reload">{% trans "Сохранить" %}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+      $(document).on("click",".open-universal-modal",function() {
+          var url = $(this).data('url')
+          $.ajax({
+            url: url,
+            success: function(data){
+              $('#universal-modal-content').html(data)
+              $('#universal-modal').modal('show')
+            }
+          })
+      })
+
+      
+
+    $(document).on("click",".reload",function() {
+      location.reload()
+    })
+
+    $(document).on("click",".delete-status-insurance",function() {
+      var id = $(this).data('id')
+      var is_checked = false
+      var url = "{% url 'contract_management:insurance_update' pk=0 %}".replace('0', id)
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+          is_checked: is_checked
+        },
+        success: function (data) {
+          location.reload()
+        }
+      })
+    })
+
+    $(document).on("change",".change-status-insurance",function() {
+      var id = $(this).data('id')
+      var is_checked = $(this).is(':checked')
+      var url = "{% url 'contract_management:insurance_update' pk=0 %}".replace('0', id)
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+          is_checked: is_checked
+        },
+        success: function (data) {
+        }
+      })
+    })
+{% endblock %}

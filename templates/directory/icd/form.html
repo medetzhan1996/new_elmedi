@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+{% load i18n %}
+<div class="modal-body">
+    <div class="form-group">
+        <b>{% trans "Код услуги" %}</b>
+        {{ form.code|add_class:"form-control" }}
+        <input type="hidden" name="parent" id="id_parent" value="{{ form.instance.parent.id }}">
+    </div>
+	<div class="form-group">
+        <b> {% trans "Название услуги" %} </b>
+		{{ form.title|add_class:"form-control" }} 
+    </div>
+</div>

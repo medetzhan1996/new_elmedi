@@ -1,0 +1,23 @@
+{% load i18n %}
+<form action="{% url 'promedicine:professional_examination_delete' object.id %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Удалить" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p style="color: #333">{% trans "Название: " %}{{ object }}</p>
+                <hr>
+                <p class="mb-0 " style="color: #333"> {% trans "Вы уверены, что хотите удалить " %}"{{ object }}"?   </p>
+            </div>
+        </div>
+    </div>    
+    <div class="modal-footer">
+        <a href="{% url 'promedicine:professional_examination_list' %}" class="btn btn-secondary btn-sm">{% trans "Отмена" %}</a>
+        <button type="submit" class="btn btn-danger btn-sm">{% trans "Удалить" %}</button>
+    </div>
+</form>

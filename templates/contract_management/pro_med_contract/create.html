@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<form action="{% url 'contract_management:pro_med_contract_create' %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+	    <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Добавить контракт" %}</h5>
+	    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	        <span aria-hidden="true">×</span>
+	    </button>
+	</div>
+    {% include "contract_management/pro_med_contract/form.html" %}
+    <div class="modal-footer">
+	<button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans "Отмена" %}</button>
+	<button type="submit" class="btn btn-primary btn-sm">{% trans "Сохранить" %}</button>
+	</div>
+</form>

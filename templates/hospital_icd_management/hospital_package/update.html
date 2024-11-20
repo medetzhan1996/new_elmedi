@@ -1,0 +1,16 @@
+{% load i18n %}
+
+<form action="{% url 'hospital_icd_management:hospital_package_update' hospital=hospital pk=form.instance.id %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Редактировать название групп мкб-10" %} </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% include "hospital_icd_management/hospital_package/form.html" %}
+    <div class="modal-footer">
+	    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans "Отмена" %}</button>
+	    <button type="submit" class="btn btn-primary btn-sm">{% trans "Сохранить" %}</button>
+	</div>
+</form>

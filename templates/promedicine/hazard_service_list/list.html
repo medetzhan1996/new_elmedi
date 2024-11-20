@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'promedicine:hazard_view' %}">Список вредности</a></li>
+    <li class="breadcrumb-item active">
+        <a href="">
+            {{hazard.title}}
+        </a>
+    </li>
+
+{% endblock %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+    <div class="card" style="padding: 10px;">
+        <div class="row align-items-center">
+              
+            <div class="col-md-9">
+              <input type="text" id="promedicine-search" class="form-control" placeholder=""> 
+            </div>
+            <div class="col-md-3 col-lg-3"> 
+                <a class="btn btn-primary open-universal-modal w-100"
+                   href="{% url 'promedicine:hazard_service_setting' id=hazard.id %}">Добавить
+                </a>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-md-12">
+                <div class="table-responsive m-b-30">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Названия </th>
+                            </tr>
+                        </thead>
+                        <tbody id="promedicine-content">
+                            {% for result in hazard_service_list %}
+                            <tr>
+                                <td>
+                                   {{ result.service.title }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block domready %}
+    $("#promedicine-search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#promedicine-content tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        })
+    })
+{% endblock %}
+

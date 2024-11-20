@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row mt-3">
+		<div class="col-md-6">
+			<h5> {% trans "Удалить клиента" %}</h5>
+			{% if form.errors %}
+			    <div class="alert alert-danger" role="alert">
+			        {% for field in form %}
+			            {% for error in field.errors %}
+			                <strong>{{ field.label }}:</strong> {{ error|escape }}
+			            {% endfor %}
+			        {% endfor %}
+			    </div>
+			{% endif %}
+			<form action="" method="POST">
+				{% csrf_token %}
+				<br><br>
+			    <h5 style="color: red;">{% trans "Будут удалены все связанные данные клиента!" %}</h5>
+				<br><br><button type="submit" class="btn btn-primary btn-sm">{% trans "Удалить" %}</button>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+{% endblock %}

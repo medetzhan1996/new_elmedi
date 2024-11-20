@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    {% load static %}
+    {% load i18n %}
+    {% load pwa %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="Orbiter is a bootstrap minimal & clean admin template">
+    <meta name="keywords" content="admin, admin panel, admin template, admin dashboard, responsive, bootstrap 4, ui kits, ecommerce, web app, crm, cms, html, sass support, scss">
+    <meta name="author" content="Themesbox">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>HAZAR ECOSYSTEMS</title>
+    <!-- Fevicon -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <link href="{% static 'assets/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'assets/css/icons.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css/jquery.treetable.css' %}">
+    <link rel="stylesheet" href="{% static 'css/jquery.treetable.theme.default.css' %}">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet" type="text/css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- End css -->
+    {% progressive_web_app_meta %}
+</head>
+<body class="horizontal-layout">
+    <div class="infobar-settings-sidebar-overlay"></div>
+    <!-- End Infobar Setting Sidebar -->
+    <!-- Start Containerbar -->
+    <div id="containerbar" class="">
+        <!-- Start Rightbar -->
+        <div class="rightbar">
+            <!-- Start Topbar Mobile -->
+            <div class="topbar-mobile">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+                        <div class="mobile-logobar">
+                            <a href="index.html" class="mobile-logo"><img src="{% static 'assets/images/logo.png' %}" class="img-fluid" alt="logo"></a>
+                        </div>
+                        <div class="mobile-togglebar">
+                            <ul class="list-inline mb-0">
+                                <li class="list-inline-item">
+                                    <div class="topbar-toggle-icon">
+                                        <a class="topbar-toggle-hamburger" href="javascript:void();">
+                                            <img src="{% static 'assets/images/svg-icon/collapse.svg' %}" class="img-fluid menu-hamburger-horizontal" alt="horizontal">
+                                            <img src="{% static 'assets/images/svg-icon/close.svg' %}" class="img-fluid menu-hamburger-vertical" alt="verticle">
+                                         </a>
+                                     </div>
+                                </li>                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Start Topbar -->
+            <div class="topbar">
+                <!-- Start container-fluid -->
+                <div class="container-fluid">
+                    <!-- Start row -->
+                    <div class="row align-items-center">
+                        <!-- Start col -->
+                        <div class="col-md-12 d-flex align-self-center" style="justify-content: space-between; align-items: center;padding-left: 6px;padding-right: 6px;">
+                            <div class="togglebar">
+                                <ul class="list-inline mb-0">
+                                    <li class="list-inline-item">
+                                        <div class="logobar">
+                                            <a href="" class="logo logo-large"><img src="{% static 'assets/images/logo.png' %}" class="img-fluid" alt="logo"></a>
+                                        </div>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <div class="logobar">
+                                            {% if request.user.hospital %}
+                                                    {% if request.user.hospital.logo %}
+                                                        <a href="" class="logo logo-large"><img src="{{ request.user.hospital.logo.url }}" class="img-fluid" alt="logo" style="height: 34px;"></a>
+                                                    {% else %}
+                                                        <a href="" class="logo-title logo-large">
+                                                        {{ request.user.hospital.title}}</a>
+                                                    {% endif %}
+                                            {% elif request.user.insurance %}
+                                                    {% if request.user.insurance.logo %}
+                                                        <a href="" class="logo logo-large"><img src="{{ request.user.insurance.logo.url }}" class="img-fluid" alt="logo" style="height: 34px;"></a>
+                                                    {% else %}
+                                                        <a href="" class="logo-title logo-large">
+                                                        {{ request.user.insurance.title}}</a>
+                                                    {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </li>
+                                    {% if request.user.user_type == 17  %}
+                                    <a href="{% url 'directory:admin_insurance' %}" class=" btn btn-primary btn-sm" style="width: 25px;padding: 1px 0px;position: absolute;left: -24px;top: 52px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" width="24px" height="24px"><path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 11 21 L 11 15 L 13 15 L 13 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z M 12 4.7910156 L 18 10.191406 L 18 11 L 18 19 L 15 19 L 15 13 L 9 13 L 9 19 L 6 19 L 6 10.191406 L 12 4.7910156 z"/></svg>
+                                    </a>
+                                        <!-- <li class="list-inline-item {% if url_name == 'package_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'directory:admin_insurance' %}">
+                                            <span class="menu-title">Админ </span>
+                                          </a>
+                                        </li> -->
+                                    {% elif request.user.user_type == 18  %}
+                                    <a href="{% url 'directory:admin_hospital' %}" class=" btn btn-primary btn-sm" style="width: 25px;padding: 1px 0px;position: absolute;left: -24px;top: 52px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" width="24px" height="24px"><path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 11 21 L 11 15 L 13 15 L 13 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z M 12 4.7910156 L 18 10.191406 L 18 11 L 18 19 L 15 19 L 15 13 L 9 13 L 9 19 L 6 19 L 6 10.191406 L 12 4.7910156 z"/></svg>
+                                    </a>
+                                    {% elif request.user.user_type == 19  %}
+                                    <a href="{% url 'directory:admin_pro_medicine' %}" class=" btn btn-primary btn-sm" style="width: 25px;padding: 1px 0px;position: absolute;left: -24px;top: 52px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" width="24px" height="24px"><path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 11 21 L 11 15 L 13 15 L 13 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z M 12 4.7910156 L 18 10.191406 L 18 11 L 18 19 L 15 19 L 15 13 L 9 13 L 9 19 L 6 19 L 6 10.191406 L 12 4.7910156 z"/></svg>
+                                    </a>
+                                    {% elif request.user.user_type == 20  %}
+                                    <a href="{% url 'directory:admin_pro_medicine_hospital' %}" class=" btn btn-primary btn-sm" style="width: 25px;padding: 1px 0px;position: absolute;left: -24px;top: 52px;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#fff" width="24px" height="24px"><path d="M 12 2.0996094 L 1 12 L 4 12 L 4 21 L 11 21 L 11 15 L 13 15 L 13 21 L 20 21 L 20 12 L 23 12 L 12 2.0996094 z M 12 4.7910156 L 18 10.191406 L 18 11 L 18 19 L 15 19 L 15 13 L 9 13 L 9 19 L 6 19 L 6 10.191406 L 12 4.7910156 z"/></svg>
+                                    </a>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                            
+                            <div class="infobar">
+                                <ul class="list-inline mb-0" style="display:flex;align-items: center;">
+                                    <li class="list-inline-item">
+                                        <div id="header">
+                                                                  
+                                      {% get_current_language as LANGUAGE_CODE %}
+                                      {% get_available_languages as LANGUAGES %}
+                                      {% get_language_info_list for LANGUAGES as languages %}
+                                      <div class="languages">
+                                        <ul class="list-inline" style="margin-right: 10px;">
+                                          {% for language in languages %}
+                                              <li class="list-inline-item">
+                                                <a class=" me-4 {% if language.code == LANGUAGE_CODE %} selected{% endif %}"
+                                                   href="/{{ language.code }}{{ request.path|slice:'3:' }}">
+                                                   {% if language.code == 'ru' %}
+                                                     
+                                            <svg width="30" height="30" viewBox="0 0 512 334" xmlns="http://www.w3.org/2000/svg"><g fill="none"><path fill="#FFF" d="M0 1.097h512v110.537H0z"/><path fill="#D52B1E" d="M0 222.08h512v110.537H0z"/><path fill="#0039A6" d="M0 111.634h512v110.537H0z"/></g></svg>
+                                                   {% elif language.code == 'az' %}
+                                                   <img src="{% static 'icons/az.jpg' %}" style="width:30px; height: 21px;">
+                                                   {% endif %}
+                                                </a>
+                                              </li>
+                                            {% endfor %}
+
+                                        </ul>
+                                      </div>
+                                    </div>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <div class="profilebar">
+                                            <div class="dropdown">
+                                              <a class="dropdown-toggle" href="#" role="button" id="profilelink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{% static 'assets/images/users/profile.svg' %}" class="img-fluid" alt="profile">
+                                                {{ request.user.last_name }}
+                                                {{ request.user.first_name }}
+                                                <span class="caret"></span>
+                                              </a>
+                                              <span class="profile-info">
+                                                  {{ request.user.get_user_type_display }}
+                                              </span>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="profilelink">
+                                                    
+                                                    <div class="userbox">
+                                                        <ul class="list-unstyled mb-0">
+                                                                                                                     
+                                                            
+                                                            <li class="media dropdown-item">
+                                                                {% trans "Создать заявку" %}
+                                                            </li>
+                                                            <li class="media dropdown-item">
+                                                                <a href="{% url 'logout' %}?next=/login" class="profile-icon red">{% trans "Завершить работу" %}</a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>                                   
+                                    </li>
+                                    <li class="list-inline-item menubar-toggle">
+                                        <div class="menubar">
+                                            <a class="menu-hamburger navbar-toggle bg-transparent" href="javascript:void();" data-toggle="collapse" data-target="#navbar-menu" aria-expanded="true">
+                                                <img src="{% static 'assets/images/svg-icon/collapse.svg' %}" class="img-fluid menu-hamburger-collapse" alt="collapse">
+                                                <img src="{% static 'assets/images/svg-icon/close.svg' %}" class="img-fluid menu-hamburger-close" alt="close">
+                                            </a>
+                                         </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="padding:0;text-align: center;">
+                            <nav class="horizontal-nav mobile-navbar fixed-navbar">
+                                <ul class="list-inline mb-0">
+                                   {% with request.resolver_match.app_names.0|add:':'|add:request.resolver_match.url_name as url_name %}
+                                      {% if url_name == 'package_icd_management:package_list' or url_name == 'package_icd_management:icd_list' or url_name == 'package_icd_management:package_icd_list' or url_name == 'package_icd_management:package_icd_setting' %}
+                                        <li class="list-inline-item {% if url_name == 'package_icd_management:package_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'package_icd_management:package_list' %}">
+                                            <span class="menu-title">{% trans "Клиническое покрытие" %}</span>
+                                          </a>
+                                        </li>
+                                        <li class="list-inline-item {% if url_name == 'package_icd_management:icd_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'package_icd_management:icd_list' %}">
+                                            <span class="menu-title">{% trans "Настройка исключений по типам услуг" %}</span>
+                                          </a>
+                                        </li>
+                                        <li class="list-inline-item {% if url_name == 'package_icd_management:icd_list' %}active{% endif %}">
+                                          <a class="" href="#">
+                                            <span style="color:#afa4a4;" class="menu-title">{% trans "Настройка исключений по МКБ 9" %}</span>
+                                          </a>
+                                        </li>
+                                      {% elif url_name == 'hospital_icd_management:hospital_package_list' or url_name == 'hospital_icd_management:hospital_package_evaluation_list' or url_name == 'hospital_icd_management:hospital_package_icd_evaluation_list' or url_name == 'hospital_icd_management:hospital_package_icd_list' or url_name == 'hospital_icd_management:hospital_package_icd_setting' %}
+                                        {% if request.user.hospital %}
+                                            <li class="list-inline-item {% if url_name == 'hospital_icd_management:hospital_package_list' %}active{% endif %}">
+                                              <a class="" href="{% url 'hospital_icd_management:hospital_package_list' hospital=request.user.hospital.id %}">
+                                                <span class="menu-title">{% trans "Настройка МКБ 10" %}</span>
+                                              </a>
+                                            </li>
+                                            <li class="list-inline-item {% if url_name == 'hospital_icd_management:hospital_package_evaluation_list' %}active{% endif %}">
+                                              <a class="" href="{% url 'hospital_icd_management:hospital_package_evaluation_list' hospital=request.user.hospital.id %}">
+                                                <span class="menu-title">{% trans "Настройка исключения МКБ 10" %}</span>
+                                              </a>
+                                            </li>
+                                            <li class="list-inline-item ">
+                                              <a class="" href="#">
+                                                <span style="color:#afa4a4;" class="menu-title">{% trans "Настройка МКБ 9" %}</span>
+                                              </a>
+                                            </li>
+                                            <li class="list-inline-item ">
+                                              <a class="" href="#">
+                                                <span style="color:#afa4a4;" class="menu-title">{% trans "Настройка исключения МКБ 9" %}</span>
+                                              </a>
+                                            </li>
+                                        {% endif %}
+                                      {% endif %}
+                                      {% if url_name == 'hospital_service_management:hospital_package_evaluation_list' or url_name == 'contract_management:contract_hospital_confir_list' or url_name == 'hospital_service_management:hospital_package_service_evaluation_list' or url_name == 'contract_management:contract_hospital_package_list' or url_name == 'contract_management:contract_hospital_package_service_list' or url_name == 'contract_management:insurance_list' or url_name == 'report_management:invoice_report_hospital_list' %}
+                                        {% if request.user.hospital %}
+                                            <li class="list-inline-item {% if url_name == 'hospital_service_management:hospital_package_evaluation_list' %}active{% endif %}">
+                                              <a class="" href="{% url 'hospital_service_management:hospital_package_evaluation_list' hospital=request.user.hospital.id %}">
+                                                <span class="menu-title">{% trans "Назначение цен" %}</span>
+                                              </a>
+                                            </li>
+                                            <li class="list-inline-item {% if url_name == 'contract_management:contract_hospital_confir_list' %}active{% endif %}">
+                                              <a class="" href="{% url 'contract_management:contract_hospital_confir_list' %}">
+                                                <span class="menu-title">{% trans "Страховые контракты/Заявки страховщика" %}</span>
+                                              </a>
+                                            </li>
+                                                <li class="list-inline-item {% if url_name == 'report_management:invoice_report_hospital_list' %}active{% endif %}">
+                                              <a class="" href="{% url 'report_management:invoice_report_hospital_list' hospital=request.user.hospital.id %}">
+                                                <span class="menu-title">{% trans "Отчеты о выполненных услугах" %}</span>
+                                              </a>
+                                            </li>
+                                        {% endif %}
+                                      {% endif %}
+                                      {% if url_name == 'hospital_service_management:hospital_package_pro_med_evaluation_list' or url_name == 'contract_management:pro_med_contract_hospital_confir_list' or url_name == 'contract_management:pro_med_contract_hospital_package_list' %}
+                                        {% if request.user.hospital %}
+                                            <li class="list-inline-item {% if url_name == 'hospital_service_management:hospital_package_evaluation_list' %}active{% endif %}">
+                                              <a class="" href="{% url 'hospital_service_management:hospital_package_evaluation_list' hospital=request.user.hospital.id %}">
+                                                <span class="menu-title">{% trans "Назначение цен" %}</span>
+                                              </a>
+                                            </li>
+                                            <li class="list-inline-item {% if url_name == 'contract_management:pro_med_contract_hospital_confir_list' %}active{% endif %}">
+                                              <a class="" href="{% url 'contract_management:pro_med_contract_hospital_confir_list' %}">
+                                                <span class="menu-title">{% trans "Страховые контракты/Заявки страховщика" %}</span>
+                                              </a>
+                                            </li>
+                                        {% endif %}
+                                      {% endif %}
+                                      {% if url_name == 'contract_management:contract_list' or url_name == 'contract_management:contract_customer_list' or url_name == 'contract_management:contract_program_list' or url_name == 'contract_management:contract_program_package_list' or url_name == 'contract_management:contract_program_package_service_list' or url_name == 'contract_management:contract_result'%}
+                                        <li class="list-inline-item {% if url_name == 'contract_management:contract_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'contract_management:contract_list' %}">
+                                            <span class="menu-title">{% trans "База контрактов" %}</span>
+                                          </a>
+                                        </li>
+                                        <li class="list-inline-item {% if url_name == 'contract_management:contract_customer_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'contract_management:contract_customer_list' %}">
+                                            <span class="menu-title">{% trans "База пациентов" %}</span>
+                                          </a>
+                                        </li>
+                                      {% endif %}
+                                        {% if url_name == 'contract_management:pro_med_contract_list' or url_name == 'contract_management:pro_med_contract_program_list' or url_name == 'contract_management:pro_med_contract_program_package_list' or url_name == 'contract_management:pro_med_contract_program_package_service_list' %}
+                                        <li class="list-inline-item {% if url_name == 'contract_management:contract_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'contract_management:pro_med_contract_list' %}">
+                                            <span class="menu-title">{% trans "База контрактов" %}</span>
+                                          </a>
+                                        </li>
+                                        <li class="list-inline-item {% if url_name == 'contract_management:contract_customer_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'contract_management:pro_med_contract_customer_list' %}">
+                                            <span class="menu-title">{% trans "База пациентов" %}</span>
+                                          </a>
+                                        </li>
+                                      {% endif %}
+                                      {% if url_name == 'contract_management:contract_hospital_list' or url_name == 'report_management:invoice_report_list' %}                                       
+                                        <li class="list-inline-item {% if url_name == 'contract_management:contract_hospital_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'contract_management:contract_hospital_list' %}">
+                                            <span class="menu-title">{% trans "Размещение страховых контрактов" %}</span>
+                                          </a>
+                                        </li>
+                                         <li class="list-inline-item {% if url_name == 'report_management:invoice_report_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'report_management:invoice_report_list' %}">
+                                            <span class="menu-title">{% trans "Отчеты о выполненных услугах" %}</span>
+                                          </a>
+                                        </li>
+                                      {% endif %}
+                                      {% if url_name == 'directory:service_list' or url_name == 'directory:form_list' %}
+                                        <li class="list-inline-item {% if url_name == 'directory:service_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'directory:service_list' %}">
+                                            <span class="menu-title">{% trans "Справочник услуг" %}</span>
+                                          </a>
+                                        </li>
+                                        <li class="list-inline-item {% if url_name == 'directory:form_list' %}active{% endif %}">
+                                          <a class="" href="{% url 'directory:form_list' %}">
+                                            <span class="menu-title">{% trans "Справочник форм" %}</span>
+                                          </a>
+                                        </li>
+                                        <li class="list-inline-item">
+                                          <a class="" href="">
+                                            <span class="menu-title">{% trans "Другие справочники" %}</span>
+                                          </a>
+                                        </li>
+                                      {% endif %}
+
+
+                                    {% endwith %}
+                                </ul>
+                                
+                            </nav>
+                        </div>
+                        <!-- End col -->
+                    </div> 
+                    <!-- End row -->
+                </div>
+                <!-- End container-fluid -->
+            </div>
+            <!-- End Topbar -->
+            <!-- Start Navigationbar -->
+            
+            <!-- End Navigationbar -->
+            <!-- Start Breadcrumbbar -->
+            <div class="breadcrumbbar">
+                <div class="breadcrumbbar-none row align-items-center">
+                    <div class="col-md-12 col-lg-12"><!--
+                        <h4 class="page-title">Подпрограмма</h4> -->
+                        <div class="breadcrumb-list">
+                            <ol class="breadcrumb" style="width: 100%">
+                                {% block breadcrumb %}{% endblock %}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="spinner-content">
+               <div class="d-flex justify-content-center align-items-center mt-5">
+                  <strong class="ml-2" style="font-size: 22px;">Загрузка...</strong>
+                  <div class="spinner-border" role="status" aria-hidden="true"></div>
+                </div>
+            </div>
+            <div id="main-content" class="d-none">
+            {% block content %}{% endblock %}
+            </div>
+            {% block modal %}{% endblock %}
+            
+        </div>
+        <!-- End Rightbar -->
+    </div>
+    <!-- End Containerbar -->
+    <!-- Start js -->        
+    <script src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/js.cookie.min.js' %}"></script>
+    <script src="{% static 'js/jquery.treetable.js' %}"></script>
+    <script src="{% static 'js/jquery.confirmModal.min.js' %}"></script>
+    <script src="{% static 'js/jquery.table2excel.js' %}"></script>
+   
+    <script type="text/javascript">
+          var csrftoken = Cookies.get('csrftoken');
+          function csrfSafeMethod(method) {
+              // these HTTP methods do not require CSRF protection
+              return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+          }
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+                  if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                      xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                  }
+              }
+          });
+
+          $("#table-search").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#table-content tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            })
+          })
+
+          $(document).ready(function() {
+              $('#spinner-content').html('')
+              $('#main-content').removeClass('d-none')
+              {% block domready %}{% endblock %}
+          })
+    </script>
+   
+</body>
+</html>

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"><a href="">{% trans "Оценка  и актуарий услуг" %}</a></li>
+{% endblock %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-12">
+              <input type="text" id="package-search" class="form-control" placeholder='{% trans "Поиск групп услуг" %}'>
+          </div>
+      </div> 
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table ">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">{% trans "Названия групп услуг" %}</th>
+                              <th style="width: 150px;"></th>
+                          </tr>
+                      </thead>
+                      <tbody id="package-content">
+                        {% for package in packages %}
+                          <tr>
+                            <td style="display: flex;align-items: center;height: 30px;">
+                              <a href="{% url 'package_service_management:package_service_evaluation_list' package=package.id %}" class="a-link">
+                                <span class='folder'>
+                                  {{ package.title }}
+                                </span>
+                                <!-- <i class="fa fa-folder" aria-hidden="true"></i> -->
+                                
+                              </a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="4">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block domready %}
+
+  $("#package-search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#package-content tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    })
+  })
+{% endblock %}

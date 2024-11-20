@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<style type="text/css">
+	.breadcrumb-list{
+		display: none;
+	}
+</style>
+	<div class="contentbar" style="margin-top: 0;">
+		<div class="card" style="padding: 10px;">
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th>{% trans "Справочники" %}</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'directory:service_list' %}">
+							{% trans "Медицинские услуги" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:insurance_list' %}">{% trans "Страховые компании" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="">{% trans "Промпредприятия" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:hospital_list' %}">{% trans "Провайдеры" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:customer_list' %}">{% trans "Пациенты/клиенты" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'contract_management:pro_med_hazard_reference_list' %}">{% trans "Вредности" %}</a></td>
+						</tr>
+					</table>
+					<table class="table table-bordered mt-4">
+						<thead class="thead-light">
+							<tr>
+								<th>Report_dirigir</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'report_management:invoice_report_list' %}">Клинические отчеты</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'report_management:act_report_list' %}">Заключительный акт</a></td>
+						</tr>
+					</table>
+					<table class="table table-bordered mt-4">
+						<thead class="thead-light">
+							<tr>
+								<th>Alignment  services</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'package_service_management:pro_med_package_list' %}">Настройка вредностей/связь с услугами</a></td> <!-- nastroika_spr_sk -->
+						</tr>
+						<tr>
+							<td><a href="{% url 'package_service_management:pro_med_package_evaluation_list' %}">Оценка  и актуарий вредностей/услуг</a></td> <!-- price_sk -->
+						</tr>
+					</table>
+					<table class="table table-bordered mt-4">
+						<thead class="thead-light">
+							<tr>
+								<th>Anderrayting</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'program_management:pro_med_program_list' %}">Настройка профессий</a></td> <!-- admin_programm -->
+						</tr>
+						<!-- <tr>
+							<td><a href="{% url 'contract_management:contract_list' %}">contract_klient_insurance</a></td> <!-- kontract_sk_klient -->
+						</tr> 
+						<tr>
+							<td><a href="{% url 'contract_management:pro_med_contract_list' %}">pro-med-contract-management</a></td> <!-- kontract_sk_klient -->
+						</tr>
+
+					</table>
+					<table class="table table-bordered mt-4">
+						<thead class="thead-light">
+							<tr>
+								<th>Medical assistance</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'contract_management:pro_med_contract_hospital_list' %}">contract_provider_insurance</a></td>
+							<!-- kontract_sk_provider -->
+						</tr>
+					</table>
+
+				</div>
+			</div>
+		</div>
+	</div>	
+{% endblock %}

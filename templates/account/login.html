@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    {% load static %}
+    {% load pwa %}
+    {% load widget_tweaks %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="QwrPuCgOky3UeITMUZhVxGBelHNzdRdnmdGHOOzI">
+    <title>HAZAR ECOSYSTEMS</title>
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    {% progressive_web_app_meta %}  
+</head>
+
+<body style="background-image:url( {% static 'assets/images/login-bg1-1.jpg' %});background-repeat: no-repeat;background-position: revert;background-size: cover;">
+    <header class="container">
+        <div class="login-wrap">
+            <div class="form-group">
+                <img src="{% static 'assets/images/logo.png' %}" class="img-fluid" style="width:100%;margin-bottom: 10px;" alt="logo">
+            </div>
+            <!-- <h3 class="text-center login-h3">Войти</h3> -->
+            <form method="post" action="" class="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">Введите логин.</label>
+                    {{ form.username|add_class:"form__input" }} 
+                </div>
+                <div class="form-group">
+                    <label for="email">Введите пароль </label>
+                    {{ form.password|add_class:"form__input" }}
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="next" value="{{ next }}">
+                    <button type="submit" class="form__btn btn btn-primary">
+                        Авторизоваться
+                    </button> 
+                </div>
+            </form>
+        </div>
+    </header>
+</body>
+</html>

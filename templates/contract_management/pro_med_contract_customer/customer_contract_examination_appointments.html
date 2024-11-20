@@ -1,0 +1,26 @@
+{% load i18n %}
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Расписание" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p>{{examination_appointments.service.title}} - {{examination_appointments.date_time}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+         <a href="" class="btn btn-secondary btn-sm">{% trans "Закрыт" %}</a>
+    </div>
+</form>
+
+
+
+
+

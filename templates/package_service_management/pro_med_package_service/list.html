@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load package_service_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+		<a href="{% url 'package_service_management:pro_med_package_list' %}">
+			{% trans "Оценка  и актуарий вредностей/услуг" %}
+		</a>
+	</li>
+    <li class="breadcrumb-item active"><a href="">{{ package.title }}</a></li>
+{% endblock %}
+
+{% block content %}
+<style>
+	input{
+		width: 40px
+	}
+</style>
+<div class="contentbar" style="margin-top: 0;">
+	<div class="card" style="padding: 10px;">
+
+		<a class="btn-right-ab btn btn-info btn-sm"
+		   href="{% url 'package_service_management:pro_med_package_service_setting' package=package.id %}">
+			{% trans "Выберите услуги в группе" %} {{ package.service.title }}
+		</a>
+		<div class="row mt-2">
+			<!-- <div class="col-md-9">
+				<div class="">
+					<input type="text" class="form-control" placeholder="Поиск услуг по коду и названию">
+				</div>
+			</div>
+			<div class="col-md-3">
+				<a class="btn btn-primary w-100" href="{% url 'package_service_management:package_service_setting' package=package.id %}">
+						+Добавить/создать услугу
+					</a>
+			</div> -->
+			<div class="col-md-12">
+				<div class="scroll-table">
+					<table class="table table-bordered" style="margin-bottom: 0;padding-bottom: 0;">
+
+							<tr>
+								<th colspan="1" style="width: 200px;"><div>{% trans "Коды услуг" %}</div></th>
+								<th><div>{% trans "Названия услуг" %}</div></th>
+								<th style="width:156px;">{% trans "Редактирование" %}</th>
+							</tr>
+					</table>
+					<div class="scroll-table-body-none-header">
+						<table class="table table-bordered treetable mt-0" id="service-table">
+							<tbody>
+								{% for service in services %}
+									{% is_leaf_node service.is_leaf_node as is_leaf_node %}
+									{% if package.service.id != service.id %}
+										<tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+											<td style="width: 200px;height: 30px;">
+												{% if not is_leaf_node %}
+												<span class='folder'>
+													{{ service.code }}
+												</span>
+												{% else %}
+												<span class='file'>
+													{{ service.code }}
+												</span>
+												{% endif %}
+											</td>
+											<td>
+												{{ service.title }}
+											</td>
+											<td class="text-center" style="width:150px">
+
+			                                    <input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+			                                    <button data-service="{{ service.id }}"
+			                                            class="fa fa-trash btn delete-package_service"></button>
+			                                </td>
+										</tr>
+									{% endif %}
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block domready %}
+$("#service-table").treetable({
+expandable: true,
+clickableNodeNames: true
+})
+
+function get_form_data(_this, closest_element, element){
+	data = {}
+	_this.closest(closest_element).find(element).each(function(){
+		var name = $(this).attr('name')
+		data[name] = $(this).val()
+	})
+	return data
+}
+
+$(document).on("blur", ".package-service-customize", function() {
+	data = {}
+	var service = $(this).closest('tr').data('tt-id')
+	var data = get_form_data($(this), 'tr', '.package-service-customize')
+	data['service'] = service
+	data['package'] = "{{ package.id }}"
+	var url = "{% url 'package_service_management:package_service_form' package=package.id %}"
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: data,
+		success: function(data){
+			console.log(data)
+		}
+	})
+})
+
+$(document).on("click", ".delete-package_service", function() {
+	 var id = $(this).closest('tr').data('tt-id')
+	 var service = $(this).data('service')
+	 $.confirmModal('{% trans "Вы точно хотите удалить выбранную услугу?" %}', function(el) {
+		var url = "{% url 'package_service_management:package_service_delete' package=package.id service=1234 %}".replace(/1234/, service)
+		$.ajax({
+			url: url,
+			type: "POST",
+			success: function(data){
+				$("#service-table").treetable("removeNode", id)
+			}
+		})
+    });
+
+})
+
+{% endblock %}
+

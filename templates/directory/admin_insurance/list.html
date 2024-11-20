@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block content %}
+<style type="text/css">
+	.breadcrumb-list{
+		display: none;
+	}
+</style>
+	<div class="contentbar" style="margin-top: 0;">
+		<div class="card" style="padding: 10px;">
+			<div class="row">
+				<div class="col-md-12">
+					<table class="table table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th>{% trans "Справочники" %}</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'directory:service_list' %}">
+							{% trans "Услуги" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:icd_list' %}">
+							{% trans "МКБ-10" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:form_list' %}">
+							{% trans "Формы" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:insurance_list' %}">{% trans "Страховые компании" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:hospital_list' %}">{% trans "Провайдеры" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'directory:customer_list' %}">{% trans "Клиенты" %}</a></td>
+						</tr>
+						<tr>
+							<td><a href="{% url 'report_management:invoice_report_list' %}">report_management</a></td>
+						</tr>
+						
+						<!-- <tr>
+							<td><span disabled>МКБ-10</span></td>
+						</tr>
+						<tr>
+							<td><span  disabled>МКБ-9</span></td>
+						</tr>
+						<tr>
+							<td><span  disabled>Лекарства</span></td>
+						</tr>
+						<tr>
+							<td><span  disabled>ИМН</span></td>
+						</tr>
+						<tr>
+							<td><span >Пациенты</span></td>
+						</tr> -->
+					</table>
+
+					<table class="table table-bordered mt-4">
+						<thead class="thead-light">
+							<tr>
+								<th>Alignment  services</th>
+							</tr>
+						</thead>	
+						<tr>
+							<td><a href="{% url 'package_service_management:package_list' %}">alignment_services_insurance</a></td> <!-- nastroika_spr_sk -->
+						</tr>
+						<tr>
+							<td><a href="{% url 'package_service_management:package_evaluation_list' %}">price_actuarius_insurance</a></td> <!-- price_sk -->
+						</tr>
+					</table>
+					<table class="table table-bordered mt-4">
+						<thead class="thead-light">
+							<tr>
+								<th>Anderrayting</th>
+							</tr>
+						</thead>
+						<tr>
+							<td><a href="{% url 'package_icd_management:package_list' %}">clinician_insurance</a></td> <!-- nastroika_mkb_sk -->
+						</tr>	
+						<tr>
+							<td><a href="{% url 'program_management:program_list' %}">admin_programm_insurance</a></td> <!-- admin_programm -->
+						</tr>
+						<tr>
+							<td><a href="{% url 'contract_management:contract_list' %}">contract_klient_insurance</a></td> <!-- kontract_sk_klient -->
+						</tr>
+						
+					</table>
+					<table class="table table-bordered mt-4">
+						<thead class="thead-light">
+							<tr>
+								<th>Medical assistance</th>
+							</tr>
+						</thead>	
+						<tr>
+							<td><a href="{% url 'contract_management:contract_hospital_list' %}">contract_provider_insurance</a></td>
+							<!-- kontract_sk_provider -->
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>	
+{% endblock %}

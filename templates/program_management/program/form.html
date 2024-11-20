@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="modal-body">
+	<div class="form-group">
+		<b>{% trans "Название программы" %}</b>
+		{{ form.title|add_class:"form-control" }}
+		<b>{% trans "Процент страхового лимита" %}</b>
+		{{ form.limit_percent|add_class:"form-control" }}
+		<b>{% trans "Процент страховой премии" %}</b>
+		{{ form.premium_percent|add_class:"form-control" }}
+		<b>{% trans "Семейное прикрепление" %}</b>
+		<input type="text" name="" disabled="" class="form-control">
+		<b>{% trans "Добавить ограничения" %}</b>
+		<input type="text" name="" disabled="" class="form-control">
+	</div>
+</div>

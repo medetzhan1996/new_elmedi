@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load package_icd_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'promedicine:profession_list' %}">Список профессий</a></li>
+    <li class="breadcrumb-item"><a href="{% url 'promedicine:profession_hazard_list' id=result.id %}">{{result.title}}</a></li>
+    <li class="breadcrumb-item active">
+        <a href="">
+            Добавить вредность
+        </a>
+    </li>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="contentbar" style="margin-top: 0;">
+    <div class="card" style="padding: 10px;">
+        <div class="row align-items-center">
+            <div class="col-md-12">
+                <div class="table-responsive m-b-30">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Названия </th>
+                              <th scope="col" style="width:150px">Редактировать </th>
+                            </tr>
+                        </thead> 
+                        <tbody id="promedicine-content">
+                            {% for hazard in hazard_list %}
+                            <tr>
+                                <td>
+                                   {{ hazard.title }}
+                                </td>
+                                <td class="text-center">
+                                    <input type="checkbox" value="{{ hazard.id }}" class="hazard-checkbox" data-hazard-id="{{ hazard.id }}"  {% if hazard.id in checked_hazards %}checked{% endif %}  >
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block domready %}
+    $('.hazard-checkbox').change(function() {
+        var hazardId = $(this).data('hazard-id');
+        var isChecked = $(this).prop('checked');
+        var professionId = {{ result.id }};
+        alert(hazardId)
+        var url = '{% url "promedicine:profession_hazard_create" %}';
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: {
+                'profession_id': professionId,
+                'hazard_id': hazardId,
+                'is_checked': isChecked
+            },
+            success: function(response) {
+                console.log(response.message);
+            },
+            error: function(error) {
+                console.log('An error occurred.');
+            }
+        });
+    });
+{% endblock %}

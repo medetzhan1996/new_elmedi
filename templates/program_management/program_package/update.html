@@ -1,0 +1,17 @@
+{% load i18n %}
+
+<form action="{% url 'program_management:program_package_update'  pk=form.instance.id program=program.id %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Изменить название группы" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+    	{% include "program_management/program_package/form.html" %}
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-primary btn-sm" value='{% trans "Сохранить" %}'></a>
+    </div>
+</form>

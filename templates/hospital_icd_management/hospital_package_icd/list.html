@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load hospital_package_icd_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_icd_management:hospital_package_list' hospital=hospital %}">
+            {% trans "Список групп" %}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="">
+            {{ hospital_package_obj.title }}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+<div class="contentbar" style="margin-top: 0px;">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <a href="{% url 'hospital_icd_management:hospital_package_icd_setting' hospital=hospital hospital_package=hospital_package %}" class="btn-right-ab btn-sm btn btn-primary">
+                {% trans "Добавить/создать мкб-10" %}
+            </a>
+            <div class="col-md-12">
+                <div class="scroll-table">
+                    <table class="table table-bordered treetable mb-0">
+                        <tr>
+                            <th style="width:200px;">
+                                <div>{% trans "Коды МКБ" %}</div>
+                            </th>
+                            <th>
+                                <div>{% trans "Наименование МКБ" %}</div>                     
+                            </th>
+                            <th style="width:150px">{% trans "Редактирование" %}</th>
+                        </tr>
+                    </table>
+                    <div class="scroll-table-body-none-header">
+                        <table class="table table-bordered treetable mt-0" id="icd-table">
+                            <tbody>
+                                {% for icd in icds %}
+                                    <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}'>
+                                        <td style="width:200px ;height: 30px;">
+                                            {% if not icd.is_leaf_node %}
+                                                <span class='folder'>
+                                                    {{ icd.code }}
+                                                </span>
+                                            {% else %}
+                                                <span class='file'>
+                                                    {{ icd.code }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ icd.title }}</td>
+                                        <td style="width:150px">
+                                           <input type="checkbox" name="is_checked" class="package-icd-customize d-none" checked>
+                                            <button data-icd="{{ icd.id }}"
+                                                    class="fa fa-trash btn delete-hospital_package_icd"></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="table-responsive m-b-30">
+
+                    <table id="icd-table" class="table table-hover table-bordered">
+
+                        <tr>
+                            <th style="width: 200px;">
+                                <div>Коды мкб-10</div>
+                            </th>
+                            <th>
+                                <div>Названия мкб-10</div>
+                            </th>
+                            <th width="30px"></th>
+                        </tr>
+                        <tbody>
+                            {% for icd in icds %}
+                                <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}'>
+                                    <td style="display: flex;align-items: center;height: 30px;">
+                                        {% if not icd.is_leaf_node %}
+                                            <span class='folder'>
+                                                {{ icd.code }}
+                                            </span>
+                                        {% else %}
+                                            <span class='file'>
+                                                {{ icd.code }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ icd.title }}</td>
+                                    <td>
+                                       <input type="checkbox" name="is_checked" class="package-icd-customize d-none" checked>
+                                        <button data-icd="{{ icd.id }}"
+                                                class="fa fa-trash btn delete-hospital_package_icd"></button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+    $("#icd-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    $(document).on("click", ".delete-hospital_package_icd", function() {
+        var id = $(this).closest('tr').data('tt-id')
+        var icd = $(this).data('icd')
+        var url = "{% url 'hospital_icd_management:hospital_package_icd_delete' hospital=hospital hospital_package=hospital_package icd=0 %}".replace('0', icd)
+        $.ajax({
+            url: url,
+            type: "POST",
+            success: function(data){
+                $("#icd-table").treetable("removeNode", id)
+            }
+        })
+    })
+{% endblock %}
+

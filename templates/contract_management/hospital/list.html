@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="">Список клиник / провайдеров </a>
+    </li>
+{% endblock %}
+{% block content %}
+<style type="text/css">
+  .bg-successs{
+    background: #b8edd0;
+  }
+  .bg-dangerr{
+    background: #f3d9d9;
+  }
+</style>
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-5">
+              <input id="table-search" type="text" class="form-control" placeholder="Поиск">
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-success w-100" data-toggle="modal" data-target="#exampleModal">Добавить клиник / провайдеров</button>
+          </div>
+      </div> 
+      <div class="row mt-3">
+          <div class="col-md-8">
+              <div class="table-responsive m-b-30">
+                  <table class="table" id="table-content">
+                      <thead class="thead-light">
+                        <tr>
+                          
+                          <th>Название клиник / провайдеров</th>
+                          <th style="width: 170px;"></th>
+                          <th style="width:50px;"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                           
+                            <td>
+                              Markezi
+                            </td>
+                            <td>
+                              <button class="btn-sm btn  btn-primary">Создать заявку</button>
+                            </td>
+                            <td class="text-center">
+                              <button class="btn-sm btn  btn-danger">Удалить</button>
+                            </td>
+                          </tr>
+                      
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Список клиник / провайдеров</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+
+        <ul class="list-group list-group-flush">
+         
+          <li class="list-group-item">
+            <input type="checkbox" name="" class="change-status-insurance" >
+             Markezi
+          </li>
+          
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отменить</button>
+        <button type="button" class="btn btn-primary">Сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-12">
+              <input id="table-search" type="text" class="form-control" placeholder="Поиск">
+          </div>
+      </div> 
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table" id="table-content">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>Название клиники</th>
+                          <th>+/-</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for hospital in hospitals %}
+                          <tr 
+                            class="{% if hospital.hospital_service_management_hospitalpackage_related.count %}
+                              bg-successs
+                            {% else %}
+                              bg-dangerr
+                            {% endif %}"
+
+                            >
+                            <td>
+                                {{ hospital.title }}
+                            </td>
+                            <td>
+                              <input type="checkbox" name="" class="change-status-hospital" data-id="{{ hospital.id }}"
+                              {% if hospital.is_checked %} checked {% endif %}>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="7">Данные не найдены!</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div> -->
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+      $(document).on("click",".open-universal-modal",function() {
+          var url = $(this).data('url')
+          $.ajax({
+            url: url,
+            success: function(data){
+              $('#universal-modal-content').html(data)
+              $('#universal-modal').modal('show')
+            }
+          })
+      })
+
+    $(document).on("change",".change-status-hospital",function() {
+      var id = $(this).data('id')
+      var is_checked = $(this).is(':checked')
+      var url = "{% url 'contract_management:hospital_update' pk=0 %}".replace('0', id)
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+          is_checked: is_checked
+        },
+        success: function (data) {
+        }
+      })
+    })
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+{% load contract_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="">{% trans "Все страховые контракты" %}</a>
+    </li>
+{% endblock %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-12">
+              <input id="table-search" type="text" class="form-control" placeholder='{% trans "Поиск" %}'>
+          </div>
+      </div> 
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table" id="table-content">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>{% trans "Страховая компания" %}</th>
+                          <th>{% trans "Номер контракта" %}</th>
+                          <th>{% trans "Программы" %}</th>
+                          <th>{% trans "Дата начала" %}</th>
+                          <th>{% trans "Дата окончания" %}</th>
+                          <th style="width:320px"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for contract_hospital in contract_hospitals %}
+                          {% get_contract contract_hospital.contract as contract %}
+                          {% get_contract_hospital contract contract_hospital.hospital as contract_hospitals_2  %}
+                          {% get_hospital contract_hospital.hospital as hospital %}
+                          <tr>
+                              <td>{{ contract.insurance.title }}</td>
+                              <td>{{ contract.number }}</td>
+                              <td>
+                                {% for contract_hospital_2 in contract_hospitals_2 %}
+                                  <a href="{% url 'contract_management:contract_hospital_package_list' contract_hospital=contract_hospital_2.id hospital=contract_hospital_2.hospital.id %}" class="a-link">
+                                    {{ contract_hospital_2.program.title }} 
+                                    
+                                  </a>
+                                  &nbsp&nbsp
+                                    <a href="#" class="open-universal-modal" data-url="{% url     'contract_management:contract_hospital_delete' pk=contract_hospital_2.id %}">
+                                  <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a><br>
+                                {% endfor %}
+                              </td>
+                              <td>{{ contract.start_date|date:"d.m.Y" }}</td>
+                              <td>{{ contract.end_date|date:"d.m.Y" }}</td>
+                              <td style="text-align:right;">
+                                {% if contract_hospitals_2.first.status == 1 %}
+                                    <button class="btn-sm btn  btn-primary">{% trans "Ожидание" %}</button>
+                                {% elif contract_hospitals_2.first.status == 2 %}
+                                    <button class="btn-sm btn  btn-success change-status" data-contract="{{ contract.id }}" data-hospital="{{ hospital.id }}" data-status="3">{% trans "Принять заявку" %}</button>
+                                {% elif contract_hospitals_2.first.status == 3 %}
+                                    <button class="btn-sm btn  btn-info">{% trans "Заявка принята" %}</button>
+                                    <button class="btn-sm btn  btn-success change-status" data-contract="{{ contract.id }}" data-hospital="{{ hospital.id }}" data-status="4">{% trans "Отправить" %}</button>
+                                {% else %}
+                                    <button class="btn-sm btn  btn-primary" data-contract="{{ contract.id }}" data-hospital="{{ hospital.id }}">{% trans "Заявка переотправлена" %}</button>
+                                {% endif %}
+                                
+                              </td>
+                            </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="7">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+      $(document).on("click",".open-universal-modal",function() {
+          var url = $(this).data('url')
+          $.ajax({
+            url: url,
+            success: function(data){
+              $('#universal-modal-content').html(data)
+              $('#universal-modal').modal('show')
+            }
+          })
+      })
+
+    $(document).on("change","#id_contract",function() {
+      var contract = $(this).val()
+      var url = "{% url 'contract_management:program_by_contract' contract=0 %}".replace('0', contract)
+      $.ajax({
+        url: url,
+        success: function (data) {
+          $("#id_program").html(data)
+        }
+      })
+    })
+
+    $(document).on("click",".change-status",function() {
+      var contract = $(this).data('contract')
+      var hospital = $(this).data('hospital')
+      var status = $(this).data('status')
+      $.ajax({
+        url: "{% url 'contract_management:contract_hospital_status_update' %}",
+        type: "POST",
+        data: {
+          contract: contract,
+          hospital: hospital,
+          status: status
+        },
+        success: function (data) {
+          location.reload()
+        }
+      })
+    })
+{% endblock %}

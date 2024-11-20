@@ -1,0 +1,36 @@
+{% load i18n %}
+{% load widget_tweaks %}
+<form action="{% url 'contract_management:pro_med_contract_customer_import_excel' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Добавить" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+	<div class="form-group">
+		<b>{% trans "Выберите файл" %}</b>
+		{{ form.excel_file }}
+        <b>{% trans "Выберите контракт" %}</b>
+		<select class="form-control" name="contract" id="choose-contract">
+            <option value="">&nbsp</option>
+            {% for contract in contracts %}
+             <option value="{{ contract.id }}">{{ contract.number }}</option>
+           {% endfor %}
+        </select>
+        <b>{% trans "Выберите программу" %}</b>
+		<select class="form-control" name="program" id="id_program">
+            <option value="">---------</option>
+        </select>
+        <b>{% trans "Дата начала" %}</b>
+        <input type="date" name="begin_date">
+        <b>{% trans "Дата окончания" %}</b>
+		<input type="date" name="end_date">
+	</div>
+</div>
+    <div class="modal-footer">
+	    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">{% trans "Отмена" %}</button>
+	    <button type="submit" class="btn btn-primary btn-sm">{% trans "Сохранить" %}</button>
+	</div>
+</form>

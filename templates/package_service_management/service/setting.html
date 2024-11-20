@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load package_service_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'package_service_management:package_list' %}">{% trans "Настройка услуг" %}</a></li>
+    <li class="breadcrumb-item active">
+    	<a href="">{% trans "Добавить группу услуг" %}</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<style>
+	input{
+		width: 50px
+	}
+</style>
+<div class="contentbar" style="margin-top: 0;">
+	<div class="card" style="padding: 10px;">
+		<div class="row align-items-center">
+			<div class="col-md-9">
+				<div class="form-group">
+                <b class="mymove m-l-15 text-end">{% trans "Выберите  группу услуг" %}</b>
+                <select name="base_service" id="id_base_service" class="form-control ">
+                	<option value="" hidden>{% trans "Справочник клинических услуг" %}</option>
+                    {% for value in base_services %}
+                        <optgroup label="{{ value.title }}">
+                            {% for value_children in value.get_children %}
+                                <option value="{{ value_children.id }}"
+                                    {% is_selected value_children.id base_service %}>
+                                    {{ value_children.title }}
+                                </option>
+                            {% endfor %}
+                        </optgroup>
+
+                    {% endfor %}
+                </select>
+              </div>
+			</div>
+
+			<div class="col-md-3">
+				<div class="form-group">
+                	<b class="white">.</b>
+                	<a href="{% url 'package_service_management:package_list' %}" class="btn btn-success d-block">{% trans "Завершить выбор групп услуг" %}</a>
+                </div>
+            </div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="scroll-table">
+					<table class="table table-bordered" style="margin-bottom: 0;padding-bottom: 0;">
+			
+							<tr>
+								<th colspan="1" style="width: 200px;"><div>{% trans "Коды услуг" %}</div></th>
+								<th><div>{% trans "Названия услуг" %}</div></th>
+								<th style="width:156px;">{% trans "Редактирование" %}</th>
+							</tr>
+					</table>
+					<div class="scroll-table-body">
+						<table class="table table-bordered treetable mt-0" id="service-table">
+							{% for service in services %}
+
+								{% is_leaf_node service.is_leaf_node as is_leaf_node %}
+							<tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+								<td style="width: 200px;height: 30px;">
+									{% if not is_leaf_node %}
+									<span class='folder'>
+										{{ service.code }}
+									</span>
+									{% else %}
+									<span class='file'>
+										{{ service.code }}
+									</span>
+									{% endif %}
+								</td>
+								<td>{{ service.title }}</td>
+								<td class="text-center" style="width:150px">
+									<input type="checkbox" class="package-service-check" name="is_checked"
+                                        {% if is_leaf_node or service.level == 3 %} disabled {% endif %}>
+								</td>
+							</tr>
+							{% empty %}
+								<tr>
+									<td colspan="3" align="center">
+										<h6>{% trans "Выберите услугу" %}</h6>
+									</td>
+								</tr>
+
+							{% endfor %}
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block domready %}
+$("#service-table").treetable({
+	expandable: true,
+	clickableNodeNames: true
+})
+
+function get_form_data(_this, closest_element, element){
+	data = {}
+	_this.closest(closest_element).find(element).each(function(){
+		var name = $(this).attr('name')
+		data[name] = $(this).val()
+	})
+	return data
+}
+
+
+$(document).on("change", ".package-service-check", function() {
+	var service = $(this).closest('tr').data('tt-id')
+	var element = "[name='" + $(this).attr('name') + "']"
+	var is_checked = $(this).is(':checked')
+	var url = "{% url 'package_service_management:service_setting_form' %}"
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: {
+			service: service,
+			is_checked: is_checked
+		},
+		success: function(data){
+			if(is_checked){
+				$("#service-table").treetable("checkNode", service, element)
+			}
+			else{
+				$("#service-table").treetable("uncheckNode", service, element)
+			}
+		}
+	})
+})
+
+
+
+$(document).on("change", "#id_base_service", function() {
+	var base_service = $('#id_base_service').val()
+	var searchParams = new URLSearchParams(window.location.search)
+	if(base_service){
+		searchParams.set("base_service", base_service)
+	}
+	window.location.search = searchParams.toString()
+})
+
+{% endblock %}
+

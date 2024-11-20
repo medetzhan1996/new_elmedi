@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load package_icd_management_tags %}
+{% load i18n %}
+
+
+{% block content %}
+<style type="text/css">
+.breadcrumbbar-none{
+  display: none;
+}
+</style>
+<div class="contentbar" style="margin-top: 0">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <b class="m-l-15">Выберите тип МКБ</b>
+                <select name="base_icd" id="id_base_icd" class="form-control">
+                    {% for value in base_icds %}
+                        <option value="{{ value.id }}" {% is_selected value.id base_icd %}>
+                            {{ value.title }}
+                        </option>
+                    {% endfor %}
+                </select> -->
+                <div class="scroll-table">
+                    <table class="table table-bordered treetable mb-0">
+                        <tr>
+                            <th rowspan="3" colspan="1" style="width:150px;">
+                                <div style="margin-top: 124px;">{% trans "Коды МКБ" %}</div>
+                            </th>
+                            <th rowspan="3" style="width: 250px;">
+                                <div style="margin-top: 124px;">{% trans "Наименование МКБ" %}</div>                     
+                            </th>
+                            <th colspan="4" class="text-center yellow">{% trans "ОМС" %}</th>
+                            <th colspan="4" class="text-center green">{% trans "ДМС" %}</th>
+                            <th colspan="4" class="text-center bg-red">{% trans "ПЛАТНО" %}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4" class="text-center yellow">{% trans "Статус выполнения" %}</th>
+                            <th colspan="4" class="text-center green">{% trans "Статус выполнения" %}</th>
+                            <th colspan="4" class="text-center bg-red">{% trans "Статус выполнения" %}</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center yellow"><div class="rotate" style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                            <th class="text-center yellow"><div class="rotate" style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                            <th class="text-center yellow"><div class="rotate">{% trans "Амбулаторно" %}</div></th>
+                            <th class="text-center yellow"><div class="rotate">{% trans "Стационарно" %}</div></th>
+                            <th class="text-center green"><div class="rotate"style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                            <th class="text-center green"><div class="rotate" style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                            <th class="text-center green"><div class="rotate">{% trans "Амбулаторно" %}</div></th>
+                            <th class="text-center green"><div class="rotate">{% trans "Стационарно" %}</div></th>
+                            <th class="text-center bg-red"><div class="rotate" style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                            <th class="text-center bg-red"><div class="rotate" style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                            <th class="text-center bg-red"><div class="rotate">{% trans "Амбулаторно" %}</div></th>
+                            <th class="text-center bg-red"><div class="rotate">{% trans "Стационарно" %}</div></th>
+                        </tr>
+                    </table>
+                    <div class="scroll-table-body">
+                        <table class="table table-bordered treetable mt-0" id="icd-table" >
+                            <tbody>
+                                {% for icd in icds %}
+                                    {% get_icd icd as package_icd %}
+                                    <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}' data-package="{% get_package package_icd.package.id %}">
+                                        <td style="width: 150px;height: 30px;">
+                                            {% if not icd.is_leaf_node %}
+                                                <span class='folder'>{{ icd.code }}</span>
+                                            {% else %}
+                                                <span class='file'>{{ icd.code }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td style="width: 250px;">{{ icd.title }}</td>
+                                        <td class="yellow">
+                                            <input type="checkbox" class="package-icd-customize" name="social_at_home_performed"
+                                                {% is_checked package_icd.social_at_home_performed %}>
+                                        </td>
+                                        <td class="yellow">
+                                            <input type="checkbox" class="package-icd-customize" name="social_primary_health_care_performed"
+                                                {% is_checked package_icd.social_primary_health_care_performed %}>
+                                        </td>
+                                        <td class="yellow">
+                                            <input type="checkbox" class="package-icd-customize" name="social_clinical_diagnostic_performed"
+                                                {% is_checked package_icd.social_clinical_diagnostic_performed %}>
+                                        </td>
+                                        <td class="yellow">
+                                            <input type="checkbox" class="package-icd-customize" name="social_hospital_performed"
+                                                {% is_checked package_icd.social_hospital_performed %}>
+                                        </td>
+                                        <td class="green">
+                                            <input type="checkbox" class="package-icd-customize" name="vhi_at_home_performed"
+                                                {% is_checked package_icd.vhi_at_home_performed %}>
+                                        </td>
+                                        <td class="green">
+                                            <input type="checkbox" class="package-icd-customize" name="vhi_primary_health_care_performed"
+                                                {% is_checked package_icd.vhi_primary_health_care_performed %}>
+                                        </td>
+                                        <td class="green">
+                                            <input type="checkbox" class="package-icd-customize" name="vhi_clinical_diagnostic_performed"
+                                                {% is_checked package_icd.vhi_clinical_diagnostic_performed %}>
+                                        </td>
+                                        <td class="green">
+                                            <input type="checkbox" class="package-icd-customize" name="vhi_hospital_performed"
+                                                {% is_checked package_icd.vhi_hospital_performed %}>
+                                        </td>
+                                        <td class="bg-red">
+                                            <input type="checkbox" class="package-icd-customize" name="pay_at_home_performed"
+                                                {% is_checked package_icd.pay_at_home_performed %}>
+                                        </td>
+                                        <td class="bg-red">
+                                            <input type="checkbox" class="package-icd-customize" name="pay_primary_health_care_performed"
+                                                {% is_checked package_icd.pay_primary_health_care_performed %}>
+                                        </td>
+                                        <td class="bg-red">
+                                            <input type="checkbox" class="package-icd-customize" name="pay_clinical_diagnostic_performed"
+                                                {% is_checked package_icd.pay_clinical_diagnostic_performed %}>
+                                        </td>
+                                        <td class="bg-red">
+                                            <input type="checkbox" class="package-icd-customize" name="pay_hospital_performed"
+                                                {% is_checked package_icd.pay_hospital_performed %}>
+                                             <input type="checkbox" class="package-icd-customize d-none" name="is_perfomed" checked>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="table table-responsive m-b-30">
+                    
+                    <table  id="icd-table" class="table table-bordered treetable">
+                       
+                        <tr>
+                            <th rowspan="3" colspan="1">
+                                <div style="margin-top: 124px;">Коды МКБ</div>
+                            </th>
+                            <th rowspan="3" style="width: 250px;">
+                                <div style="margin-top: 124px;">Наименование МКБ</div>                     
+                            </th>
+                            <th colspan="4" class="text-center yellow">ОМС</th>
+                            <th colspan="4" class="text-center green">ДМС</th>
+                            <th colspan="4" class="text-center bg-red">ПЛАТНО</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4" class="text-center yellow">Статус выполнения</th>
+                            <th colspan="4" class="text-center green">Статус выполнения</th>
+                            <th colspan="4" class="text-center bg-red">Статус выполнения</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center yellow"><div class="rotate" style="margin-top: 32px;">На дому</div></th>
+                            <th class="text-center yellow"><div class="rotate" style="margin-top: 45px;">ПМСП</div></th>
+                            <th class="text-center yellow"><div class="rotate">Амбулаторно</div></th>
+                            <th class="text-center yellow"><div class="rotate">Стационарно</div></th>
+                            <th class="text-center green"><div class="rotate"style="margin-top: 32px;">На дому</div></th>
+                            <th class="text-center green"><div class="rotate" style="margin-top: 45px;">ПМСП</div></th>
+                            <th class="text-center green"><div class="rotate">Амбулаторно</div></th>
+                            <th class="text-center green"><div class="rotate">Стационарно</div></th>
+                            <th class="text-center bg-red"><div class="rotate" style="margin-top: 32px;">На дому</div></th>
+                            <th class="text-center bg-red"><div class="rotate" style="margin-top: 45px;">ПМСП</div></th>
+                            <th class="text-center bg-red"><div class="rotate">Амбулаторно</div></th>
+                            <th class="text-center bg-red"><div class="rotate">Стационарно</div></th>
+                        </tr>
+                        
+                        {% for icd in icds %}
+                            {% get_icd icd as package_icd %}
+                            <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}' data-package="{% get_package package_icd.package.id %}">
+                                <td style="display: flex;align-items: center;height: 30px;">
+                                    {% if not icd.is_leaf_node %}
+                                        <span class='folder'>{{ icd.code }}</span>
+                                    {% else %}
+                                        <span class='file'>{{ icd.code }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ icd.title }}</td>
+                                <td class="yellow">
+                                    <input type="checkbox" class="package-icd-customize" name="social_at_home_performed"
+                                        {% is_checked package_icd.social_at_home_performed %}>
+                                </td>
+                                <td class="yellow">
+                                    <input type="checkbox" class="package-icd-customize" name="social_primary_health_care_performed"
+                                        {% is_checked package_icd.social_primary_health_care_performed %}>
+                                </td>
+                                <td class="yellow">
+                                    <input type="checkbox" class="package-icd-customize" name="social_clinical_diagnostic_performed"
+                                        {% is_checked package_icd.social_clinical_diagnostic_performed %}>
+                                </td>
+                                <td class="yellow">
+                                    <input type="checkbox" class="package-icd-customize" name="social_hospital_performed"
+                                        {% is_checked package_icd.social_hospital_performed %}>
+                                </td>
+                                <td class="green">
+                                    <input type="checkbox" class="package-icd-customize" name="vhi_at_home_performed"
+                                        {% is_checked package_icd.vhi_at_home_performed %}>
+                                </td>
+                                <td class="green">
+                                    <input type="checkbox" class="package-icd-customize" name="vhi_primary_health_care_performed"
+                                        {% is_checked package_icd.vhi_primary_health_care_performed %}>
+                                </td>
+                                <td class="green">
+                                    <input type="checkbox" class="package-icd-customize" name="vhi_clinical_diagnostic_performed"
+                                        {% is_checked package_icd.vhi_clinical_diagnostic_performed %}>
+                                </td>
+                                <td class="green">
+                                    <input type="checkbox" class="package-icd-customize" name="vhi_hospital_performed"
+                                        {% is_checked package_icd.vhi_hospital_performed %}>
+                                </td>
+                                <td class="bg-red">
+                                    <input type="checkbox" class="package-icd-customize" name="pay_at_home_performed"
+                                        {% is_checked package_icd.pay_at_home_performed %}>
+                                </td>
+                                <td class="bg-red">
+                                    <input type="checkbox" class="package-icd-customize" name="pay_primary_health_care_performed"
+                                        {% is_checked package_icd.pay_primary_health_care_performed %}>
+                                </td>
+                                <td class="bg-red">
+                                    <input type="checkbox" class="package-icd-customize" name="pay_clinical_diagnostic_performed"
+                                        {% is_checked package_icd.pay_clinical_diagnostic_performed %}>
+                                </td>
+                                <td class="bg-red">
+                                    <input type="checkbox" class="package-icd-customize" name="pay_hospital_performed"
+                                        {% is_checked package_icd.pay_hospital_performed %}>
+                                     <input type="checkbox" class="package-icd-customize d-none" name="is_perfomed" checked>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                  
+                </div> -->
+            </div>
+        </div>         
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+
+    $("#icd-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    function get_form_data(_this, closest_element, element){
+        data = {}
+        _this.closest(closest_element).find(element).each(function(){
+            var name = $(this).attr('name')
+            data[name] = $(this).is(':checked')
+        })
+        return data
+    }
+
+
+    $(document).on("change", ".package-icd-customize", function() {
+        var data = {}
+        var icd = $(this).closest('tr').data('tt-id')
+        var package = $(this).closest('tr').data('package')
+        var element = "[name='" + $(this).attr('name') + "']"
+        var is_checked = $(this).is(':checked')
+        var data = get_form_data($(this), 'tr', '.package-icd-customize')
+        data['icd'] = icd
+        data['package'] = package
+        var url = "{% url 'package_icd_management:package_icd_form' package=0 %}".replace('0', package)
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            success: function(data){
+                if(is_checked){
+                    $("#icd-table").treetable("checkNode", icd, element)
+                }
+                else{
+                    $("#icd-table").treetable("uncheckNode", icd, element)
+                }
+            }
+        })
+    })
+    $(document).on("change", "#id_base_icd, #id_kind_service", function() {
+        var base_icd = $('#id_base_icd').val()
+        var searchParams = new URLSearchParams(window.location.search)
+        if(base_icd){
+            searchParams.set("base_icd", base_icd)
+        }
+        window.location.search = searchParams.toString()
+    })
+{% endblock %}
+

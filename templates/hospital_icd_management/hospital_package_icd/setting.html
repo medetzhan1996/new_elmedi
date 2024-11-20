@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load hospital_package_icd_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    {% if request.user.user_type != 7 %}
+       <!--  <li class="breadcrumb-item">
+            <a href="{% url 'hospital_icd_management:hospital_list' %}">Клиники/Провайдеры</a>
+        </li> -->
+    {% endif %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_icd_management:hospital_package_list' hospital=hospital %}">
+           {% trans "Список групп" %}
+        </a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_icd_management:hospital_package_icd_list' hospital=hospital hospital_package=hospital_package %}">
+            {{ hospital_package_obj.title }}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="">
+            {% trans "Добавить/создать мкб-10" %}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <style>
+        input{
+            width: 50px
+        }
+    </style>
+<div class="contentbar" style="margin-top: 0px;">
+    <div class="card" style="padding: 10px;">
+        <div class="row align-items-center">
+            <div class="col-md-9">
+              <div class="form-group">
+                <b class="mymove m-l-15">{% trans "Выберите мкб-10" %}</b>
+                <select name="base_icd" id="id_base_icd" class="form-control">
+                    <option value="" hidden>{% trans "Выберите мкб-10" %}</option>
+                    {% for value in base_icds %}
+                        <optgroup label="{{ value.title }}">
+                            {% for value_children in value.get_children %}
+                                <option value="{{ value_children.id }}"
+                                    {% is_selected value_children.id base_icd %}>
+                                    {{ value_children.title }}
+                                </option>
+                            {% endfor %}
+                        </optgroup>
+
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'hospital_icd_management:hospital_package_icd_list' hospital=hospital hospital_package=hospital_package %}" class="w-100 btn btn-success">{% trans "Завершить выбор мкб-10" %}</a>
+            </div>
+
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <div class="scroll-table">
+                    <table class="table table-bordered treetable mb-0">
+                        <tr>
+                            <th style="width:200px;">
+                                <div>{% trans "Коды МКБ" %}</div>
+                            </th>
+                            <th>
+                                <div>{% trans "Наименование МКБ" %}</div>                     
+                            </th>
+                            <th style="width:150px">{% trans "Редактирование" %}</th>
+                        </tr>
+                    </table>
+                    <div class="scroll-table-body-mkb">
+                        <table class="table table-bordered treetable mt-0" id="icd-table">
+                            <tbody  >
+                                {% for icd in icds %}
+                                    {% get_hospital_package_icd hospital_package icd as hospital_package_icd %}
+                                    <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}'>
+                                        <td style="width: 200px;height: 30px;">
+                                            {% if not icd.is_leaf_node %}
+                                                <span class='folder'>
+                                                    {{ icd.code }}
+                                                </span>
+                                            {% else %}
+                                                <span class='file'>
+                                                    {{ icd.code }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ icd.title }}</td>
+                                        <td width="150px" class="text-center">
+                                            <input type="checkbox" class="package-icd-check" name="is_perfomed"
+                                                {% is_perfomed hospital_package_icd.is_perfomed %}>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="3" align="center">
+                                            <h6>{% trans "Выберите мкб-10" %}</h6>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="table-responsive m-b-30">
+                    <table id="icd-table" class="table table-hover table-bordered">
+                        <tr>
+                          <th>Код</th>
+                          <th >Наименование мкб-10</th>
+                          <th>+/-</th>
+                        </tr>
+                        <tbody  >
+                            {% for icd in icds %}
+                                {% get_hospital_package_icd hospital_package icd as hospital_package_icd %}
+                                <tr data-tt-id="{{ icd.id }}" data-tt-parent-id='{{ icd.parent.id }}'>
+                                    <td style="display: flex;align-items: center;height: 30px;">
+                                        {% if not icd.is_leaf_node %}
+                                            <span class='folder'>
+                                                {{ icd.code }}
+                                            </span>
+                                        {% else %}
+                                            <span class='file'>
+                                                {{ icd.code }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ icd.title }}</td>
+                                    <td width="10px">
+                                        <input type="checkbox" class="package-icd-check" name="is_perfomed"
+                                            {% is_perfomed hospital_package_icd.is_perfomed %}>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" align="center">
+                                        <h6>Выберите мкб-10</h6>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+    $("#icd-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    function get_form_data(_this, closest_element, element){
+        data = {}
+        _this.closest(closest_element).find(element).each(function(){
+            var name = $(this).attr('name')
+            data[name] = $(this).val()
+        })
+        return data
+    }
+
+
+    $(document).on("change", ".package-icd-check", function() {
+        data = {}
+        var icd = $(this).closest('tr').data('tt-id')
+        var element = "[name='" + $(this).attr('name') + "']"
+	    var is_perfomed = $(this).is(':checked')
+        var data = get_form_data($(this), 'tr', '.package-icd-customize')
+        data['icd'] = icd
+        data['hospital_package'] = "{{ hospital_package }}"
+        data['is_perfomed'] = is_perfomed
+        var url = "{% url 'hospital_icd_management:hospital_package_icd_form' hospital=hospital hospital_package=hospital_package %}"
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            success: function(data){
+                if(is_perfomed){
+                    $("#icd-table").treetable("checkNode", icd, element)
+                }
+                else{
+                    $("#icd-table").treetable("uncheckNode", icd, element)
+                }
+            }
+        })
+    })
+
+    $(document).on("change", "#id_base_icd", function() {
+        var base_icd = $('#id_base_icd').val()
+        var searchParams = new URLSearchParams(window.location.search)
+        if(base_icd){
+            searchParams.set("base_icd", base_icd)
+        }
+        window.location.search = searchParams.toString()
+    })
+{% endblock %}
+

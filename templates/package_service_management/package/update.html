@@ -1,0 +1,15 @@
+<form action="{% url 'package_service_management:package_update'  pk=form.instance.id %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">Изменить название группы</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+    	{% include "package_service_management/package/form.html" %}
+    </div>
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-primary btn-sm" value="Сохранить"></a>
+    </div>
+</form>

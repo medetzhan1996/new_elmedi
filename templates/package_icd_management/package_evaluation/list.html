@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'package_icd_management:package_list' %}">Список групп</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top:0px;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-12">
+              <input type="text" class="form-control" placeholder="Поиск групп">
+          </div>
+      </div> 
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">Названия групп заболеваний (МКБ) </th>
+                              <th scope="col" class="text-center" style="width: 100px;"></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for package in packages %}
+                          <tr>
+                            <td>
+                              <a href="{% url 'package_icd_management:package_icd_evaluation_list' package=package.id %}">
+                                <span class='folder'>
+                                  {{ package.title }}
+                                </span>
+                              </a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="4">Данные не найдены!</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+
+  <!-- <div class="content-wrapper">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Настройка мкб-10</h3>
+            <div class="card-tools">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Поиск...">
+                <div class="input-group-append">
+                  <div class="btn btn-primary">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>&nbsp&nbsp
+                <button class="btn btn-primary open-universal-modal"
+                   data-url="{% url 'package_icd_management:package_create' %}">+</button>
+              </div>
+
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive mailbox-messages">
+              <table class="table table-hover table-striped table-bordered">
+                <tr>
+                  <th>Название группировки</th>
+                  <th colspan="2"></th>
+                </tr>
+                {% for package in packages %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'package_icd_management:package_icd_list' package=package.id %}">
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        {{ package.title }}
+                      </a>
+                    </td>
+                    <td></td>
+                  </tr>
+                {% empty %}
+                  <tr align="center">
+                    <td colspan="4">Данные не найдены!</td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+  $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+  })
+{% endblock %}

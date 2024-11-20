@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% load program_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{% url 'program_management:pro_med_program_list' %}">{% trans "Cписок професии" %}</a></li>
+    <li class="breadcrumb-item active"><a href="">{{ program.title }}</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-9">
+              <input type="text" id="package-search" class="form-control" placeholder='{% trans "Поиск" %}'>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <a href="#" class="w-100 btn btn-primary open-universal-modal"
+                   data-url="{% url 'program_management:pro_med_package_blank_create' program=program.id %}?insurer={{ program.insurer.id }}">{% trans "+ Добавить вредности" %}</a>
+          </div>
+      </div>
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                <table class="table">
+                  <thead class="thead-light">
+                      <th>{% trans "Название вредности" %}</th><!-- 
+                      <th>{% trans "Тип лимита" %}</th>
+                      <th class="text-center">{% trans "Сумма лимита" %}</th> -->
+                      <th style="width:130px;">{% trans "Редактирование" %}</th>
+                  </thead>
+                  <tbody id="package-content">
+                     {% for package in packages %}
+                        {% get_restriction package as restriction %}
+                      <tr>
+                        <td>
+                          <a class="a-link" href="{% url 'program_management:pro_med_package_service_list' program=package.program.id package=package.id %}">
+                            {{ package.title }}
+                          </a>
+                        </td><!-- 
+                        <td>{{ package.get_limit_type_display }}</td>
+                        <td class="text-center">
+                          {% if package.limit_type == 1 %}
+                            {{ restriction|default_if_none:"0" }}
+                          {% else %}
+                            {{ package.limit|floatformat:"0" }}
+                          {% endif %}
+                        </td> -->
+                        <td class="text-center">
+                          <a href="#" class="open-universal-modal"
+                             data-url="{% url 'program_management:pro_med_program_package_update' program=program.id pk=package.pk %}">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                          </a>&nbsp
+                          <a href="#" class="open-universal-modal"
+                             data-url="{% url 'program_management:pro_med_program_package_delete' pk=package.pk program=package.program.id  %}">
+                            <i class="fa fa-trash" aria-hidden="true"></i>
+                          </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+    $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+    })
+
+    $("#package-search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#package-content tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        })
+   })
+
+   $(document).on("change","#id_limit_type",function() {
+      var limit_type = $(this).val()
+      if(limit_type == 1){
+        $('#id_limit').closest('.form-group').addClass('d-none')
+      }
+      else{
+        $('#id_limit').closest('.form-group').removeClass('d-none')
+      }
+
+   })
+{% endblock %}
+

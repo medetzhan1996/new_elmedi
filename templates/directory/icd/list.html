@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+	<div class="card" style="padding: 10px;">
+		<div class="row">
+			<div class="col-md-5">
+				<input type="text" id="contract-search" class="form-control" placeholder='{% trans "Введите текст для поиска" %}'>
+			</div>
+			<div class="col-md-3 col-lg-3">
+				<button class="w-100 btn btn-primary{% load i18n %} open-universal-modal"
+				{% if view.kwargs.parent %}
+					data-url="{% url 'directory:icd_create' parent=view.kwargs.parent %}"
+				{% else %}
+					data-url="{% url 'directory:icd_create' %}"
+				{% endif %}>
+					{% trans "+ Создать/Добавить услугу" %}
+				</button>
+			</div>
+			<div class="col-md-4">
+				<button class="btn btn-success w-100">{% trans "Завершить создание справочника" %}</button>
+			</div>
+		</div> 
+		<div class="row mt-3">
+			<div class="col-md-12">
+				<div class="table-responsive m-b-30">
+					<table class="table table-bordered">
+						<thead class="thead-light">
+							<tr>
+								<th>{% trans "Код" %}</th>
+								<th>{% trans "Название" %}</th>
+								<th width="100px">{% trans "Редактирование" %}</th>
+							</tr>
+						</thead>
+						<tbody id="contract-content">
+							{% for icd_ancestor in icd_ancestors %}
+								<tr>
+									<td>{{ icd_ancestor.code }}</td>
+									<td>
+										{% if icd_ancestor.parent %}
+											{% url 'directory:icd_list' parent=icd_ancestor.parent.id as parent_url %}
+										{% else %}
+											{% url 'directory:icd_list'  as parent_url %}
+										{% endif %}
+										<a href="{{ parent_url }}" style="color: #0080ff;text-decoration: revert;">
+											{{ icd_ancestor.title }}
+										</a>
+									</td>
+									<td>
+										<a href="#" class="open-universal-modal"
+											{% if view.kwargs.parent %}
+												data-url="{% url 'directory:icd_update' pk=icd_ancestor.id parent=view.kwargs.parent %}"
+											{% else %}
+												data-url="{% url 'directory:icd_update' pk=icd_ancestor.id %}"
+											{% endif %}>
+											<i class="fa fa-pencil" aria-hidden="true"></i>
+										</a> &nbsp&nbsp
+										<a href="#" class="open-universal-modal"
+											{% if view.kwargs.parent %}
+													data-url="{% url 'directory:icd_delete' pk=icd_ancestor.id parent=view.kwargs.parent %}"
+												{% else %}
+													data-url="{% url 'directory:icd_delete' pk=icd_ancestor.id %}"
+												{% endif %}>
+										<i class="fa fa-trash" aria-hidden="true"></i>
+									</a>
+								</td>		    						
+							</tr>
+							{% endfor %}
+							{% for icd in icds %}
+								<tr>
+									<td>{{ icd.code|default_if_none:'-' }}</td>
+									<td>
+										<a href="{% url 'directory:icd_list' parent=icd.id %}" style="color: #0080ff;text-decoration: revert;">
+											{{ icd.title }}
+										</a>
+									</td>
+									<td>
+										<a href="#" class="open-universal-modal"
+											{% if view.kwargs.parent %}
+												data-url="{% url 'directory:icd_update' pk=icd.id parent=view.kwargs.parent %}"
+											{% else %}
+												data-url="{% url 'directory:icd_update' pk=icd.id %}"
+											{% endif %}>
+											<i class="fa fa-pencil" aria-hidden="true"></i>
+										</a> &nbsp&nbsp
+									<a href="#" class="open-universal-modal"
+										{% if view.kwargs.parent %}
+												data-url="{% url 'directory:icd_delete' pk=icd.id parent=view.kwargs.parent %}"
+											{% else %}
+												data-url="{% url 'directory:icd_delete' pk=icd.id %}"
+											{% endif %}>
+									<i class="fa fa-trash" aria-hidden="true"></i>
+								</a>
+							</td>		    						
+						</tr>
+					{% empty %}
+					<tr align="center">
+						<td colspan="4">{% trans "Данные не найдены!" %}</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>         
+</div>
+</div>
+{% endblock %}
+
+{% block modal %}
+<div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" id="universal-modal-content">
+
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block domready %}
+$(document).on("click",".open-universal-modal",function() {
+	var url = $(this).data('url')
+	$.ajax({
+		url: url,
+		success: function(data){
+			$('#universal-modal-content').html(data)
+			$('#universal-modal').modal('show')
+		},
+		error: function(jqXHR,error, errorThrown) {  
+			if(jqXHR.status&&jqXHR.status==400){
+				alert(jqXHR.responseText); 
+			}else{
+				alert("Something went wrong");
+			}
+		}
+	})
+})
+{% endblock %}

@@ -1,0 +1,205 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <form method="get">
+          <div class="row align-items-center">
+
+
+                  <div class="col-md-3">
+                     {% trans " ИИН" %}{{ filter.form.contract_customer__customer__iin|add_class:"form-control" }}
+                  </div>
+                  <!-- <div class="col-md-2">
+                      Номер карточки: {{ filter.form.contract_customer__number|add_class:"form-control" }}
+                  </div> -->
+                  <div class="col-md-3">
+                      {% trans "Услуга:" %} {{ filter.form.service__title|add_class:"form-control" }}
+                  </div>
+                  <div class="col-md-2">
+                      {% trans "Дата начиная с " %}<br>{{ filter.form.date__gte|add_class:"form-control"|attr:"type:date" }}
+                  </div>
+                  <div class="col-md-2">
+                      {% trans "по" %} <br>{{ filter.form.date__lte|add_class:"form-control"|attr:"type:date" }}
+                  </div>
+                  <div class="col-md-2 col-lg-2">
+                      <br>
+                    <input type="submit" value='{% trans "Поиск" %} ' class="form-control btn btn-success" />
+                  </div>
+
+          </div>
+      </form>
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table table-bordered" style="font-size:13px;">
+                      <thead class="thead-light" style="font-size:14px;">
+                        <tr>
+                          <th style="font-size: 13px; width: 125px;text-align: center;">{% trans "Провайдер/клиника" %}</th>
+                          <th style="font-size: 13px; width: 250px;">{% trans "ФИО пациента" %}</th>
+                          <th  style="font-size:13px;" class="text-center">{% trans "ИИН" %}</th>
+                          <th style="font-size:13px;" class="text-center">{% trans "Страховая карта" %}</th>
+                          <th style="font-size:13px;" >{% trans "Услуга" %}</th>
+                          <th style="font-size:13px;" >{% trans "Диагноз" %}</th>
+                          <th style="font-size:13px;" >{% trans "Дата услуги" %}</th>
+                          <th style="font-size:13px;" >{% trans "ФИО врача" %}</th>
+                          <th style="font-size:13px;" >{% trans "Счет реестр" %}</th>
+                          <th style="font-size:13px;" >{% trans "ИБ" %}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="contract-content">
+                        {% for invoice in filter.qs %}
+                          <tr>
+                            <td class="text-center">
+                              {{ invoice.hospital.title }}
+                            </td>
+                            <td>
+                              {{ invoice.contract_customer.customer.full_name }}
+                            </td>
+                            <td>
+                                {{ invoice.contract_customer.customer.iin }}
+                            </td>
+                            <td>
+                                {{ invoice.contract_customer.number }}
+                            </td>
+                            <td>
+                                {{ invoice.service.code }} -
+                                {{ invoice.service.title }}
+                            </td>
+                            <td>
+                                {{ invoice.icd.code }} -
+                                {{ invoice.icd.title }}
+                            </td>
+                            <td>
+                                {{ invoice.date }}
+                            </td>
+                            <td>
+                                {{ invoice.performing_doctor|default_if_none:"-" }}
+                            </td>
+                            <td>
+                              <a href="#" data-url="{% url 'report_management:invoice_report_detail' pk=invoice.id %}" class="invoice-show a-link">
+                                Посмотреть чек
+                              </a>
+                            </td>
+                            <td>
+                              {% if invoice.screen %}
+                                   <a href="{{ invoice.screen }}" download class="a-link">
+                                      загрузить
+                                    </a>
+                              {% endif %}
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="12">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                        {% if invoice_eps_dms %}
+                          <tr>
+                            <th colspan="12" style="text-align: center;">{% trans "Инвидуальный" %}</th>
+                          </tr>
+                          {% for value_invoice in invoice_eps_dms %}
+                            <tr>
+                              <td class="text-center">
+                                {{ value_invoice.hospital }}
+                              </td>
+                              <td>
+                                {{ value_invoice.full_name }}
+                              </td>
+                              <td>
+                                  {{ value_invoice.iin }}
+                              </td>
+                              <td>
+                                  {{ value_invoice.contract_customer }}
+                              </td>
+                              <td>
+                                  {{ value_invoice.service.code }} -
+                                  {{ value_invoice.service.title }}
+                              </td>
+                              <td>
+                                  {{ value_invoice.icd.code }} -
+                                  {{ value_invoice.icd.title }}
+                              </td>
+                              <td>
+                                  {{ value_invoice.date }}
+                              </td>
+                              <td>
+                                  {{ value_invoice.performing_doctor|default_if_none:"-" }}
+                              </td>
+                              <td>
+                                <a href="#" data-url="{% url 'report_management:invoice_eps_report_detail' pk=value_invoice.id %}" class="invoice-show a-link">
+                                  Посмотреть чек
+                                </a>
+                              </td>
+                              <td>
+                                {% if value_invoice.screen %}
+                                     <a href="{{ value_invoice.screen }}"
+                                     class="a-link" download>
+                                        загрузить
+                                      </a>
+                                {% endif %}
+                              </td>
+                            </tr>
+                          {% endfor %}
+                        {% endif %}
+                      </tbody>
+                  </table>
+
+              </div>
+          </div>
+      </div>         
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+  $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+  })
+
+  $("#contract-search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#contract-content tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        })
+  })
+
+  $(document).on("click",".invoice-show",function() {
+    var url = $(this).data('url')
+    $.ajax({
+      url: url,
+      success: function(data){
+        $('#universal-modal-content').html(data)
+        $('#universal-modal').modal('show')
+      }
+    })
+    
+  })
+
+  $(document).on("click","#report-to-print",function() {
+    var element = document.getElementById('report-to-print-content');
+    html2pdf(element);
+  })
+
+  
+  
+{% endblock %}

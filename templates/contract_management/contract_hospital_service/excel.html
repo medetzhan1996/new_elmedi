@@ -1,0 +1,190 @@
+{% load mptt_tags %}
+{% load contract_management_tags %}
+{% load hospital_package_service_management_tags %}
+{% load common_tags %}
+<tr>
+    <td colspan="10"></td>
+    <td colspan="7">
+        Спецификация цен на услуги программы {{ contract_hospital.program.title }}, <br>
+        Контракт № {{ contract_hospital.contract.number }} <br>
+        Страховая компания: , {{ contract_hospital.contract.insurance.title }}<br>
+        Провайдер/клиника: , {{ contract_hospital.hospital.title }}<br>
+        Программа: {{ contract_hospital.program.title }}, <br>
+        Срок действия программы  {{ contract_hospital.contract.start_date }} -  {{ contract_hospital.contract.end_date }}
+    </td>
+</tr>
+<tr>
+    <th rowspan="2" style="width: 170px;"class="text-center"><div style="margin-top: 95px;">Коды услуг</div></th>
+    <th rowspan="2" class="text-center" style="width: 250px;"><div style="margin-top: 95px;">Названия услуг</div></th>
+    <th colspan="5" class="text-center green">Общая цена страховой компании</th>
+    <th colspan="5" class="text-center yellow">Общая цена клиники</th>
+    <th colspan="5" class="text-center bg-red">Итоговая общая цена</th>
+</tr>
+<tr>
+    <th class="green"><div class="rotate" >Базовая цена</div></th>
+    <th class="green"><div class="rotate"style="margin-top: 32px;">На дому</div></th>
+    <th class="green"><div class="rotate"style="margin-top: 45px;">ПМСП</div></th>
+    <th class="green"><div class="rotate" >Амбулаторно</div></th>
+    <th class="green"><div class="rotate" >Стационарно</div></th>
+    <!-- <th rowspan="2" class="rotate green" rowspan="2">Лимит услуг</th> -->
+    <th class="yellow"><div class="rotate" >Базовая цена</div></th>
+    <!-- <th colspan="4" class="text-center green">Ценовой коэффициент</th> -->
+    <th class="yellow"><div class="rotate"style="margin-top: 32px;">На дому</div></th>
+    <th class="yellow"><div class="rotate"style="margin-top: 45px;">ПМСП</div></th>
+    <th class="yellow"><div class="rotate" >Амбулаторно</div></th>
+    <th class="yellow"><div class="rotate" >Стационарно</div></th>
+    <th class="bg-red"><div class="rotate">Базовая цена</div></th>
+     -->
+    <th class="bg-red"><div class="rotate"style="margin-top: 32px;">На дому</div></th>
+    <th class="bg-red"><div class="rotate"style="margin-top: 45px;">ПМСП</div></th>
+    <th class="bg-red"><div class="rotate" >Амбулаторно</div></th>
+    <th class="bg-red"><div class="rotate">Стационарно</div></th>
+</tr>
+{% for hospital_package in hospital_packages %}
+    {% get_contract_hospital_package_services hospital_package as services %}
+    {% for service in services %}
+        {% get_program_package_service contract_hospital.program service as program_package_service_blank  %}
+        {% get_hospital_package_service contract_hospital.hospital service as hospital_package_service_blank  %}
+        {% get_contract_hospital_package_service hospital_package.id service as contract_hospital_package_service %}
+        {% if service.is_leaf_node %}
+            <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                <td style="width:170px;height: 30px;">
+                    {{ service.code }}
+                </td>
+                <td style="width:250px;">{{ service.title }}</td>
+
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.insurance_base_price %}
+                            {{ contract_hospital_package_service.insurance_base_price }}
+                        {% else %}
+                            {{ program_package_service_blank.vhi_price|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.insurance_at_home_coefficient %}
+                            {{ contract_hospital_package_service.insurance_at_home_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_at_home_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.insurance_primary_health_care_coefficient %}
+                            {{ contract_hospital_package_service.insurance_primary_health_care_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_primary_health_care_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.insurance_clinical_diagnostic_coefficient %}
+                            {{ contract_hospital_package_service.insurance_clinical_diagnostic_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_clinical_diagnostic_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.insurance_hospital_coefficient %}
+                            {{ contract_hospital_package_service.insurance_hospital_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_hospital_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.hospital_price %}
+                            {{ contract_hospital_package_service.hospital_price }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_price|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.hospital_at_home_coefficient %}
+                            {{ contract_hospital_package_service.hospital_at_home_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_at_home_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.hospital_primary_health_care_coefficient %}
+                            {{ contract_hospital_package_service.hospital_primary_health_care_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_primary_health_care_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.hospital_clinical_diagnostic_coefficient %}
+                            {{ contract_hospital_package_service.hospital_clinical_diagnostic_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_clinical_diagnostic_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {% if contract_hospital_package_service.hospital_hospital_coefficient %}
+                            {{ contract_hospital_package_service.hospital_hospital_coefficient }}
+                        {% else %}
+                            {{ hospital_package_service_blank.vhi_hospital_coefficient|default_if_none:'' }}
+                            
+                        {% endif %}
+                    {% endif %}
+                </td>
+                
+
+
+                <td>
+                    {% if service.is_leaf_node %}
+                        {{ contract_hospital_package_service.vhi_price|default:'' }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {{ contract_hospital_package_service.vhi_at_home_coefficient|default:'' }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {{ contract_hospital_package_service.vhi_primary_health_care_coefficient|default:'' }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {{ contract_hospital_package_service.vhi_clinical_diagnostic_coefficient|default:'' }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if service.is_leaf_node %}
+                        {{ contract_hospital_package_service.vhi_hospital_coefficient|default:'' }}
+                    {% endif %}
+                </td>
+            </tr>
+        {% endif %}
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block breadcrumb %}
+{% load contract_management_tags %}
+<li class="breadcrumb-item">
+    <a href="{% url 'contract_management:pro_med_contract_customer_list' %}">Список карт клиентов</a>
+</li>
+<li class="breadcrumb-item">
+    <a href="">Данные карты</a>
+</li>
+{% endblock %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row mt-3">
+          <div class="col-md-6">
+              Клиент: {{ contract_customer.customer.full_name }}<br>
+              Номер карты: {{ contract_customer.number }} <br>
+              Номер контракта: {{ contract_customer.contract_program.contract.number }} <br>
+              Программа: {{ contract_customer.contract_program.contract.number }} <br>
+              Страховая компания: {{ contract_customer.contract_program.program.title }} <br>
+              Страховщик: {{ contract_customer.contract_program.contract.insurer.title }} <br>
+              Дата начало страховки: {{ contract_customer.contract_program.contract.start_date|date:"d.m.Y" }} <br>
+              Дата окончания страховки: {{ contract_customer.contract_program.contract.end_date|date:"d.m.Y" }} <br>
+              Лимит карты: {{ contract_customer.contract_program.program.insurance_limit }} <br>
+              Текущие расходы: {{ contract_customer.get_invoice_sum }} <br>
+          </div>
+          <div class="col-md-6">
+
+              Направления: <br>
+              <table class="table table-bordered">
+                  <tr>
+                      <th>Услуга</th>
+                      <th>МКБ-10</th>
+                      <th>Направляющая больница</th>
+                      <th>Направленная больница</th>
+                      <th>Дата направления</th>
+                      <th>Направляющий доктор</th>
+                  </tr>
+                  {% for referral in referrals %}
+                      <tr>
+                          <td>{{ referral.service.title }}</td>
+                          <td>{{ referral.icd.title }}</td>
+                          <td>{{ referral.sending_hospital.title }}</td>
+                          <td>{{ referral.directed_hospital.title }}</td>
+                          <td>{{ referral.date }}</td>
+                          <td>{{ referral.doctor_full_name|default_if_none:"-" }}</td>
+                      </tr>
+                  {% endfor %}
+              </table> <br>
+              Счет реестр: <br>
+              <table class="table table-bordered">
+                  <tr>
+                      <th>Услуга</th>
+                      <th>МКБ-10</th>
+                      <th>Выполняющая больница</th>
+                      <th>Дата выполнения</th>
+                      <th>Расход</th>
+                      <th>Выполняющий доктор</th>
+                  </tr>
+                  {% for invoice in invoices %}
+                      <tr>
+                          <td>{{ invoice.service.title }}</td>
+                          <td>{{ invoice.icd.title }}</td>
+                          <td>{{ invoice.hospital.is_performed }}</td>
+                          <td>{{ invoice.date }}</td>
+                          <td>{{ invoice.consumption }}</td>
+                          <td>{{ invoice.performing_doctor }}</td>
+                      </tr>
+                  {% endfor %}
+              </table>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+      $(document).on("click",".open-universal-modal",function() {
+          var url = $(this).data('url')
+          $.ajax({
+            url: url,
+            success: function(data){
+              $('#universal-modal-content').html(data)
+              $('#universal-modal').modal('show')
+            }
+          })
+      })
+
+    /*$(document).on("change","#id_contract",function() {
+      var url = ''
+      var contract = $(this).val()
+      $.ajax({
+        url: url,
+        data: {
+          contract: contract
+        },
+        success: function (data) {
+          $("#contract_program").html(data)
+        }
+      })
+    })*/
+{% endblock %}

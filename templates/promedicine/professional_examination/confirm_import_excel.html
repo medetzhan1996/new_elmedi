@@ -1,0 +1,20 @@
+<form action="{% url 'promedicine:professional_examination_import_excel_confirm_upload' %}" method="post">
+  {% csrf_token %}
+  <table>
+    <!-- Предпросмотр данных -->
+    {% for row in preview_data %}
+    <tr>
+      {% for cell in row %}
+      <td>{{ cell }}</td>
+      {% endfor %}
+      <td>
+        <select name="row_include_{{ forloop.counter }}">
+          <option value="include">Импортировать</option>
+          <option value="exclude">Исключить</option>
+        </select>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <input type="submit" value="Загрузить">
+</form>

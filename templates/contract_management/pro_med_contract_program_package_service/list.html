@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load contract_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'contract_management:pro_med_contract_list' %}">{% trans "Контракты" %}</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'contract_management:pro_med_contract_program_list' contract=contract.id %}">
+        {{ contract.insurer.title }}</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'contract_management:pro_med_contract_program_package_list' contract=contract.id program=program.id %}">{{ program.title }}</a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="">{{ package.title }}</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<style>
+    input{
+        width: 40px
+    }
+</style>
+<div class="contentbar" style="margin-top: 0;">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <!-- <div class="col-md-12">
+                <div class="">
+                    <input type="text" class="form-control" placeholder="Поиск услуг по коду и названию">
+                </div>
+            </div> -->
+            <div class="col-md-12">
+                <div class="scroll-table">
+                    <table class="table table-bordered treetable mb-0">
+                        <tr>
+                            <th colspan="1" style="width: 200px;"><div>{% trans "Коды услуг" %}</div></th>
+                            <th><div>{% trans "Названия услуг" %}</div></th>
+                            <th style="width:150px;">{% trans "Редактирование" %}</th>
+                        </tr>
+                    </table>
+                    <div class="scroll-table-body-none-header">
+                        <table class="table table-bordered treetable mt-0" id="service-table">
+                            <tbody>
+                                {% for service in services %}
+                                    {% is_leaf_node service.is_leaf_node as is_leaf_node %}
+                                    <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                        <td style="width: 200px;height: 30px;">
+                                            {% if not is_leaf_node %}
+                                                <span class='folder'>
+                                                    {{ service.code }}
+                                                </span>
+                                            {% else %}
+                                                <span class='file'>
+                                                    {{ service.code }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ service.title }}
+                                        </td>
+                                        <td class="text-center" style="width:150px;">
+
+                                            <input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+                                            <button data-service="{{ service.id }}"
+                                                    class="fa fa-trash btn delete-package_service"></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="table-responsive m-b-30">
+
+                    <table id="service-table" class="table table-bordered">
+                        <tr>
+                            <th colspan="1" style="width: 200px;"><div>Коды услуг</div></th>
+                            <th><div>Названия услуг</div></th>
+                            <th style="width:150px;">Редактирование</th>
+                        </tr>
+
+                        <tbody>
+                            {% for service in services %}
+                                {% is_leaf_node service.is_leaf_node as is_leaf_node %}
+                                <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                    <td style="display: flex;align-items: center;height: 30px;">
+                                        {% if not is_leaf_node %}
+                                            <span class='folder'>
+                                                {{ service.code }}
+                                            </span>
+                                        {% else %}
+                                            <span class='file'>
+                                                {{ service.code }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ service.title }}
+                                    </td>
+                                    <td class="text-center">
+
+                                        <input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+                                        <button data-service="{{ service.id }}"
+                                                class="fa fa-trash btn delete-package_service"></button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+$("#service-table").treetable({
+expandable: true,
+clickableNodeNames: true
+})
+
+$(document).on("click", ".delete-package_service", function() {
+    var id = $(this).closest('tr').data('tt-id')
+    var service = $(this).data('service')
+    var url = "{% url 'contract_management:package_service_delete' package=package.id service=0 %}".replace('0', service)
+    $.ajax({
+        url: url,
+        type: "POST",
+        success: function(data){
+            console.log(data)
+            $("#service-table").treetable("removeNode", id)
+        }
+    })
+})
+
+{% endblock %}
+
+

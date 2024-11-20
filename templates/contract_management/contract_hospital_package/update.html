@@ -1,0 +1,14 @@
+<form action="{% url 'contract_management:contract_hospital_package_update' contract_hospital=contract_hospital.id hospital=hospital.id pk=form.instance.id %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">Изменить </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    {% include "contract_management/contract_hospital_package/form.html" %}
+    <div class="modal-footer">
+	    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Отмена</button>
+	    <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
+	</div>
+</form>

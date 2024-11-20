@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load program_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'program_management:program_list' %}">{% trans "Шаблоны программ" %}</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'program_management:program_package_list' program=program.id %}">{{ program.title }}</a>
+    </li>
+    <li class="breadcrumb-item">
+         <a href="{% url 'program_management:package_service_list' program=program.id package=package.id %}">{{ package.title }}</a>
+
+    </li>
+    <li class="breadcrumb-item active">
+         <a href="">{% trans "Добавить/создать услугу" %}</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<style>
+	input{
+		width: 50px
+	}
+</style>
+<div class="contentbar" style="margin-top: 0;">
+	<div class="card" style="padding: 10px;">
+		<div>
+			<a href="{% url 'program_management:package_service_list' program=program.id package=package.id %}" class="btn btn-success d-block btn-sm btn-right-ab">{% trans "Завершить выбор услуг" %}</a>
+		</div>
+		<div class="row align-items-center mt-3">
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="scroll-table">
+					<table class="table table-bordered" style="margin-bottom: 0;padding-bottom: 0;">
+			
+							<tr>
+								<th colspan="1" style="width: 200px;"><div>{% trans "Коды услуг" %}</div></th>
+								<th><div>{% trans "Названия услуг" %}</div></th>
+								<th style="width:156px;">{% trans "Редактирование" %}</th>
+							</tr>
+					</table>
+					<div class="scroll-table-body">
+						<table class="table table-bordered treetable mt-0" id="service-table">
+							{% for service in services %}
+								{% is_service_in_package package service as service_in_package  %}
+								{% is_leaf_node service.is_leaf_node as is_leaf_node %}
+								{% if package.service.id != service.id %}
+									<tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+										<td style="width: 200px;height: 30px;">
+											{% if not is_leaf_node %}
+											<span class='folder'>
+												{{ service.code }}
+											</span>
+											{% else %}
+											<span class='file'>
+												{{ service.code }}
+											</span>
+											{% endif %}
+										</td>
+										<td>{{ service.title }}</td>
+										<td class="text-center" style="width:150px">
+											<input type="checkbox" class="program-package-service-check" name="is_checked"
+		                                        {% is_checked service_in_package %}>
+										</td>
+									</tr>
+								{% endif %}	
+							{% empty %}
+								<tr>
+									<td colspan="3" align="center">
+										<h6>Выберите услугу</h6>
+									</td>
+								</tr>
+
+							{% endfor %}
+						</table>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block domready %}
+$("#service-table").treetable({
+	expandable: true,
+	clickableNodeNames: true
+})
+
+function get_form_data(_this, closest_element, element){
+	data = {}
+	_this.closest(closest_element).find(element).each(function(){
+		var name = $(this).attr('name')
+		data[name] = $(this).val()
+	})
+	return data
+}
+
+$(document).on("blur", ".package-service-customize", function() {
+	data = {}
+	var service = $(this).closest('tr').data('tt-id')
+	var data = get_form_data($(this), 'tr', '.package-service-customize')
+	data['service'] = service
+	data['package'] = "{{ package.id }}"
+	var url = "{% url 'package_service_management:package_service_form' package=package.id %}"
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: data,
+		success: function(data){
+			console.log(data)
+		}
+	})
+})
+
+$(document).on("change", ".program-package-service-check", function() {
+	var service = $(this).closest('tr').data('tt-id')
+	var element = "[name='" + $(this).attr('name') + "']"
+	var is_checked = $(this).is(':checked')
+	var data = get_form_data($(this), 'tr', '.package-service-customize')
+	data['service'] = service
+	data['program'] = "{{ program.id }}"
+	data['package'] = "{{ package.id }}"
+	data['is_checked'] = is_checked
+	var url = "{% url 'program_management:program_package_service_setting_form' program=program.id package=package.id %}"
+	$.ajax({
+		url: url,
+		type: "POST",
+		data: data,
+		success: function(data){
+			if(is_checked){
+				$("#service-table").treetable("checkNode", service, element)
+			}
+			else{
+				$("#service-table").treetable("uncheckNode", service, element)
+			}
+		}
+	})
+})
+
+
+
+$(document).on("change", "#id_base_service", function() {
+	var base_service = $('#id_base_service').val()
+	var searchParams = new URLSearchParams(window.location.search)
+	if(base_service){
+		searchParams.set("base_service", base_service)
+	}
+	window.location.search = searchParams.toString()
+})
+
+{% endblock %}
+

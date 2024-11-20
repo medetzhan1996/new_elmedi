@@ -1,0 +1,9 @@
+{% load widget_tweaks %}
+<div class="modal-body">
+	<div class="form-group">
+		<b>Название групп услуг</b>	
+		{{ form.title|add_class:"form-control" }}
+		{{ form.contract_hospital|add_class:"form-control" }}
+		<input type="hidden" name="hospital" value="{{ hospital.id }}">
+	</div>
+</div>

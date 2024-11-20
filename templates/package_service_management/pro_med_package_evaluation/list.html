@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"><a href="">{% trans "Оценка  и актуарий вредностей/услуг" %}</a></li>
+{% endblock %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+        <div class="col-md-4">
+          <select name="insurer" id="insurer-select" class="form-control">
+              <option value="">Все фабрики</option>
+              {% for insurer in insurers %}
+                <option value="{{ insurer.id }}" {% if request.GET.insurer == insurer.id|stringformat:'s' %}selected{% endif %}>
+                    {{ insurer.title }}
+                </option>
+              {% endfor %}
+          </select>
+        </div>
+          <div class="col-md-8">
+              <input type="text" id="package-search" class="form-control" placeholder='{% trans "Поиск  вредности" %}'>
+          </div>
+      </div> 
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table ">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">{% trans "Названия вредности" %}</th>
+                              <th style="width: 150px;"></th>
+                          </tr>
+                      </thead>
+
+                      <tbody id="package-content">
+                        {% for package in packages %}
+                          <tr>
+                            <td style="display: flex;align-items: center;height: 30px;">
+                              <a href="{% url 'package_service_management:pro_med_package_service_evaluation_list' package=package.id %}" class="a-link">
+                                <span class='folder'>
+                                  {{ package.title }}
+                                </span>
+                                <!-- <i class="fa fa-folder" aria-hidden="true"></i> -->
+                                
+                              </a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="4">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block domready %}
+
+  $("#package-search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#package-content tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    })
+  });
+  const insurerSelect = document.getElementById('insurer-select');
+
+ insurerSelect.addEventListener('change', function() {
+      const selectedValue = this.value;
+      const searchParams = new URLSearchParams(window.location.search);
+      alert(selectedValue);
+      if (selectedValue) {
+          searchParams.set('insurer', selectedValue);
+      } else {
+          searchParams.delete('insurer');
+      }
+
+      const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+      window.location.href = newUrl;
+  });
+{% endblock %}

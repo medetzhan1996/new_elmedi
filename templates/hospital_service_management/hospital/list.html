@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% load package_service_management_tags %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_list' %}">Клиники/Провайдеры</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0px;">
+  <div class="card" style="padding: 10px;">
+    <div class="row align-items-center">
+        <div class="col-md-9">
+            <input type="text" id="table-search" class="form-control" placeholder="Поиск провайдеров">
+        </div>
+        <div class="col-md-3 col-lg-3">              
+            <button class="btn btn-primary w-100 open-universal-modal"
+            data-url="{% url 'hospital_service_management:hospital_create' %}">+ Добавить провайдеров</button>
+        </div>
+    </div> 
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="table-responsive m-b-30">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Названия клиники/провайдеров</th>
+                            <th style="width:150px;">Редактировать</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-content">
+                      {% for hospital in hospitals %}
+                        {% if request.user.user_type == 10 %}
+                            {% url 'hospital_service_management:hospital_package_evaluation_list' hospital=hospital.id as url %}
+                        {% else %}
+                            {% url 'hospital_service_management:hospital_package_list' hospital=hospital.id as url %}
+                        {% endif %}
+                        <tr>
+                          <td>
+                            <a href="{{ url }}">
+                              {{ hospital.title }}
+                            </a>
+                          </td>
+                          <td class="text-center">
+                              <a href="#" class="open-universal-modal"
+                                 data-url="{% url 'hospital_service_management:hospital_update' pk=hospital.id %}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                              </a>
+                             &nbsp&nbsp&nbsp
+                             <a href="#" class="open-universal-modal"
+                                 data-url="{% url 'hospital_service_management:hospital_delete'         pk=hospital.id %}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                              </a>
+
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>         
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+    $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+    })
+$("#table-search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#table-content tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    })
+})
+{% endblock %}

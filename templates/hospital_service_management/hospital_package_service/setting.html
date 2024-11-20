@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load hospital_package_service_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+{% if request.user.user_type != 7 %}
+        <!-- <li class="breadcrumb-item">
+            <a href="{% url 'hospital_service_management:hospital_list' %}">Клиники/Провайдеры</a>
+        </li> -->
+    {% endif %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_package_list' hospital=hospital.id %}">
+            {% trans "Список групп услуг" %}
+        </a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_package_service_list' hospital=hospital.id hospital_package=hospital_package.id %}">
+            {{ hospital_package.title }}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="" class="">
+            {% trans "Добавить/создать услуги" %}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    <style>
+        input{
+            width: 50px
+        }
+    </style>
+    <style>
+        .mymove {;
+          animation: mymove 1s infinite;
+        }
+
+        @keyframes mymove {
+          50% {color: red;font-weight: bold;}
+          100% {color: black;}
+        }
+    </style>
+<div class="contentbar" style="margin-top: 0px;">
+    <div class="card" style="padding: 10px;">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+              <div class="form-group">
+                <b class="mymove m-l-15">{% trans "Выберите  услугу" %}</b>
+                <select name="base_service" id="id_base_service" class="form-control">
+                    <option value="" hidden>{% trans "Выберите услугу" %}</option>
+                    {% for value in base_services %}
+                        <optgroup label="{{ value.title }}">
+                            <!-- <option value="{{ value.id }}"
+                                {% is_selected value.id base_service %}>
+                                {{ value.title }}
+                            </option> -->
+                            {% for value_children in value.get_children %}
+                                <option value="{{ value_children.id }}"
+                                    {% is_selected value_children.id base_service %}>
+                                    {{ value_children.title }}
+                                </option>
+                            {% endfor %}
+                        </optgroup>
+
+                    {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <b class="white">.</b>
+                    <a href="{% url 'hospital_service_management:hospital_package_service_list' hospital=hospital.id hospital_package=hospital_package.id %}" class="d-block btn btn-success">{% trans "Завершить выбор услуг" %}</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="scroll-table">
+                    <table class="table table-bordered" style="margin-bottom: 0;padding-bottom: 0;">
+            
+                            <tr>
+                                <th colspan="1" style="width: 240px;"><div>{% trans "Коды услуг" %}</div></th>
+                                <th><div>{% trans "Названия услуг" %}</div></th>
+                                <th style="width:156px;">{% trans "Редактирование" %}</th>
+                            </tr>
+                    </table>
+                    <div class="scroll-table-body">
+                        <table class="table table-bordered treetable mt-0" id="service-table">
+                            <tbody  >
+                            {% for service in services %}
+                                {% get_hospital_package_service hospital_package.hospital service hospital_package as hospital_package_service %}
+                                <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                    <td style="width: 240px;height: 30px;">
+                                        {% if not service.is_leaf_node %}
+                                            <span class='folder'>
+                                                {{ service.code }}
+                                            </span>
+                                        {% else %}
+                                            <span class='file'>
+                                                {{ service.code }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ service.title }}</td>
+                                    <td style="width:150px;" class="text-center">
+                                        <input type="checkbox" class="package-service-check" name="is_checked"
+                                            {% is_checked hospital_package_service %}>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" align="center">
+                                        <h6>{% trans "Выберите услугу" %}</h6>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="table-responsive m-b-30">
+                    <table id="service-table" class="table table-hover table-bordered">
+                        <tr>
+                          <th style="width: 50px;">Код</th>
+                          <th >Наименование услуги</th>
+                          <th class="text-center" style="width:150px;">Редактирование</th>
+                        </tr>
+                        <tbody  >
+                            {% for service in services %}
+                                {% get_hospital_package_service hospital_package.hospital service hospital_package as hospital_package_service %}
+                                <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                    <td style="display: flex;align-items: center;height: 30px;">
+                                        {% if not service.is_leaf_node %}
+                                            <span class='folder'>
+                                                {{ service.code }}
+                                            </span>
+                                        {% else %}
+                                            <span class='file'>
+                                                {{ service.code }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ service.title }}</td>
+                                    <td style="width:100px;" class="text-center">
+                                        <input type="checkbox" class="package-service-check" name="is_checked"
+                                            {% is_checked hospital_package_service %}>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" align="center">
+                                        <h6>Выберите услугу</h6>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+    $("#service-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    function get_form_data(_this, closest_element, element){
+        data = {}
+        _this.closest(closest_element).find(element).each(function(){
+            var name = $(this).attr('name')
+            data[name] = $(this).val()
+        })
+        return data
+    }
+
+
+    $(document).on("change", ".package-service-check", function() {
+        data = {}
+        var service = $(this).closest('tr').data('tt-id')
+        var element = "[name='" + $(this).attr('name') + "']"
+	    var is_checked = $(this).is(':checked')
+        var data = get_form_data($(this), 'tr', '.package-service-customize')
+        data['service'] = service
+        data['hospital_package'] = "{{ hospital_package.id }}"
+        data['is_checked'] = is_checked
+        var url = "{% url 'hospital_service_management:hospital_package_service_form' hospital=hospital.id hospital_package=hospital_package.id %}"
+        if(is_checked){
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: data,
+                success: function(data){
+                    if(is_checked){
+                        $("#service-table").treetable("checkNode", service, element)
+                    }
+                    else{
+                        $("#service-table").treetable("uncheckNode", service, element)
+                    }
+                }
+            })
+        }
+        else{
+            var url = "{% url 'hospital_service_management:hospital_package_service_delete' hospital=hospital.id hospital_package=hospital_package.id service=0 %}".replace('0', service)
+            $.ajax({
+                url: url,
+                type: "POST",
+                success: function(data){
+                }
+            })
+        }
+
+    })
+
+    $(document).on("change", "#id_base_service", function() {
+        var base_service = $('#id_base_service').val()
+        var searchParams = new URLSearchParams(window.location.search)
+        if(base_service){
+            searchParams.set("base_service", base_service)
+        }
+        window.location.search = searchParams.toString()
+    })
+{% endblock %}
+

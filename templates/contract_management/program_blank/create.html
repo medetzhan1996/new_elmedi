@@ -1,0 +1,9 @@
+{% load i18n %}
+
+<form action="{% url 'contract_management:program_blank_create' contract=contract.id %}" method="POST">
+    {% csrf_token %}
+    {% include "contract_management/program_blank/form.html" %}
+    <div class="modal-footer">
+        <input type="submit" class="btn btn-primary btn-sm" value='{% trans "Сохранить" %}'>
+    </div>
+</form>

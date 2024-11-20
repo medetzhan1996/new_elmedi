@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+    <div class="card" style="padding: 10px;">
+        <div class="row align-items-center">
+              
+            <div class="col-md-6">
+              <input type="text" id="promedicine-search" class="form-control" placeholder="Справочник клинических услуг"> 
+            </div>
+            <div class="col-md-3 col-lg-3"> 
+                <a class="btn btn-primary open-universal-modal w-100"
+                   data-url="{% url 'promedicine:professional_examination_create' %}">Добавить
+                </a>
+            </div>
+            <div class="col-md-3 col-lg-3">
+                <a class="btn btn-primary open-universal-modal w-100"
+                   data-url="{% url 'promedicine:professional_examination_import_excel' %}" >Импорт из Excel</a>
+            </div>
+        </div>
+        <div class="row mt-1">
+            <div class="col-md-12">
+                <div class="table-responsive m-b-30">
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <tr>
+                              <th scope="col">Фабрика</th>
+                              <th scope="col">Клиент</th>
+                              <th scope="col">Професия</th>
+                              <th scope="col">Дата</th>
+                              <th scope="col">Cтатус</th>
+                              <th style="width: 150px;">{% trans "Редактирование" %}</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promedicine-content">
+                            {% for result in results %}
+                            <tr>
+                                <td>{{result.factory}}</td>
+                                <td>{{result.customer}}</td>
+                                <td>{{result.profession}}</td>
+                                <td>{{result.examination_date}}</td>
+                                <td>{{result.get_status_display }}</td>
+                                <td>
+                                    <a href="#" class="open-universal-modal" data-url="{% url 'promedicine:professional_examination_update' pk=result.id %}">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                      &nbsp&nbsp
+                                    <a class="open-universal-modal"
+                                        data-url="{% url 'promedicine:professional_examination_delete' pk=result.id %}">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block domready %}
+    $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+    })
+
+    $("#promedicine-search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#promedicine-content tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        })
+   })
+{% endblock %}

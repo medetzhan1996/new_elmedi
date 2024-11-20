@@ -1,0 +1,1526 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-05-14 07:00+0000\n"
+"PO-Revision-Date: 2023-05-11 07:51+0000\n"
+"Last-Translator:   <admin@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
+"%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
+
+#: account/models.py:27
+msgid "КЛИНИЦИСТ"
+msgstr ""
+
+#: account/models.py:28
+msgid "Админ программ"
+msgstr ""
+
+#: account/models.py:29
+msgid "НАСТРОЙКА ПАКЕТОВ"
+msgstr ""
+
+#: account/models.py:30
+#: templates/package_service_management/package/list.html:5
+#: templates/package_service_management/package_service/list.html:8
+#: templates/package_service_management/package_service/setting.html:8
+#: templates/package_service_management/service/setting.html:8
+msgid "Настройка услуг"
+msgstr ""
+
+#: account/models.py:31
+msgid "АССИСТАНС"
+msgstr ""
+
+#: account/models.py:32
+#: templates/contract_management/contract_hospital/list.html:29
+msgid "Страховой контракт"
+msgstr ""
+
+#: account/models.py:33
+msgid "Справочник"
+msgstr ""
+
+#: account/models.py:34
+msgid "Админ контрактов"
+msgstr ""
+
+#: account/models.py:35
+msgid "Medassitance"
+msgstr ""
+
+#: account/models.py:36
+msgid "Прайскурация/расчеты"
+msgstr ""
+
+#: account/models.py:37
+msgid "КЛИНИЦИСТ ОЦЕНКА"
+msgstr ""
+
+#: account/models.py:38
+msgid "Настройка мкб-10"
+msgstr ""
+
+#: account/models.py:39
+msgid "Настройка мкб-10 ЛПУ"
+msgstr ""
+
+#: account/models.py:40
+msgid "Отчет"
+msgstr ""
+
+#: account/models.py:41
+msgid "Админ страховой компании"
+msgstr ""
+
+#: account/models.py:42
+msgid "Админ больницы"
+msgstr ""
+
+#: contract_management/models.py:60 program_management/models.py:19
+msgid "Полное покрытие"
+msgstr ""
+
+#: contract_management/models.py:61 program_management/models.py:20
+msgid "Лимит на стоимость услуг"
+msgstr ""
+
+#: contract_management/models.py:62 program_management/models.py:21
+msgid "Лимит на количество услуг"
+msgstr ""
+
+#: contract_management/models.py:86
+#: templates/contract_management/contract_customer/form.html:45
+#: templates/contract_management/contract_customer/list.html:83
+msgid "Основной держатель"
+msgstr ""
+
+#: contract_management/models.py:87
+msgid "Родитель"
+msgstr ""
+
+#: contract_management/models.py:88
+msgid "Супруга"
+msgstr ""
+
+#: contract_management/models.py:89
+msgid "Дети"
+msgstr ""
+
+#: templates/base.html:160
+msgid "Создать заявку"
+msgstr ""
+
+#: templates/base.html:163
+msgid "Завершить работу"
+msgstr ""
+
+#: templates/base.html:189
+#: templates/package_icd_management/package_icd/list.html:8
+#: templates/package_icd_management/package_icd/setting.html:8
+msgid "Клиническое покрытие"
+msgstr ""
+
+#: templates/base.html:194
+msgid "Настройка исключений по типам услуг"
+msgstr ""
+
+#: templates/base.html:199
+msgid "Настройка исключений по МКБ 9"
+msgstr ""
+
+#: templates/base.html:206
+msgid "Настройка МКБ 10"
+msgstr ""
+
+#: templates/base.html:211
+msgid "Настройка исключения МКБ 10"
+msgstr ""
+
+#: templates/base.html:216
+msgid "Настройка МКБ 9"
+msgstr ""
+
+#: templates/base.html:221
+msgid "Настройка исключения МКБ 9"
+msgstr ""
+
+#: templates/base.html:230 templates/contract_management/insurance/list.html:7
+msgid "Назначение цен"
+msgstr ""
+
+#: templates/base.html:235
+msgid "Страховые контракты/Заявки страховщика"
+msgstr ""
+
+#: templates/base.html:240 templates/base.html:265
+msgid "Отчеты о выполненных услугах"
+msgstr ""
+
+#: templates/base.html:248
+msgid "База контрактов"
+msgstr ""
+
+#: templates/base.html:253
+msgid "База пациентов"
+msgstr ""
+
+#: templates/base.html:260
+msgid "Размещение страховых контрактов"
+msgstr ""
+
+#: templates/base.html:272
+msgid "Справочник услуг"
+msgstr ""
+
+#: templates/base.html:277
+msgid "Справочник форм"
+msgstr ""
+
+#: templates/base.html:282
+msgid "Другие справочники"
+msgstr ""
+
+#: templates/contract_management/contract/create.html:6
+msgid "Добавить контракт"
+msgstr ""
+
+#: templates/contract_management/contract/create.html:13
+#: templates/contract_management/contract/delete.html:22
+#: templates/contract_management/contract/update.html:13
+#: templates/contract_management/contract_customer/create.html:7
+#: templates/contract_management/contract_customer/delete.html:22
+#: templates/contract_management/contract_hospital/create.html:7
+#: templates/contract_management/contract_hospital/delete.html:22
+#: templates/contract_management/contract_hospital/update.html:7
+#: templates/contract_management/contract_program/delete.html:23
+#: templates/contract_management/contract_program/update.html:13
+#: templates/contract_management/contract_program_package/delete.html:23
+#: templates/directory/form/create.html:35
+#: templates/directory/form/delete.html:26
+#: templates/directory/form/update.html:35
+#: templates/directory/icd/create.html:31
+#: templates/directory/icd/delete.html:27
+#: templates/directory/icd/update.html:30
+#: templates/directory/service/create.html:31
+#: templates/directory/service/delete.html:27
+#: templates/directory/service/update.html:28
+#: templates/hospital_icd_management/hospital_package/create.html:13
+#: templates/hospital_icd_management/hospital_package/delete.html:23
+#: templates/hospital_icd_management/hospital_package/update.html:13
+#: templates/hospital_service_management/hospital_package/create.html:13
+#: templates/hospital_service_management/hospital_package/delete.html:23
+#: templates/hospital_service_management/hospital_package/update.html:13
+#: templates/package_icd_management/package/create.html:13
+#: templates/package_icd_management/package/delete.html:23
+#: templates/package_service_management/package/delete.html:23
+#: templates/program_management/package_blank/create.html:28
+#: templates/program_management/program/create.html:13
+#: templates/program_management/program/delete.html:27
+#: templates/program_management/program/update.html:13
+#: templates/program_management/program_package/delete.html:23
+msgid "Отмена"
+msgstr ""
+
+#: templates/contract_management/contract/create.html:14
+#: templates/contract_management/contract_customer/create.html:8
+#: templates/contract_management/contract_hospital/create.html:8
+#: templates/contract_management/contract_hospital/update.html:8
+#: templates/contract_management/contract_program/update.html:14
+#: templates/contract_management/contract_program_package/create.html:15
+#: templates/contract_management/contract_program_package/update.html:15
+#: templates/contract_management/insurance/list.html:108
+#: templates/contract_management/program_blank/create.html:7
+#: templates/directory/customer/form.html:38
+#: templates/hospital_icd_management/hospital_package/create.html:14
+#: templates/hospital_icd_management/hospital_package/update.html:14
+#: templates/hospital_service_management/hospital_package/create.html:14
+#: templates/hospital_service_management/hospital_package/update.html:14
+#: templates/package_icd_management/package/create.html:14
+#: templates/package_icd_management/package/update.html:15
+#: templates/program_management/package_blank/create.html:29
+#: templates/program_management/program/create.html:14
+#: templates/program_management/program/update.html:14
+#: templates/program_management/program_package/create.html:15
+#: templates/program_management/program_package/update.html:15
+msgid "Сохранить"
+msgstr ""
+
+#: templates/contract_management/contract/delete.html:6
+#: templates/contract_management/contract_hospital/delete.html:6
+msgid "Удалить контракт"
+msgstr ""
+
+#: templates/contract_management/contract/delete.html:14
+#: templates/contract_management/contract_program/delete.html:14
+msgid "Название карты:"
+msgstr ""
+
+#: templates/contract_management/contract/delete.html:16
+msgid " Вы уверены, что хотите удалить контракт с номером "
+msgstr ""
+
+#: templates/contract_management/contract/delete.html:21
+#: templates/contract_management/contract_customer/delete.html:21
+#: templates/contract_management/contract_hospital/delete.html:21
+#: templates/contract_management/contract_program/delete.html:22
+#: templates/contract_management/contract_program_package/delete.html:22
+#: templates/contract_management/insurance/list.html:65
+#: templates/directory/customer/delete.html:24
+#: templates/directory/customer/list.html:51
+#: templates/directory/form/delete.html:25
+#: templates/directory/icd/delete.html:26
+#: templates/directory/service/delete.html:26
+#: templates/hospital_icd_management/hospital_package/delete.html:22
+#: templates/hospital_service_management/hospital_package/delete.html:22
+#: templates/package_icd_management/package/delete.html:22
+#: templates/package_service_management/package/delete.html:22
+#: templates/program_management/program/delete.html:28
+#: templates/program_management/program_package/delete.html:22
+msgid "Удалить"
+msgstr ""
+
+#: templates/contract_management/contract/form.html:6
+msgid "Номер контракта "
+msgstr ""
+
+#: templates/contract_management/contract/form.html:10
+#: templates/contract_management/contract/list.html:29
+msgid "Филиалы страховой компании"
+msgstr ""
+
+#: templates/contract_management/contract/form.html:14
+#: templates/contract_management/contract/list.html:28
+msgid "Страхователь"
+msgstr ""
+
+#: templates/contract_management/contract/form.html:19
+msgid "Дата начала контракта"
+msgstr ""
+
+#: templates/contract_management/contract/form.html:24
+msgid "Дата окончания контракта "
+msgstr ""
+
+#: templates/contract_management/contract/list.html:5
+#: templates/contract_management/contract_program/list.html:8
+#: templates/contract_management/contract_program_package/list.html:6
+#: templates/contract_management/contract_program_package_service/list.html:9
+msgid "Контракты"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:13
+#: templates/directory/form/list.html:9 templates/directory/icd/list.html:8
+#: templates/directory/service/list.html:8
+msgid "Введите текст для поиска"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:17
+msgid "\t+ Создать/Добавить контракт"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:27
+#: templates/contract_management/contract_customer/form.html:20
+#: templates/contract_management/contract_hospital/form.html:12
+msgid "Контракт"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:30
+#: templates/contract_management/contract_customer/list.html:81
+#: templates/contract_management/contract_hospital/list.html:31
+#: templates/contract_management/contract_hospital_confirm/list.html:27
+msgid "Дата начала"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:31
+#: templates/contract_management/contract_customer/list.html:82
+#: templates/contract_management/contract_hospital/list.html:32
+#: templates/contract_management/contract_hospital_confirm/list.html:28
+msgid "Дата окончания"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:33
+#: templates/contract_management/contract_customer/list.html:84
+#: templates/contract_management/contract_program/list.html:38
+#: templates/contract_management/contract_program_package/list.html:38
+#: templates/contract_management/contract_program_package_service/list.html:43
+#: templates/directory/form/list.html:33 templates/directory/icd/list.html:32
+#: templates/directory/service/list.html:32
+#: templates/hospital_icd_management/hospital_package/list.html:42
+#: templates/hospital_icd_management/hospital_package_icd/list.html:38
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:74
+#: templates/hospital_service_management/hospital_package/list.html:42
+#: templates/hospital_service_management/hospital_package_service/list.html:43
+#: templates/hospital_service_management/hospital_package_service/setting.html:88
+#: templates/package_icd_management/package/list.html:32
+#: templates/package_icd_management/package_icd/list.html:30
+#: templates/package_icd_management/package_icd/setting.html:42
+#: templates/package_service_management/package/list.html:34
+#: templates/package_service_management/package_service/list.html:42
+#: templates/package_service_management/package_service/setting.html:64
+#: templates/package_service_management/service/setting.html:58
+#: templates/program_management/program/list.html:33
+#: templates/program_management/program_package/list.html:30
+#: templates/program_management/program_package_service/list.html:46
+#: templates/program_management/program_package_service/setting.html:44
+msgid "Редактирование"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:51
+msgid "Посмотреть текст контракта"
+msgstr ""
+
+#: templates/contract_management/contract/list.html:69
+#: templates/contract_management/contract_customer/list.html:119
+#: templates/contract_management/contract_hospital/list.html:76
+#: templates/contract_management/contract_hospital_confirm/list.html:70
+#: templates/contract_management/insurance/list.html:71
+#: templates/directory/customer/list.html:56
+#: templates/directory/form/list.html:109
+#: templates/directory/hospital/list.html:26
+#: templates/directory/icd/list.html:98
+#: templates/directory/insurance/list.html:26
+#: templates/directory/service/list.html:98
+#: templates/package_icd_management/icd_limit/list.html:75
+#: templates/package_icd_management/package/list.html:59
+#: templates/package_service_management/package/list.html:64
+#: templates/package_service_management/package_evaluation/list.html:40
+#: templates/program_management/program/list.html:76
+#: templates/report_management/invoice/list.html:96
+msgid "Данные не найдены!"
+msgstr ""
+
+#: templates/contract_management/contract/update.html:6
+msgid "Редактировать контракт"
+msgstr ""
+
+#: templates/contract_management/contract/update.html:14
+#: templates/directory/customer/list.html:48
+#: templates/directory/form/update.html:36
+#: templates/directory/icd/update.html:31
+#: templates/directory/service/update.html:29
+msgid "Обновить"
+msgstr ""
+
+#: templates/contract_management/contract_customer/delete.html:6
+msgid "Удалить контракт с клиентом"
+msgstr ""
+
+#: templates/contract_management/contract_customer/delete.html:14
+msgid "Клиент"
+msgstr ""
+
+#: templates/contract_management/contract_customer/delete.html:16
+msgid "Вы уверены, что хотите удалить контракт с клиентом"
+msgstr ""
+
+#: templates/contract_management/contract_customer/form.html:5
+#: templates/contract_management/contract_hospital/form.html:5
+#: templates/directory/form/create.html:36
+#: templates/directory/icd/create.html:32
+#: templates/directory/service/create.html:32
+msgid "Добавить"
+msgstr ""
+
+#: templates/contract_management/contract_customer/form.html:12
+msgid "Номер карточки"
+msgstr ""
+
+#: templates/contract_management/contract_customer/form.html:16
+#: templates/contract_management/contract_customer/list.html:77
+msgid "Пациент"
+msgstr ""
+
+#: templates/contract_management/contract_customer/form.html:29
+#: templates/contract_management/contract_customer/list.html:79
+#: templates/contract_management/contract_hospital/list.html:30
+msgid "Программа"
+msgstr ""
+
+#: templates/contract_management/contract_customer/form.html:33
+msgid " Дата начала"
+msgstr ""
+
+#: templates/contract_management/contract_customer/form.html:37
+msgid " Дата окончания"
+msgstr ""
+
+#: templates/contract_management/contract_customer/form.html:41
+#: templates/contract_management/contract_customer/list.html:80
+msgid "Тип держателя"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:11
+msgid "База застрахованных пациентов клиентa / страхователя"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:27
+msgid "Выберите клиента / страхователя"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:37
+msgid "Выберите контракт"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:46
+msgid "Выберите программу"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:59
+msgid "Введите иин, фио пациента"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:63
+#: templates/contract_management/contract_hospital/list.html:15
+#: templates/contract_management/contract_hospital_confirm/list.html:15
+#: templates/contract_management/contract_hospital_package/list.html:26
+#: templates/contract_management/insurance/list.html:27
+#: templates/report_management/invoice/list.html:29
+msgid "Поиск"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:68
+msgid "Добавить пациента"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:76
+msgid "Номер карты"
+msgstr ""
+
+#: templates/contract_management/contract_customer/list.html:78
+#: templates/contract_management/contract_hospital_confirm/list.html:25
+msgid "Номер контракта"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/delete.html:14
+msgid "Номер контракта: "
+msgstr ""
+
+#: templates/contract_management/contract_hospital/delete.html:16
+msgid "Вы уверены, что хотите удалить контракт с номером"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/form.html:16
+#: templates/contract_management/contract_hospital/list.html:28
+msgid "Клиника"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/list.html:7
+msgid "Статус размещения"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/list.html:19
+msgid "Добавить клиник / провайдеров"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/list.html:51
+msgid "Посмотреть спецификацию в договоре"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/list.html:64
+#: templates/contract_management/contract_hospital_confirm/list.html:61
+msgid "Отправить"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/list.html:66
+msgid "Отправлен"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/list.html:68
+#: templates/contract_management/contract_hospital_confirm/list.html:60
+msgid "Заявка принята"
+msgstr ""
+
+#: templates/contract_management/contract_hospital/list.html:70
+msgid "Акцептовано, принять"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_confirm/list.html:7
+#: templates/contract_management/contract_hospital_package_service/list.html:12
+#: templates/contract_management/contract_hospital_service/list.html:12
+msgid "Все страховые контракты"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_confirm/list.html:24
+msgid "Страховая компания"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_confirm/list.html:26
+msgid "Программы"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_confirm/list.html:56
+msgid "Ожидание"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_confirm/list.html:58
+msgid "Принять заявку"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_confirm/list.html:63
+msgid "Заявка переотправлена"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package/list.html:8
+msgid " Все страховые контракты"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package/list.html:13
+#: templates/contract_management/contract_hospital_package_service/list.html:17
+#: templates/contract_management/contract_hospital_service/list.html:17
+msgid "Список контрактов"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package/list.html:35
+#: templates/package_service_management/package/list.html:33
+msgid "Группы услуг"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:28
+msgid " Oбщая цена"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:84
+#: templates/contract_management/contract_hospital_service/list.html:45
+#: templates/contract_management/contract_program_package_service/list.html:41
+#: templates/hospital_service_management/hospital_package_service/list.html:41
+#: templates/hospital_service_management/hospital_package_service/setting.html:86
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:50
+#: templates/package_service_management/package_service/list.html:40
+#: templates/package_service_management/package_service/setting.html:62
+#: templates/package_service_management/package_service_evaluation/list.html:26
+#: templates/package_service_management/service/setting.html:56
+#: templates/program_management/program_package_service/setting.html:42
+msgid "Коды услуг"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:85
+#: templates/contract_management/contract_hospital_service/list.html:46
+#: templates/contract_management/contract_program_package_service/list.html:42
+#: templates/hospital_service_management/hospital_package_service/list.html:42
+#: templates/hospital_service_management/hospital_package_service/setting.html:87
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:51
+#: templates/package_service_management/package_service/list.html:41
+#: templates/package_service_management/package_service/setting.html:63
+#: templates/package_service_management/package_service_evaluation/list.html:27
+#: templates/package_service_management/service/setting.html:57
+#: templates/program_management/program_package_service/list.html:44
+#: templates/program_management/program_package_service/setting.html:43
+msgid "Названия услуг"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:86
+#: templates/contract_management/contract_hospital_service/list.html:47
+msgid "Общая цена страховой компании"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:87
+#: templates/contract_management/contract_hospital_service/list.html:48
+msgid "Общая цена клиники"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:88
+#: templates/contract_management/contract_hospital_service/list.html:49
+msgid "Итоговая общая цена"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:92
+#: templates/contract_management/contract_hospital_package_service/list.html:98
+#: templates/contract_management/contract_hospital_package_service/list.html:105
+#: templates/contract_management/contract_hospital_service/list.html:53
+#: templates/contract_management/contract_hospital_service/list.html:59
+#: templates/contract_management/contract_hospital_service/list.html:66
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:57
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:63
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:70
+#: templates/package_service_management/package_service_evaluation/list.html:33
+#: templates/package_service_management/package_service_evaluation/list.html:39
+#: templates/package_service_management/package_service_evaluation/list.html:46
+msgid "Базовая цена"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:93
+#: templates/contract_management/contract_hospital_package_service/list.html:100
+#: templates/contract_management/contract_hospital_package_service/list.html:108
+#: templates/contract_management/contract_hospital_service/list.html:54
+#: templates/contract_management/contract_hospital_service/list.html:61
+#: templates/contract_management/contract_hospital_service/list.html:69
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:57
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:61
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:65
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:59
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:65
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:73
+#: templates/package_icd_management/icd/list.html:45
+#: templates/package_icd_management/icd/list.html:49
+#: templates/package_icd_management/icd/list.html:53
+#: templates/package_service_management/package_service_evaluation/list.html:35
+#: templates/package_service_management/package_service_evaluation/list.html:41
+#: templates/package_service_management/package_service_evaluation/list.html:49
+msgid "На дому"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:94
+#: templates/contract_management/contract_hospital_package_service/list.html:101
+#: templates/contract_management/contract_hospital_package_service/list.html:109
+#: templates/contract_management/contract_hospital_service/list.html:55
+#: templates/contract_management/contract_hospital_service/list.html:62
+#: templates/contract_management/contract_hospital_service/list.html:70
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:58
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:62
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:66
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:60
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:66
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:74
+#: templates/package_icd_management/icd/list.html:46
+#: templates/package_icd_management/icd/list.html:50
+#: templates/package_icd_management/icd/list.html:54
+#: templates/package_service_management/package_service_evaluation/list.html:36
+#: templates/package_service_management/package_service_evaluation/list.html:42
+#: templates/package_service_management/package_service_evaluation/list.html:50
+msgid "ПМСП"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:95
+#: templates/contract_management/contract_hospital_package_service/list.html:102
+#: templates/contract_management/contract_hospital_package_service/list.html:110
+#: templates/contract_management/contract_hospital_service/list.html:56
+#: templates/contract_management/contract_hospital_service/list.html:63
+#: templates/contract_management/contract_hospital_service/list.html:71
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:59
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:63
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:67
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:61
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:67
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:75
+#: templates/package_icd_management/icd/list.html:47
+#: templates/package_icd_management/icd/list.html:51
+#: templates/package_icd_management/icd/list.html:55
+#: templates/package_service_management/package_service_evaluation/list.html:37
+#: templates/package_service_management/package_service_evaluation/list.html:43
+#: templates/package_service_management/package_service_evaluation/list.html:51
+msgid "Амбулаторно"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_package_service/list.html:96
+#: templates/contract_management/contract_hospital_package_service/list.html:103
+#: templates/contract_management/contract_hospital_package_service/list.html:111
+#: templates/contract_management/contract_hospital_service/list.html:57
+#: templates/contract_management/contract_hospital_service/list.html:64
+#: templates/contract_management/contract_hospital_service/list.html:72
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:60
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:64
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:68
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:62
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:68
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:76
+#: templates/package_icd_management/icd/list.html:48
+#: templates/package_icd_management/icd/list.html:52
+#: templates/package_icd_management/icd/list.html:56
+#: templates/package_service_management/package_service_evaluation/list.html:38
+#: templates/package_service_management/package_service_evaluation/list.html:44
+#: templates/package_service_management/package_service_evaluation/list.html:52
+msgid "Стационарно"
+msgstr ""
+
+#: templates/contract_management/contract_hospital_service/list.html:40
+msgid "Скачать как excel"
+msgstr ""
+
+#: templates/contract_management/contract_program/delete.html:5
+#: templates/program_management/program/delete.html:6
+msgid "Удалить программу"
+msgstr ""
+
+#: templates/contract_management/contract_program/delete.html:16
+msgid " Вы уверены, что хотите удалить"
+msgstr ""
+
+#: templates/contract_management/contract_program/form.html:5
+#: templates/contract_management/contract_program/list.html:33
+#: templates/program_management/program/form.html:6
+msgid "Название программы"
+msgstr ""
+
+#: templates/contract_management/contract_program/form.html:7
+#: templates/program_management/program/form.html:8
+msgid "Процент страхового лимита"
+msgstr ""
+
+#: templates/contract_management/contract_program/form.html:9
+#: templates/program_management/program/form.html:10
+msgid "Процент страховой премии"
+msgstr ""
+
+#: templates/contract_management/contract_program/form.html:11
+#: templates/contract_management/contract_program/list.html:36
+#: templates/program_management/program/form.html:12
+#: templates/program_management/program/list.html:31
+msgid "Семейное прикрепление"
+msgstr ""
+
+#: templates/contract_management/contract_program/form.html:13
+#: templates/program_management/program/form.html:14
+msgid "Добавить ограничения"
+msgstr ""
+
+#: templates/contract_management/contract_program/list.html:20
+msgid "Введите текст для поиска контракта"
+msgstr ""
+
+#: templates/contract_management/contract_program/list.html:24
+msgid "+ Добавить программу"
+msgstr ""
+
+#: templates/contract_management/contract_program/list.html:34
+#: templates/program_management/program/list.html:29
+msgid "Страховой лимит, манат"
+msgstr ""
+
+#: templates/contract_management/contract_program/list.html:35
+#: templates/program_management/program/list.html:30
+msgid "Страховая премия , манат"
+msgstr ""
+
+#: templates/contract_management/contract_program/list.html:37
+#: templates/program_management/program/list.html:32
+msgid "+ Добавить ограничения"
+msgstr ""
+
+#: templates/contract_management/contract_program/update.html:6
+msgid "Редактировать подпрограмму"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/create.html:6
+#: templates/contract_management/contract_program_package/update.html:6
+#: templates/package_icd_management/package/update.html:6
+#: templates/program_management/program_package/update.html:6
+msgid "Изменить название группы"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/delete.html:5
+#: templates/package_icd_management/package/delete.html:5
+#: templates/package_service_management/package/delete.html:5
+#: templates/program_management/program_package/delete.html:5
+msgid "Удалить группу"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/delete.html:14
+#: templates/package_service_management/package/delete.html:14
+#: templates/program_management/program_package/delete.html:14
+msgid "Название группы:"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/delete.html:16
+#: templates/hospital_icd_management/hospital_package/delete.html:16
+#: templates/hospital_service_management/hospital_package/delete.html:16
+#: templates/package_service_management/package/delete.html:16
+#: templates/program_management/program_package/delete.html:16
+msgid "Вы уверены, что хотите удалить"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/form.html:4
+#: templates/package_icd_management/package/form.html:6
+#: templates/program_management/program_package/form.html:5
+msgid "Название группы"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/form.html:6
+msgid "Выберите тип лимита"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/form.html:8
+#: templates/program_management/package_blank/create.html:22
+#: templates/program_management/program_package/form.html:11
+msgid "Введите лимит"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/form.html:10
+#: templates/program_management/program_package/form.html:14
+msgid "Введите описание (при необходимости)"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/list.html:21
+#: templates/program_management/program_package/list.html:15
+msgid "Введите название подпрограммы для поиска"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/list.html:26
+#: templates/contract_management/program_blank/form.html:4
+msgid "Добавить подпрограмму"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/list.html:35
+#: templates/program_management/program_package/list.html:27
+msgid "Название подпрограммы"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/list.html:36
+msgid "Лимиты на подпрограмму"
+msgstr ""
+
+#: templates/contract_management/contract_program_package/list.html:37
+msgid "Значение лимита"
+msgstr ""
+
+#: templates/contract_management/insurance/list.html:11
+#: templates/contract_management/insurance/list.html:89
+msgid "Список страховых компании"
+msgstr ""
+
+#: templates/contract_management/insurance/list.html:30
+msgid "Добавить страховую компанию"
+msgstr ""
+
+#: templates/contract_management/insurance/list.html:40
+#: templates/directory/insurance/list.html:14
+msgid "Название страховой компании"
+msgstr ""
+
+#: templates/contract_management/insurance/list.html:107
+msgid "Отменить"
+msgstr ""
+
+#: templates/contract_management/program_blank/form.html:11
+msgid "Выберите шаблон программы "
+msgstr ""
+
+#: templates/directory/admin_hospital/list.html:17
+#: templates/directory/admin_insurance/list.html:17
+msgid "Справочники"
+msgstr ""
+
+#: templates/directory/admin_hospital/list.html:21
+#: templates/directory/admin_insurance/list.html:22
+msgid "Услуги"
+msgstr ""
+
+#: templates/directory/admin_hospital/list.html:24
+#: templates/directory/admin_insurance/list.html:26
+msgid "МКБ-10"
+msgstr ""
+
+#: templates/directory/admin_hospital/list.html:27
+#: templates/directory/admin_insurance/list.html:30
+msgid "Формы"
+msgstr ""
+
+#: templates/directory/admin_hospital/list.html:30
+#: templates/directory/admin_insurance/list.html:33
+msgid "Страховые компании"
+msgstr ""
+
+#: templates/directory/admin_hospital/list.html:33
+#: templates/directory/admin_insurance/list.html:36
+msgid "Провайдеры"
+msgstr ""
+
+#: templates/directory/admin_hospital/list.html:36
+#: templates/directory/admin_insurance/list.html:39
+msgid "Клиенты"
+msgstr ""
+
+#: templates/directory/customer/delete.html:10
+msgid "Удалить клиента"
+msgstr ""
+
+#: templates/directory/customer/delete.html:23
+msgid "Будут удалены все связанные данные клиента!"
+msgstr ""
+
+#: templates/directory/customer/form.html:11
+msgid "Обновить клиента"
+msgstr ""
+
+#: templates/directory/customer/form.html:13
+msgid "Добавить клиента"
+msgstr ""
+
+#: templates/directory/customer/form.html:26
+msgid "Фамилия клиента"
+msgstr ""
+
+#: templates/directory/customer/form.html:28
+msgid "Имя клиента"
+msgstr ""
+
+#: templates/directory/customer/form.html:30
+msgid "ИИН "
+msgstr ""
+
+#: templates/directory/customer/form.html:32
+msgid " Номер телефона"
+msgstr ""
+
+#: templates/directory/customer/form.html:34
+msgid " Адрес "
+msgstr ""
+
+#: templates/directory/customer/form.html:36
+#: templates/directory/customer/list.html:21
+msgid "Профессия"
+msgstr ""
+
+#: templates/directory/customer/list.html:11
+msgid "+ Добавить клиента"
+msgstr ""
+
+#: templates/directory/customer/list.html:16
+msgid "ФИО"
+msgstr ""
+
+#: templates/directory/customer/list.html:17
+#: templates/report_management/invoice/list.html:42
+msgid "ИИН"
+msgstr ""
+
+#: templates/directory/customer/list.html:18
+msgid "Номер телефона"
+msgstr ""
+
+#: templates/directory/customer/list.html:19
+msgid "Адрес"
+msgstr ""
+
+#: templates/directory/customer/list.html:20
+msgid "Место работы"
+msgstr ""
+
+#: templates/directory/form/create.html:12
+msgid "Добавить форму"
+msgstr ""
+
+#: templates/directory/form/create.html:19
+#: templates/directory/form/update.html:19
+msgid "Код формы"
+msgstr ""
+
+#: templates/directory/form/create.html:23
+#: templates/directory/form/update.html:23
+msgid "Название формы "
+msgstr ""
+
+#: templates/directory/form/create.html:30
+msgid "Прекрепить файл "
+msgstr ""
+
+#: templates/directory/form/delete.html:10
+msgid "Удалить форму"
+msgstr ""
+
+#: templates/directory/form/delete.html:18
+msgid "Название формы:"
+msgstr ""
+
+#: templates/directory/form/delete.html:20
+msgid "Будут удалены все дочерные"
+msgstr ""
+
+#: templates/directory/form/list.html:18
+msgid "+ Создать/Добавить форму"
+msgstr ""
+
+#: templates/directory/form/list.html:22 templates/directory/icd/list.html:21
+#: templates/directory/service/list.html:21
+msgid "Завершить создание справочника"
+msgstr ""
+
+#: templates/directory/form/list.html:31 templates/directory/icd/list.html:30
+#: templates/directory/service/list.html:30
+msgid "Код"
+msgstr ""
+
+#: templates/directory/form/list.html:32 templates/directory/icd/list.html:31
+#: templates/directory/service/list.html:31
+msgid "Название"
+msgstr ""
+
+#: templates/directory/form/list.html:80
+msgid "Скачать форму"
+msgstr ""
+
+#: templates/directory/form/update.html:12
+#: templates/directory/service/update.html:11
+msgid " Редактировать услугу"
+msgstr ""
+
+#: templates/directory/form/update.html:28
+msgid "Прекрепить файл"
+msgstr ""
+
+#: templates/directory/hospital/list.html:14
+msgid "Название провайдера"
+msgstr ""
+
+#: templates/directory/icd/create.html:12
+msgid " Добавить услугу"
+msgstr ""
+
+#: templates/directory/icd/create.html:19 templates/directory/icd/form.html:5
+#: templates/directory/icd/update.html:19
+#: templates/directory/service/create.html:19
+#: templates/directory/service/update.html:18
+msgid "Код услуги"
+msgstr ""
+
+#: templates/directory/icd/create.html:26
+#: templates/directory/service/update.html:23
+msgid "Название услуги "
+msgstr ""
+
+#: templates/directory/icd/delete.html:11
+#: templates/directory/service/delete.html:11
+msgid "Удалить услугу"
+msgstr ""
+
+#: templates/directory/icd/delete.html:19
+#: templates/directory/service/delete.html:19
+msgid "Название услуги:"
+msgstr ""
+
+#: templates/directory/icd/delete.html:21
+msgid "Будут удалены все дочерные услуги"
+msgstr ""
+
+#: templates/directory/icd/form.html:10 templates/directory/icd/update.html:24
+#: templates/directory/service/create.html:26
+msgid "Название услуги"
+msgstr ""
+
+#: templates/directory/icd/list.html:17
+#: templates/directory/service/list.html:17
+msgid "+ Создать/Добавить услугу"
+msgstr ""
+
+#: templates/directory/icd/update.html:12
+msgid "Редактировать услугу"
+msgstr ""
+
+#: templates/directory/service/create.html:12
+msgid "Добавить услугу"
+msgstr ""
+
+#: templates/directory/service/delete.html:21
+msgid "Будут удалены все дочерные услуги "
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/create.html:5
+msgid " группу мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/delete.html:5
+msgid "Удалить группу мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/delete.html:14
+msgid "Название групп мкб-10:"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/form.html:6
+#: templates/hospital_icd_management/hospital_package/list.html:41
+msgid "Название групп мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/list.html:24
+msgid "Поиск групп мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/list.html:28
+msgid "+ Создать/Добавить группу мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/list.html:31
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:59
+msgid "Завершить выбор мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package/update.html:6
+msgid "Редактировать название групп мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_evaluation/list.html:25
+msgid "Поиск групп МКБ 10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_evaluation/list.html:28
+msgid "Завершить выбор по  МКБ 10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_evaluation/list.html:38
+msgid "Название групп МКБ 10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd/list.html:10
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:15
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:15
+msgid "Список групп"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd/list.html:26
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:25
+msgid "Добавить/создать мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd/list.html:33
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:69
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:42
+#: templates/package_icd_management/icd/list.html:30
+#: templates/package_icd_management/package_icd/list.html:25
+#: templates/package_icd_management/package_icd/setting.html:37
+msgid "Коды МКБ"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd/list.html:36
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:72
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:45
+#: templates/package_icd_management/icd/list.html:33
+msgid "Наименование МКБ"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:41
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:43
+#: templates/hospital_icd_management/hospital_package_icd/setting.html:103
+msgid "Выберите мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:33
+msgid " Добавить/создать мкб-10"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:47
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:52
+#: templates/package_icd_management/icd/list.html:35
+#: templates/package_icd_management/icd_limit/list.html:48
+#: templates/package_service_management/package_service_evaluation/list.html:28
+msgid "ОМС"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:48
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:53
+#: templates/package_icd_management/icd/list.html:36
+#: templates/package_icd_management/icd_limit/list.html:49
+#: templates/package_service_management/package_service_evaluation/list.html:29
+msgid "ДМС"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:49
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:54
+#: templates/package_icd_management/icd/list.html:37
+#: templates/package_icd_management/icd_limit/list.html:50
+#: templates/package_service_management/package_service_evaluation/list.html:30
+msgid "ПЛАТНО"
+msgstr ""
+
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:52
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:53
+#: templates/hospital_icd_management/hospital_package_icd_evaluation/list.html:54
+#: templates/package_icd_management/icd/list.html:40
+#: templates/package_icd_management/icd/list.html:41
+#: templates/package_icd_management/icd/list.html:42
+msgid "Статус выполнения"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/create.html:5
+#: templates/package_service_management/package/list.html:23
+#: templates/package_service_management/service/setting.html:10
+msgid "Добавить группу услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/delete.html:5
+msgid "Удалить группу услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/delete.html:14
+msgid "Название групп услуг:"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/form.html:6
+#: templates/hospital_service_management/hospital_package/list.html:41
+#: templates/hospital_service_management/hospital_package_evaluation/list.html:38
+msgid "Название групп услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/list.html:24
+#: templates/hospital_service_management/hospital_package_evaluation/list.html:26
+#: templates/package_service_management/package_evaluation/list.html:12
+msgid "Поиск групп услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/list.html:28
+msgid "+ Создать/Добавить группу услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/list.html:31
+#: templates/hospital_service_management/hospital_package_service/setting.html:75
+#: templates/package_service_management/package_service/setting.html:25
+#: templates/program_management/program_package_service/setting.html:32
+msgid "Завершить выбор услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package/update.html:6
+msgid "Редактировать название групп услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_evaluation/list.html:29
+msgid "Открыть доступ для страховой компании"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_service/list.html:15
+msgid " Список групп услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_service/list.html:31
+#: templates/hospital_service_management/hospital_package_service/setting.html:25
+msgid "Добавить/создать услуги"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_service/setting.html:15
+msgid "Список групп услуг"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_service/setting.html:51
+msgid "Выберите  услугу"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_service/setting.html:53
+#: templates/hospital_service_management/hospital_package_service/setting.html:117
+#: templates/package_service_management/package_service/setting.html:95
+#: templates/package_service_management/service/setting.html:87
+msgid "Выберите услугу"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:21
+msgid " Назначение цен"
+msgstr ""
+
+#: templates/hospital_service_management/hospital_package_service_evaluation/list.html:42
+msgid "Добавить/создать услуги "
+msgstr ""
+
+#: templates/package_icd_management/icd_limit/list.html:31
+msgid "Поиск услуг..."
+msgstr ""
+
+#: templates/package_icd_management/icd_limit/list.html:46
+msgid "Код мкб-10"
+msgstr ""
+
+#: templates/package_icd_management/icd_limit/list.html:47
+msgid "Наименование мкб-10"
+msgstr ""
+
+#: templates/package_icd_management/icd_limit/list.html:51
+msgid "Возможно платно"
+msgstr ""
+
+#: templates/package_icd_management/package/create.html:6
+#: templates/program_management/program_package/create.html:6
+msgid "Добавить группировку"
+msgstr ""
+
+#: templates/package_icd_management/package/delete.html:14
+msgid "Название МКБ-10:"
+msgstr ""
+
+#: templates/package_icd_management/package/delete.html:16
+#: templates/program_management/program/delete.html:16
+msgid "Вы уверены, что хотите удалить "
+msgstr ""
+
+#: templates/package_icd_management/package/list.html:22
+msgid "+ Добавить название исключанмых групп"
+msgstr ""
+
+#: templates/package_icd_management/package/list.html:31
+msgid "Названия групп исключаемых заболеваний (МКБ) "
+msgstr ""
+
+#: templates/package_icd_management/package_icd/list.html:19
+msgid "Добавить/cоздать исключения по МКБ10 "
+msgstr ""
+
+#: templates/package_icd_management/package_icd/list.html:28
+msgid "Наименование заболевания по МКБ"
+msgstr ""
+
+#: templates/package_icd_management/package_icd/setting.html:14
+msgid "Настройка исключений по МКБ 10"
+msgstr ""
+
+#: templates/package_icd_management/package_icd/setting.html:25
+msgid "Выберите тип заболевания  МКБ "
+msgstr ""
+
+#: templates/package_icd_management/package_icd/setting.html:40
+msgid "Названия заболеваний по МКБ"
+msgstr ""
+
+#: templates/package_service_management/package_evaluation/list.html:5
+#: templates/package_service_management/package_service_evaluation/list.html:8
+msgid "Оценка  и актуарий услуг"
+msgstr ""
+
+#: templates/package_service_management/package_evaluation/list.html:21
+msgid "Названия групп услуг"
+msgstr ""
+
+#: templates/package_service_management/package_service/list.html:22
+msgid "Выберите услуги в группе"
+msgstr ""
+
+#: templates/package_service_management/package_service/list.html:120
+msgid "Вы точно хотите удалить выбранную услугу?"
+msgstr ""
+
+#: templates/package_service_management/package_service/setting.html:12
+#: templates/program_management/program_package_service/setting.html:19
+msgid "Добавить/создать услугу"
+msgstr ""
+
+#: templates/package_service_management/service/setting.html:25
+msgid "Выберите  группу услуг"
+msgstr ""
+
+#: templates/package_service_management/service/setting.html:27
+msgid "Справочник клинических услуг"
+msgstr ""
+
+#: templates/package_service_management/service/setting.html:46
+msgid "Завершить выбор групп услуг"
+msgstr ""
+
+#: templates/program_management/package_blank/create.html:6
+msgid "Добавить подпрограмму / лимит"
+msgstr ""
+
+#: templates/program_management/package_blank/create.html:14
+msgid "Выберите предустановленную группу услуг"
+msgstr ""
+
+#: templates/program_management/package_blank/create.html:18
+#: templates/program_management/program_package/form.html:7
+msgid "Введите тип лимита"
+msgstr ""
+
+#: templates/program_management/program/create.html:6
+msgid "Добавить новую программу"
+msgstr ""
+
+#: templates/program_management/program/delete.html:14
+msgid "Название программы: "
+msgstr ""
+
+#: templates/program_management/program/list.html:7
+#: templates/program_management/program_package/list.html:6
+msgid "Шаблоны страховых программ"
+msgstr ""
+
+#: templates/program_management/program/list.html:15
+msgid "Поиск шаблона страховых программ"
+msgstr ""
+
+#: templates/program_management/program/list.html:19
+msgid "+ Создать/Добавить новый шаблон программ"
+msgstr ""
+
+#: templates/program_management/program/list.html:28
+msgid "Названия шаблон программ"
+msgstr ""
+
+#: templates/program_management/program/update.html:6
+msgid "Редактировать программу"
+msgstr ""
+
+#: templates/program_management/program_package/list.html:19
+msgid "+ Добавить подпрограмму / лимит"
+msgstr ""
+
+#: templates/program_management/program_package/list.html:28
+msgid "Тип лимита"
+msgstr ""
+
+#: templates/program_management/program_package/list.html:29
+msgid "Сумма лимита"
+msgstr ""
+
+#: templates/program_management/program_package_service/list.html:9
+#: templates/program_management/program_package_service/setting.html:9
+msgid "Шаблоны программ"
+msgstr ""
+
+#: templates/program_management/program_package_service/list.html:28
+msgid "Выберите услуги в группе "
+msgstr ""
+
+#: templates/program_management/program_package_service/list.html:41
+msgid "Коды услу"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:13
+msgid " ИИН"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:19
+msgid "Услуга:"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:22
+msgid "Дата начиная с "
+msgstr ""
+
+#: templates/report_management/invoice/list.html:25
+msgid "по"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:40
+msgid "Провайдер/клиника"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:41
+msgid "ФИО пациента"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:43
+msgid "Страховая карта"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:44
+msgid "Услуга"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:45
+msgid "Диагноз"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:46
+msgid "Дата услуги"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:47
+msgid "ФИО врача"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:48
+msgid "Счет реестр"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:49
+msgid "ИБ"
+msgstr ""
+
+#: templates/report_management/invoice/list.html:101
+msgid "Инвидуальный"
+msgstr ""

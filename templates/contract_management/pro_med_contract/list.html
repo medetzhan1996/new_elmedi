@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"><a href="{% url 'contract_management:pro_med_contract_list' %}">{% trans "Контракты" %}</a></li>
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-9">
+              <input type="text" id="contract-search" class="form-control" placeholder='{% trans "Введите текст для поиска"%}'>
+          </div>
+          <div class="col-md-3 col-lg-3">
+          <button class="w-100 btn btn-primary open-universal-modal" data-url="{% url 'contract_management:pro_med_contract_create' %}">
+          	{% trans "	+ Создать/Добавить контракт" %}
+          	</button>
+          </div>
+      </div>
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <tr>
+                          <th style="width: 125px;text-align: center;">{% trans "Контракт" %}</th>
+                          <th style="width: 250px;">{% trans "Страхователь/промпредприятие/клиент " %}</th>
+                          <th style="width: 250px;">{% trans "Филиалы страховой компании" %}</th>
+                          <th class="text-center">{% trans "Дата начала" %}</th>
+                          <th class="text-center">{% trans "Дата окончания" %}</th>
+                          <th></th>
+                          <th>{% trans "Редактирование" %}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="contract-content">
+                        {% for contract in contracts %}
+                          <tr>
+                            <td class="text-center">
+                              <a href="{% url 'contract_management:pro_med_contract_program_list' contract=contract.id %}" style="color: #0080ff;text-decoration: revert;">
+                                {{ contract.number }}
+                              </a>
+                            </td>
+                            <td class="">{{ contract.insurer.title }}</td>
+                            <td class="">{{ contract.insurance.title }}</td>
+                            <td class="text-center">{{ contract.start_date|date:"d.m.Y" }}</td>
+                            <td class="text-center">{{ contract.end_date|date:"d.m.Y" }}</td>
+                            <td class="text-center">
+                              {% if contract.program_set.count %}
+                                <a style="color: #0080ff;text-decoration: revert;" href="{% url 'contract_management:contract_result' pk=contract.id %}"
+                                disabled>{% trans "Посмотреть текст контракта" %}</a>
+                              {% else %}
+                                ---
+                              {% endif %}
+
+                            </td>
+                            <td class="text-center">
+                              <a href="#" class="open-universal-modal" data-url="{% url 'contract_management:pro_med_contract_update' pk=contract.id %}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                              </a> &nbsp&nbsp
+                              <a href="#" class="open-universal-modal"
+                                 data-url="{% url 'contract_management:pro_med_contract_delete' pk=contract.id %}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                              </a>
+                            </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="4">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+  <!-- <div class="content-wrapper">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Список контрактов</h3>
+            <div class="card-tools">
+              <div class="input-group input-group-sm">
+                <input type="text" class="form-control" placeholder="Поиск...">
+                <div class="input-group-append">
+                  <div class="btn btn-primary">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>&nbsp&nbsp
+                <button class="btn btn-primary open-universal-modal"
+                   data-url="{% url 'contract_management:contract_create' %}">+</button>
+              </div>
+
+            </div>
+          </div>
+          <div class="card-body p-0">
+
+            <div class="table-responsive mailbox-messages">
+              <table class="table table-hover table-striped table-bordered">
+                <tr>
+                  <th>Номер контракта</th>
+                  <th>Страховщик</th>
+                  <th>Страховая компания</th>
+                  <th>Дата начала</th>
+                  <th>Дата окончания</th>
+                  <th colspan="2"></th>
+                </tr>
+                {% for contract in contracts %}
+                  <tr>
+                    <td>
+                      <a href="{% url 'contract_management:contract_program_list' contract=contract.id %}">
+                        {{ contract.number }}
+                      </a>
+                    </td>
+                    <td>{{ contract.insurer.title }}</td>
+                    <td>{{ contract.insurance.title }}</td>
+                    <td>{{ contract.start_date|date:"d.m.Y" }}</td>
+                    <td>{{ contract.end_date|date:"d.m.Y" }}</td>
+                    <td>
+                      <a href="{% url 'contract_management:contract_result' pk=contract.id %}">Посмотреть договор</a>
+                    </td>
+                  </tr>
+                {% empty %}
+                  <tr align="center">
+                    <td colspan="4">Данные не найдены!</td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+  $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+  })
+
+  $("#contract-search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#contract-content tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        })
+  })
+{% endblock %}

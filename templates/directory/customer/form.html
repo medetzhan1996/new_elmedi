@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row mt-3">
+		<div class="col-md-6">
+			{% if object %}
+				<h5> {% trans "Обновить клиента" %}</h5>
+			{% else %}
+				<h5> {% trans "Добавить клиента" %}</h5>
+			{% endif %}
+			{% if form.errors %}
+			    <div class="alert alert-danger" role="alert">
+			        {% for field in form %}
+			            {% for error in field.errors %}
+			                <strong>{{ field.label }}:</strong> {{ error|escape }}
+			            {% endfor %}
+			        {% endfor %}
+			    </div>
+			{% endif %}
+			<form action="" method="POST">
+			    {% csrf_token %}
+			    <b> {% trans "Фамилия клиента" %} </b>
+				{{ form.last_name|add_class:"form-control" }}
+				<b> {% trans "Имя клиента" %} </b>
+				{{ form.first_name|add_class:"form-control" }}
+				<b> {% trans "ИИН " %}</b>
+				{{ form.iin|add_class:"form-control" }}
+				<b>{% trans " Номер телефона" %} </b>
+				{{ form.telephone_number|add_class:"form-control" }}  
+				<b>{% trans " Адрес " %}</b>
+				{{ form.address|add_class:"form-control" }} 
+				<b> {% trans "Профессия" %} </b>
+				{{ form.profession|add_class:"form-control" }}  
+				<br><button type="submit" class="btn btn-primary btn-sm">{% trans "Сохранить" %}</button>
+			</form>
+		</div>
+	</div>
+</div>
+</div>
+
+{% endblock %}

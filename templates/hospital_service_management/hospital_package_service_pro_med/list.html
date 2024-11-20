@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load common_tags %}
+{% load hospital_package_service_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    {% if request.user.user_type != 7 %}
+        <!-- <li class="breadcrumb-item">
+            <a href="{% url 'hospital_service_management:hospital_list' %}">Клиники/Провайдеры</a>
+        </li> -->
+    {% endif %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_pro_med_package_list' hospital=hospital.id %}">
+           {% trans " Список групп услуг" %}
+        </a>
+    </li>
+    <li class="breadcrumb-item active ">
+        <a href="" class="">
+            {{ hospital_package.title }}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+
+<div class="contentbar" style="margin-top: 0px;">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <a href="{% url 'hospital_service_management:hospital_pro_med_package_service_setting' hospital=hospital.id hospital_package=hospital_package.id %}" class="btn-right-ab btn-sm btn btn-primary">
+                {% trans "Добавить/создать услуги" %}
+            </a>
+            <div class="col-md-12">
+                <div class="scroll-table mt-2">
+                    {% for hospital_package_service in hospital_package_services %}
+                        {{ hospital_package_service.service.title }} <br>
+                    {% endfor %}
+                    <table class="table table-bordered" style="margin-bottom: 0;padding-bottom: 0;">
+            
+                            <tr>
+                                <th colspan="1" style="width: 200px;"><div>{% trans "Коды услуг" %}</div></th>
+                                <th><div>{% trans "Названия услуг" %}</div></th>
+                                <th style="width:156px;">{% trans "Редактирование" %}</th>
+                            </tr>
+                    </table>
+                    <div class="scroll-table-body-none-header">
+                        <table class="table table-bordered treetable mt-0" id="service-table">
+                            <tbody>
+
+                                {% for service in services %}
+                                    <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                        <td style="width: 200px;height: 30px;">
+                                            {% if not service.is_leaf_node %}
+                                                <span class='folder'>
+                                                    {{ service.code }} <!-- {{ service.id }} -->
+                                                </span>
+                                            {% else %}
+                                                <span class='file'>
+                                                    {{ service.code }}
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ service.title }}</td>
+                                        <td class="text-center" style="width:150px">
+                                           <input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+                                            <button data-service="{{ service.id }}"
+                                                    class="fa fa-trash btn delete-hospital_package_service"></button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                           
+                        </table>
+                    </div>
+                </div>
+                <!-- <div class="table-responsive m-b-30">
+
+                            {% for hospital_package_service in hospital_package_services %}
+                                {{ hospital_package_service.service.title }} <br>
+                            {% endfor %}
+                    <table id="service-table" class="table table-hover table-bordered">
+
+                        <tr>
+                            <th style="width: 150px;">
+                                <div>Коды услуг</div>
+                            </th>
+                            <th>
+                                <div >Названия услуг</div>
+                            </th>
+                            <th style="width:150px;">Редактировать</th>
+                        </tr>
+                        <tbody>
+
+                            {% for service in services %}
+                                <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                    <td style="display: flex;align-items: center;height: 30px;">
+                                        {% if not service.is_leaf_node %}
+                                            <span class='folder'>
+                                                {{ service.code }} {{ service.id }}
+                                            </span>
+                                        {% else %}
+                                            <span class='file'>
+                                                {{ service.code }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ service.title }}</td>
+                                    <td class="text-center">
+                                       <input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+                                        <button data-service="{{ service.id }}"
+                                                class="fa fa-trash btn delete-hospital_package_service"></button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                      </table>
+                </div> -->
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+    $("#service-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    $(document).on("click", ".delete-hospital_package_service", function() {
+        var id = $(this).closest('tr').data('tt-id')
+        var service = $(this).data('service')
+        var url = "{% url 'hospital_service_management:hospital_package_service_delete' hospital=hospital.id hospital_package=hospital_package.id service=0 %}".replace('0', service)
+        $.ajax({
+            url: url,
+            type: "POST",
+            success: function(data){
+                $("#service-table").treetable("removeNode", id)
+            }
+        })
+    })
+{% endblock %}
+

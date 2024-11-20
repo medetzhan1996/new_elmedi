@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% load common_tags %}
+{% load contract_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'contract_management:pro_med_contract_list' %}"> {% trans "Контракты" %}</a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="">{{ contract.insurer.title }}</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-9">
+              <input type="text" id="contract-search" class="form-control" placeholder='{% trans "Введите текст для поиска контракта" %}'>
+          </div>
+          <div class="col-md-3 col-lg-3">
+          <a href="#" class="btn btn-primary w-100 open-universal-modal"
+             data-url="{% url 'contract_management:pro_med_program_blank_create' contract=contract.id %}">{% trans "+ Добавить программы / профессии" %}</a>
+          </div>
+      </div>
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table table-bordered">
+                      <thead class="thead-light">
+                        <tr>
+                          <th>{% trans "Название программы / профессий" %}</th>
+                          <th scope="col" class="text-center">{% trans "Лимит" %}</th>
+                          <th scope="col" class="text-center">{% trans "Премия" %}</th>
+                          <th scope="col" class="text-center">{% trans "Семейное прикрепление" %}</th>
+                          <th scope="col" style="color: red !important;">{% trans "+ Добавить ограничения" %}</th>
+                          <th style="width:130px;">{% trans "Редактирование" %}</th>
+                        </tr>
+                      </thead>
+                      <tbody id="contract-content">
+                          {% for program in contract.program_set.all %}
+                            {% get_program_restriction program as program_restriction %}
+                            <tr>
+                              <td>
+                                <a href="{% url 'contract_management:pro_med_contract_program_package_list' contract=contract.id program=program.id %}" class="a-link">
+                                  {{ program.title }}
+                                </a>
+                              </td>
+                              <td class="text-center">
+                                {% if program_restriction %}
+                                  {% get_val_by_percent program_restriction program.limit_percent as  limit_percent %}
+                                  {{ limit_percent|floatformat:2 }}
+                                {% endif %}
+                              </td>
+                              <td class="text-center">
+                                {% if program_restriction %}
+                                  {% get_val_by_percent program_restriction program.premium_percent as premium_percent  %}
+                                  {{ premium_percent|floatformat:2 }}
+                                {% endif %}
+                              </td>
+                              <td></td>
+                              <td></td>
+                              <td class="text-center">
+                                  <a href="#" class="open-universal-modal"
+                                     data-url="{% url 'contract_management:pro_med_contract_program_update' contract=contract.id pk=program.id %}">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                  </a>&nbsp&nbsp
+                                  <a href="#" class="open-universal-modal"
+                                     data-url="{% url 'contract_management:pro_med_contract_program_delete' contract=contract.id pk=program.id %}">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                  </a>
+                             </td>
+                            </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+    $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+    })
+
+    $("#contract-search").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#contract-content tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        })
+   })
+{% endblock %}
+

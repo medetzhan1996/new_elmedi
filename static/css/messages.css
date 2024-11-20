@@ -1,0 +1,128 @@
+.card .nav.flex-column>li {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    margin: 0;
+}
+.nav-pills .nav-link {
+    color: #6c757d;
+}
+.bg-primary, .bg-primary>a {
+    color: #fff!important;
+    background-color: #007bff;
+}
+.bg-warning {
+    background-color: #ffc107!important;
+    color: #1f2d3d!important;
+}
+.card-title {
+    float: left;
+    font-size: 1.1rem;
+    font-weight: 400;
+    margin: 0;
+}
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: .75rem 1.25rem;
+    position: relative;
+    border-top-left-radius: .25rem;
+    border-top-right-radius: .25rem;
+}
+.card-header>.card-tools {
+    float: right;
+    margin-right: -.625rem;
+}
+.mailbox-controls {
+    padding: 5px;
+}
+.btn-default {
+    background-color: #f8f9fa;
+    border-color: #ddd;
+    color: #444;
+}
+.mailbox-name a{
+	font-weight: 500;
+}
+.mailbox-read-info {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 10px;
+}
+.mailbox-read-info h5 {
+    margin: 0;
+    padding: 5px 0 0;
+}
+.mailbox-controls.with-border {
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+.mailbox-read-message {
+    padding: 10px;
+}
+.card-img-top{
+	width: 100%;
+	height: 150px;
+}
+.mailbox-attachment-info {
+    background: #f8f9fa;
+    padding: 10px;
+}
+.mailbox-attachment-name {
+    color: #666;
+    font-weight: 700;
+}.mailbox-attachment-size {
+    color: #999;
+    font-size: 12px;
+}
+.btn-tool {
+    background: 0 0;
+    color: #adb5bd;
+    font-size: .875rem;
+    margin: -.75rem 0;
+    padding: .25rem .5rem;
+}
+.span-omo {
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+}
+.forma_reg {
+    margin-bottom: 10px;
+}
+.input-mini {
+height: 33px!important;
+font-size: 14px!important;
+}
+.card .card-title {
+    color: #1c273c;
+    margin-bottom: 0.625rem;
+    font-size: .875rem;
+    font-weight: 700;
+    text-transform: none;
+}
+.card-table {
+    box-shadow: none;
+    margin-bottom: 0;
+}
+.tablee {
+    font-size: 13px;
+    border-radius: 4px;
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+}
+.card-table>tbody>tr>td {
+    padding: 6px;
+    border-top: none;
+}
+.mailbox-read-time{
+    font-size: 14px;
+}
+.select-border{
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.select-border:focus {
+  outline: none;
+  box-shadow: none;
+  border: solid 1px grey;
+}
+.select-border::-ms-expand{
+    color: #ddd;
+}

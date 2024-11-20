@@ -1,0 +1,30 @@
+{% load i18n %}
+
+<form action="{% url 'program_management:pro_med_program_delete' object.id %}" method="POST">
+    {% csrf_token %}
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle-1">{% trans "Удалить професии" %}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <p style="color: #333">{% trans "Название професии: " %}{{ object }}</p>
+                <hr>
+                <p class="mb-0 " style="color: #333"> {% trans "Вы уверены, что хотите удалить " %}"{{ object }}"?   </p>
+            </div>
+            <!-- <div class="col-md-12 ">
+                <div class="pull-right ">
+                    <input type="submit" class="btn btn-info btn-sm" value="Удалить">
+                    <a href="{% url 'program_management:program_list' %}" class="btn btn-secondary btn-sm">Отмена</a>
+                </div>
+            </div> -->
+        </div>
+    </div>    
+    <div class="modal-footer">
+        <a href="{% url 'program_management:pro_med_program_list' %}" class="btn btn-secondary btn-sm">{% trans "Отмена" %}</a>
+        <button type="submit" class="btn btn-danger btn-sm">{% trans "Удалить" %}</button>
+    </div>
+</form>

@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active"><a href="">{% trans "Настройка вредностей" %}sdsd</a></li>
+{% endblock %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <h5>Настройка услуг</h5>
+      </div>
+    </div> -->
+      <div class="row align-items-center">
+
+          <div class="col-md-3 col-lg-3">
+              <select name="insurer" id="insurer-select" class="form-control">
+                  <option value="">Все фабрики</option>
+                  {% for insurer in insurers %}
+                    <option value="{{ insurer.id }}" {% if selected_insurer == insurer.id|stringformat:'s' %}selected{% endif %}>
+                        {{ insurer.title }}
+                    </option>
+                  {% endfor %}
+              </select>
+          </div>
+          <div class="col-md-6 col-lg-6">
+
+          </div>
+          <div class="col-md-3 col-lg-3">              
+              <button class="btn btn-primary w-100 open-universal-modal"
+                   data-url="{% url 'package_service_management:pro_med_package_create' %}">+ Добавить вредность</button>
+<!--              <a class="btn btn-primary w-100 btn-right-ab-nastr-uslug btn-sm" href="{% url 'package_service_management:service_setting' %}">-->
+<!--              {% trans "Добавить группу вредности" %}-->
+            </a>
+          </div>
+      </div> 
+      <div class="row mt-1">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table table-bordered">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">{% trans "Список вреднестей" %}</th>
+                              <th style="width: 150px;">{% trans "Редактирование" %}</th>
+                          </tr>
+                      </thead>
+                      <tbody id="package-content">
+                        {% for package in packages %}
+                          <tr>
+                            <td>
+                              <a href="{% url 'package_service_management:pro_med_package_service_list' package=package.id %}" class="a-link">
+                                {{ package.title }}
+                                <!-- <i class="fa fa-folder" aria-hidden="true"></i> -->
+                                
+                              </a>
+                            </td>
+                             <td class="text-center">
+                                  <a href="#" class="open-universal-modal"
+                                     data-url="{% url 'package_service_management:pro_med_package_update' pk=package.id %}">
+                                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                                  </a>
+                                 &nbsp&nbsp&nbsp
+                                 <a href="#" class="open-universal-modal"
+                                     data-url="{% url 'package_service_management:pro_med_package_delete' pk=package.id %}">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                  </a>
+
+                              </td>
+                          </tr>
+                        {% empty %}
+                          <tr align="center">
+                            <td colspan="4">{% trans "Данные не найдены!" %}</td>
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+    </div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+
+  $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+  })
+
+  $("#package-search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#package-content tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    })
+  })
+
+  const insurerSelect = document.getElementById('insurer-select');
+  // Слушаем изменения в выборе пользователя
+   insurerSelect.addEventListener('change', function() {
+        const selectedValue = this.value;
+        const searchParams = new URLSearchParams(window.location.search);
+        alert(selectedValue);
+        if (selectedValue) {
+            searchParams.set('insurer', selectedValue);
+        } else {
+            searchParams.delete('insurer');
+        }
+
+        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+        window.location.href = newUrl;
+    });
+{% endblock %}

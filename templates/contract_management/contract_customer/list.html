@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% load contract_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+<!-- <li class="breadcrumb-item">
+    <a href="">Карты пациентов</a>
+</li> -->
+
+<li class="breadcrumb-item">
+    <a href="">{% trans "База застрахованных пациентов клиентa / страхователя" %} </a>
+</li>
+{% endblock %}
+{% block content %}
+<div class="contentbar" style="margin-top: 0;">
+  <div class="card" style="padding: 10px;">
+    <form id="myForm" action="" method="get"> 
+      <div class="row align-items-center">
+        <div class="col-md-3">
+          <!-- <label>Выберите компанию</label> -->
+           <!-- <select id="id_search_insurance" class="form-control" name="insurance">
+              <option value="">&nbsp</option>  
+              {% for insurance in insurances %}
+                <option value="{{ insurance.id }}" {% is_selected request.GET.insurance insurance.id %}>{{ insurance.title }}</option>
+              {% endfor %}
+           </select> -->
+           <label>{% trans "Выберите клиента / страхователя" %}</label>
+           <select id="id_search_insurer" class="form-control" name="insurer">
+              <option value="">&nbsp</option>  
+              {% for insurers in insurer %}
+                <option value="{{ insurers.id }}"{% is_selected request.GET.insurer insurer.id %}>{{ insurers.title }}</option>
+              {% endfor %}
+              
+           </select>
+        </div>
+        <div class="col-md-2">
+          <label>{% trans "Выберите контракт" %}</label>
+          <select id="id_search_contract" class="form-control" name="contract">
+            <option value="">&nbsp</option> 
+            {% for contract in contracts %}
+                <option value="{{ contract.id }}" {% is_selected request.GET.contract contract.id %}>{{ contract.number }}</option>
+              {% endfor %}
+           </select>
+        </div>
+        <div class="col-md-2">
+          <label>{% trans "Выберите программу" %}</label>  
+          <select id="id_search_program" class="form-control" name="program">
+            <option value="">&nbsp</option> 
+            {% for program in programs %}
+                <option value="{{ program.id }}" {% is_selected request.GET.program program.id %}>
+                  {{ program.title }}
+                </option>
+              {% endfor %}
+           </select>
+        </div>
+        <div class="col-md-3">
+        <label>&nbsp</label>
+        <input type="text" name="customer" class="form-control" placeholder='
+        {% trans "Введите иин, фио пациента" %}' name="customer" value="{{ request.GET.customer }}">
+      </div>
+      <div class="col-md-2">
+        <label>&nbsp</label>
+        <button class="btn btn-info w-100">{% trans "Поиск" %}</button>
+      </div>
+      </div>
+    </form>
+    <button type="button" class="btn-right-ab  btn btn-primary open-universal-modal"
+        data-url="{% url 'contract_management:contract_customer_create' %}">
+      + {% trans "Добавить пациента" %}
+    </button>
+    <div class="row align-items-center">
+      
+      <div class="col-md-12 mt-3">
+        <div class="table-responsive m-b-30">
+          <table class="table" >
+            <thead class="thead-light">
+              <tr>
+                <th>{% trans "Номер карты" %}</th>
+                <th>{% trans "Пациент" %}</th>
+                <th>{% trans "Номер контракта" %}</th>
+                <th>{% trans "Программа" %}</th>
+                <th>{% trans "Тип держателя" %}</th>
+                <th>{% trans "Дата начала" %}</th>
+                <th>{% trans "Дата окончания" %}</th>
+                <th>{% trans "Основной держатель" %}</th>
+                <th>{% trans "Редактирование" %}</th>
+              </tr>
+            </thead>
+            <tbody id="table-content">
+              {% for customer_card in customer_cards %}
+                <tr>
+                  <td>
+                      <a href="{% url 'contract_management:contract_customer_detail' pk=customer_card.id %}">
+                          
+                      </a>
+                      {{ customer_card.number }}
+                  </td>
+                  <td>{{ customer_card.customer.full_name }}</td>
+                  <td>{{ customer_card.contract.number }}</td>
+                  <td>{{ customer_card.program.title }}</td>
+                  <td>{{ customer_card.get_type_holder_display }}</td>
+                  <td>{{ customer_card.begin_date|date:"d.m.Y" }}</td>
+                  <td>{{ customer_card.end_date|date:"d.m.Y" }}</td>
+                  <td>
+                    {% if customer_card.base_card %}
+                      {{ customer_card.base_card.customer.full_name }}
+                    {% else %}
+                      Основной держатель
+                    {% endif %}
+
+                  </td>
+                  <td style="text-align: center;">
+                   
+                    <a href="#" class="open-universal-modal" data-url="{% url 'contract_management:contract_customer_delete' pk=customer_card.id %}">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                  </td>
+                </tr>
+              {% empty %}
+                <tr align="center">
+                  <td colspan="7">{% trans "Данные не найдены!" %}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> 
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+      $(document).on("click",".open-universal-modal",function() {
+          var url = $(this).data('url')
+          $.ajax({
+            url: url,
+            success: function(data){
+              $('#universal-modal-content').html(data)
+              $('#universal-modal').modal('show')
+            }
+          })
+      })
+
+    $(document).on("change","#id_search_contract,#id_search_insurer, #id_search_program, #id_search_insurance",function() {
+      $('#myForm').submit();
+    })
+
+    $(document).on("change","#id_contract",function() {
+      var contract = $(this).val()
+      var url = "{% url 'contract_management:program_by_contract' contract=0 %}".replace('0', contract)
+      $.ajax({
+        url: url,
+        success: function (data) {
+          $("#id_program").html(data)
+        }
+      })
+    })
+
+  $("#table-search").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#table-content tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    })
+  })
+{% endblock %}

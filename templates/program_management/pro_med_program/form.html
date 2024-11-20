@@ -1,0 +1,13 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="modal-body">
+	<div class="form-group">
+		<b>{% trans "Название професии" %}</b>
+		{{ form.title|add_class:"form-control" }}
+		<b>{% trans "Фабрика" %}</b>
+		{{ form.insurer|add_class:"form-control" }}
+		<b>{% trans "Тип" %}</b>
+		{{ form.program_type|add_class:"form-control" }}
+	</div>
+</div>

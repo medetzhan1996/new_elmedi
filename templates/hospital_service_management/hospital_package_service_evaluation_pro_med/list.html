@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load hospital_package_service_management_tags %}
+{% load i18n %}
+
+{% block breadcrumb %}
+{% if request.user.user_type == 18  %}
+<style type="text/css">
+    .breadcrumbbar{
+        margin-top: 99px;
+    }
+</style>
+ {% endif %}
+    {% if request.user.user_type != 10 %}
+       <!--  <li class="breadcrumb-item">
+            <a href="{% url 'hospital_service_management:hospital_list' %}">Клиники/Провайдеры</a>
+        </li> -->
+    {% endif %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_service_management:hospital_package_pro_med_evaluation_list' hospital=hospital.id %}">
+           <!--  {{ hospital.title }} -->{% trans " Назначение цен" %}
+        </a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="" class="" >
+            {{ hospital_package.title }}
+        </a>
+    </li>
+    
+{% endblock %}
+
+{% block content %}
+
+<div class="contentbar" style="margin-top: 0px;">
+    <div class="card" style="padding: 10px;">
+        <div class="row">
+            <form>
+<!-- <button class="btn-right-ab btn btn-sm btn-primary" type="submit">Дать разрешение к контрактеру</button>  -->           </form>
+            
+            {% if request.user.id == 9 %}
+                <a href="{% url 'hospital_service_management:hospital_package_service_setting' hospital=hospital.id hospital_package=hospital_package.id %}" class="btn-right-ab btn-sm btn btn-primary">
+                    {% trans "Добавить/создать услуги " %}
+                </a>
+            {% endif %}
+            <div class="col-md-12">
+                <div class="scroll-table">
+                    <table class="table table-bordered treetable" style="margin-bottom: 0;padding-bottom: 0;">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" colspan="1" style=" width:150px;"class="text-center"><div style="margin-top: 95px;">{% trans "Коды услуг" %}</div></th>
+                                <th rowspan="2" class="text-center" style="width: 250px;"><div style="margin-top: 95px;">{% trans "Названия услуг" %}</div></th>
+                               <!--  <th colspan="5" class="text-center yellow">{% trans "ОМС" %}</th> -->
+                                <th colspan="5" class="text-center green">{% trans "ОМО" %}</th>
+                                <th colspan="5" class="text-center bg-red">{% trans "ОПМО" %}</th>
+                            </tr>
+                            <tr>
+                                <!-- <th rowspan="2" class="yellow"><div class="rotate ">{% trans "Базовая цена" %}</div></th> -->
+                                <!-- <th colspan="4" class="text-center yellow">Ценовой коэффициент</th> -->
+                               <!--  <th rowspan="2" class="yellow"><div class="rotate"style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                                <th rowspan="2" class="yellow"><div class="rotate" style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                                <th rowspan="2" class="yellow"><div class="rotate" >{% trans "Амбулаторно" %}</div></th>
+                                <th rowspan="2" class="yellow"><div class="rotate">{% trans "Стационарно" %}</div></th> -->
+                                <th rowspan="2" class="green"><div class="rotate" >{% trans "Базовая цена" %}</div></th>
+                                <!-- <th colspan="4" class="text-center green">Ценовой коэффициент</th> -->
+                                <th rowspan="2" class="green"><div class="rotate"style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                                <th rowspan="2" class="green"><div class="rotate"style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                                <th rowspan="2" class="green"><div class="rotate" >{% trans "Амбулаторно" %}</div></th>
+                                <th rowspan="2" class="green"><div class="rotate" >{% trans "Стационарно" %}</div></th>
+                                <!-- <th rowspan="2" class="rotate green" rowspan="2">Лимит услуг</th> -->
+                                <th rowspan="2" class="bg-red"><div class="rotate">{% trans "Базовая цена" %}</div></th>
+                                <!-- <th colspan="4" class="text-center bg-red">Ценовой коэффициент</th>
+                                 -->
+                                <th rowspan="2" class="bg-red"><div class="rotate"style="margin-top: 32px;">{% trans "На дому" %}</div></th>
+                                <th rowspan="2" class="bg-red"><div class="rotate"style="margin-top: 45px;">{% trans "ПМСП" %}</div></th>
+                                <th rowspan="2" class="bg-red"><div class="rotate" >{% trans "Амбулаторно" %}</div></th>
+                                <th rowspan="2" class="bg-red"><div class="rotate">{% trans "Стационарно" %}</div></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <div class="scroll-table-body">
+                        <table class="table table-bordered treetable mt-0" id="service-table">
+                            <tbody>
+                            {% for service in services %}
+                                {% get_hospital_package_service hospital_package.hospital service hospital_package as hospital_package_service %}
+                                <tr data-tt-id="{{ service.id }}" data-tt-parent-id='{{ service.parent.id }}'>
+                                    <td style="height: 30px; width: 150px;">
+                                        {% if not service.is_leaf_node %}
+                                            <span class='folder'>
+                                                {{ service.code }} 
+                                            </span>
+                                        {% else %}
+                                            <span class='file'>
+                                                {{ service.code }} 
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="width:250px;">{{ service.title }}</td><!-- 
+                                    <td class="yellow">
+                                        {% if service.is_leaf_node %}
+                                            <div class="input-css-style">
+                                                {{ service.stateinsurance.price|default_if_none:"" }}
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                <td class="yellow">
+                                    {% if service.is_leaf_node %}
+                                        <input type="text" name="state_at_home" class="package-service-customize input-css-style"
+                                            value="{{ hospital_package_service.state_at_home|default:'' }}">
+                                    {% endif %}
+                                </td>
+                                <td class="yellow">
+                                    {% if service.is_leaf_node %}
+                                        <input type="text" name="state_primary_health_care" class="package-service-customize input-css-style"
+                                            value="{{ hospital_package_service.state_primary_health_care|default:'' }}">
+                                    {% endif %}
+                                </td>
+                                <td class="yellow">
+                                    {% if service.is_leaf_node %}
+                                        <input type="text" name="state_clinical_diagnostic" class="package-service-customize input-css-style"
+                                            value="{{ hospital_package_service.state_clinical_diagnostic|default:'' }}">
+                                    {% endif %}
+                                </td>
+                                <td class="yellow">
+                                    {% if service.is_leaf_node %}
+                                        <input type="text" name="state_hospital" class="package-service-customize input-css-style"
+                                            value="{{ hospital_package_service.state_hospital|default:'' }}">
+                                    {% endif %}
+                                </td> -->
+                                    <td class="green">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="vhi_price" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.vhi_price|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="green">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="vhi_at_home_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.vhi_at_home_coefficient|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="green">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="vhi_primary_health_care_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.vhi_primary_health_care_coefficient|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="green">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="vhi_clinical_diagnostic_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.vhi_clinical_diagnostic_coefficient|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="green"class="bg-red">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="vhi_hospital_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.vhi_hospital_coefficient|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="bg-red">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="pay_base_price" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.pay_base_price|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="bg-red">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="pay_at_home_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.pay_at_home_coefficient|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="bg-red">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="pay_primary_health_care_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.pay_primary_health_care_coefficient|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="bg-red">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="pay_clinical_diagnostic_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.pay_clinical_diagnostic_coefficient|default:'' }}">
+                                        {% endif %}
+                                    </td>
+                                    <td class="bg-red">
+                                        {% if service.is_leaf_node %}
+                                            <input type="text" name="pay_hospital_coefficient" class="package-service-customize input-css-style"
+                                                value="{{ hospital_package_service.pay_hospital_coefficient|default:'' }}">
+                                        {% endif %}
+                                        <input type="checkbox" name="is_checked" class="package-service-customize d-none" checked>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        </table>
+                    </div>
+                    
+                </div>
+ 
+            </div>
+        </div> 
+    </div>
+</div>
+{% endblock %}
+
+{% block domready %}
+    $("#service-table").treetable({
+        expandable: true,
+        clickableNodeNames: true
+    })
+
+    function get_form_data(_this, closest_element, element){
+        data = {}
+        _this.closest(closest_element).find(element).each(function(){
+            var name = $(this).attr('name')
+            data[name] = $(this).val()
+        })
+        return data
+    }
+
+    $(document).on("blur", ".package-service-customize", function() {
+        data = {}
+        var service = $(this).closest('tr').data('tt-id')
+        var data = get_form_data($(this), 'tr', '.package-service-customize')
+        data['service'] = service
+        data['hospital_package'] = "{{ hospital_package.id }}"
+        var url = "{% url 'hospital_service_management:hospital_package_service_form' hospital=hospital.id hospital_package=hospital_package.id %}"
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: data,
+            success: function(data){
+                console.log(data)
+            }
+        })
+    })
+{% endblock %}
+

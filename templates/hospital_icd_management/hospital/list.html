@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load package_icd_management_tags %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{% url 'hospital_icd_management:hospital_list' %}">Клиники/Провайдеры</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0px;">
+  <div class="card" style="padding: 10px;">
+    <div class="row align-items-center">
+        <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="Поиск провайдеров">
+        </div>
+        <!--div class="col-md-3 col-lg-3">              
+            <button class="btn btn-primary w-100">+ Добавить провайдеров</button>
+        </div-->
+    </div> 
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <div class="table-responsive m-b-30">
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Названия клиники/провайдеров</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      {% for hospital in hospitals %}
+                        {% if request.user.user_type == 10 %}
+                            {% url 'hospital_icd_management:hospital_package_evaluation_list' hospital=hospital.id as url %}
+                        {% else %}
+                            {% url 'hospital_icd_management:hospital_package_list' hospital=hospital.id as url %}
+                        {% endif %}
+                        <tr>
+                          <td>
+                            <a href="{{ url }}">
+                              {{ hospital.title }}
+                            </a>
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>         
+  </div>
+</div>
+{% endblock %}

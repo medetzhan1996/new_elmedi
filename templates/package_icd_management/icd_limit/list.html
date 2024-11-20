@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load mptt_tags %}
+{% load package_icd_management_tags %}
+{% load i18n %}
+
+{% block content %}
+  <div class="content-wrapper">
+    <style>
+  span[contenteditable="true"] {
+    padding-right: 0px;
+    padding-left: 3px;
+    white-space: normal;
+}
+span[contenteditable]:empty::before {
+    content: "......";
+}
+</style>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 class="card-title">
+              {% for package in packages %}
+                <a href="{% url 'price_list:package_service_price_list' package=package.id %}">
+                  {{ package.title }}
+                </a> /
+              {% endfor %}
+            </h3>
+            <div class="card-tools">
+              <div class="input-group input-group-sm">
+                <input type="text" id="search-service" class="form-control" placeholder='{% trans "Поиск услуг..." %}'>
+                <div class="input-group-append">
+                  <div class="btn btn-primary">
+                    <i class="fa fa-search"></i>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive mailbox-messages">
+              <table id="service-price-list" class="table table-hover table-bordered">
+                <tr>
+                  <th>№</th>
+                  <th>{% trans "Код мкб-10" %}</th>
+                  <th>{% trans "Наименование мкб-10" %}</th>
+                  <th>{% trans "ОМС" %}</th>
+                  <th>{% trans "ДМС" %}</th>
+                  <th>{% trans "ПЛАТНО" %}</th>
+                  <th>{% trans "Возможно платно" %}</th>
+                </tr>
+                <tbody  >
+                  {% for icd in icds %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ icd.code }}</td>
+                      <td>{{ icd.title }}</td>
+                      <td>
+                          <input type="checkbox" class="set-icd-limit" data-id="{{ icd.id }}" {% is_checked icd.icdlimit.state %} >
+                      </td>
+                      <td>
+                          <input type="checkbox" class="set-icd-limit" data-id="{{ icd.id }}" {% is_checked icd.icdlimit.vhi %} >
+                      </td>
+                      <td>
+                          <input type="checkbox" class="set-icd-limit" data-id="{{ icd.id }}" {% is_checked icd.icdlimit.pay %} >
+                      </td>
+                      <td>
+                          <input type="checkbox" class="set-icd-limit" data-id="{{ icd.id }}" {% is_checked icd.icdlimit.possibly_pay %}>
+                      </td>
+                    </tr>
+                  </tbody>
+                {% empty %}
+                  <tr align="center">
+                    <td colspan="4">{% trans "Данные не найдены!" %}</td>
+                  </tr>
+                {% endfor %}
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+
+    $(document).on("blur", ".set-price", function() {
+        data = {}
+        fields = [
+            'vhi_price', 'vhi_at_home_coefficient', 'vhi_primary_health_care_coefficient',
+            'vhi_clinical_diagnostic_coefficient', 'vhi_hospital_coefficient',
+            'pay_base_price', 'pay_at_home_coefficient', 'pay_primary_health_care_coefficient',
+            'pay_clinical_diagnostic_coefficient', 'pay_hospital_coefficient'
+        ]
+        data['service'] = $(this).data('service')
+        for (var i = 0; i < fields.length; i++) {
+            var field = fields[i]
+            var classes = '.' + field
+            var val = parseFloat($(this).closest('tr').find(classes).text().trim())
+            if(val){
+              data[field] = val
+            }
+        }
+        $.ajax({
+            url: "{% url 'price_list:package_service_price_form' %}",
+            type: "POST",
+            data: data,
+            success: function(data){
+            }
+        })
+    })
+
+{% endblock %}

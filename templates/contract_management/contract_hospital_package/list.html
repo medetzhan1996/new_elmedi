@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block breadcrumb %}
+    {% if request.user.user_type == 10 or request.user.user_type == 18 %}
+      <li class="breadcrumb-item">
+          <a href="{% url 'contract_management:contract_hospital_confir_list' %}">
+           {% trans " Все страховые контракты" %}
+          </a>
+      </li>
+    {% else %}
+      <li class="breadcrumb-item">
+          <a href="{% url 'contract_management:contract_hospital_list' %}">{% trans "Список контрактов" %}</a>
+      </li>
+    {% endif %}
+    <li class="breadcrumb-item active">
+        <a href="">{{ contract_hospital.program }}</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+<div class="contentbar" style="margin-top: 0px;">
+  <div class="card" style="padding: 10px;">
+      <div class="row align-items-center">
+          <div class="col-md-8">
+              <input type="text" class="form-control" placeholder='{% trans "Поиск" %}'>
+          </div>
+      </div>
+      <div class="row mt-3">
+          <div class="col-md-12">
+              <div class="table-responsive m-b-30">
+                  <table class="table">
+                      <thead class="thead-light">
+                          <tr>
+                              <th scope="col">{% trans "Группы услуг" %}</th>
+                              <!-- <th width="100px">+/-</th> -->
+                          </tr>
+                      </thead>
+                      <tbody>
+                        {% for hospital_package in hospital_packages %}
+                          <tr>
+                            <td>
+                              <a href="{% url 'contract_management:contract_hospital_package_service_list' hospital=hospital.id  hospital_package=hospital_package.id contract_hospital=contract_hospital.id %}" class="a-link">
+                                {{ hospital_package.title }}
+                              </a>
+                            </td>
+                            <!-- <td>
+                              <a href="#" class="open-universal-modal"
+                                 data-url="{% url 'contract_management:contract_hospital_package_update' contract_hospital=contract_hospital.id hospital=hospital.id pk=hospital_package.id %}">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                              </a>
+                             &nbsp&nbsp&nbsp
+                             <a href="#" class="open-universal-modal"
+                                 data-url="{% url 'contract_management:contract_hospital_package_delete' contract_hospital=contract_hospital.id hospital=hospital.id pk=hospital_package.id %}">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                              </a>
+
+                          </td> -->
+                          </tr>
+                        {% endfor %}
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+  <div class="modal fade bs-example-modal-lg" id="universal-modal" role="dialog" aria-labelledby="myLargeModalLabel" style="display: none;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content" id="universal-modal-content">
+
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block domready %}
+    $(document).on("click",".open-universal-modal",function() {
+      var url = $(this).data('url')
+      $.ajax({
+        url: url,
+        success: function(data){
+          $('#universal-modal-content').html(data)
+          $('#universal-modal').modal('show')
+        }
+      })
+    })
+{% endblock %}
+

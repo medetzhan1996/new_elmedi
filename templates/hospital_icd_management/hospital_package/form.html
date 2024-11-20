@@ -1,0 +1,10 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="modal-body">
+	<div class="form-group">
+		<b>{% trans "Название групп мкб-10" %}</b>	
+		{{ form.title|add_class:"form-control" }} 
+		<input type="hidden" name="hospital" value="{{ hospital }}">
+	</div>
+</div>

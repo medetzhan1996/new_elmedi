@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+{% load i18n %}
+
+<div class="form-group">
+	<b>{% trans "Название группы" %}</b>
+	{{ form.title|add_class:"form-control" }}
+	<b>{% trans "Введите тип лимита" %}</b>
+	{{ form.limit_type|add_class:"form-control" }}
+	
+	<div class="form-group {% if form.instance.limit_type == 1 %} d-none {% endif %}">
+		<b>{% trans "Введите лимит" %}</b>
+		{{ form.limit|add_class:"form-control" }}
+	</div>
+	<b>{% trans "Введите описание (при необходимости)" %}</b>
+	{{ form.description|add_class:"form-control" }}
+	{{ form.program|add_class:"form-control" }}
+<input type="checkbox" checked name="is_favorite" class="d-none">
+</div>
